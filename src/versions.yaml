@@ -1,0 +1,61 @@
+position:
+  latitude: 42.355691
+  longitude: 43.323853
+  timezone: Asia/Tbilisi
+versions:
+- name: dawn-scattered
+  time: sunrise-15*60
+  weather:
+    temperature: 23.2
+    wind_speed: 4.5
+    wind_direction: 330.0
+    visibility: 1593
+    cloud_type: scattered
+    cloud_height: 4000
+- name: morning-scattered
+  time: sunrise+45*60
+  weather:
+    temperature: 23.2
+    wind_speed: 4.5
+    wind_direction: 330.0
+    visibility: 1593
+    cloud_type: scattered
+    cloud_height: 4000
+- name: morning-overcast-rain
+  time: sunrise+45*60
+  weather:
+    temperature: 16.4
+    wind_speed: 1.0
+    wind_direction: 80.0
+    visibility: 80000
+    cloud_type: overcast
+    precipitation: true
+    cloud_height: 2900
+- name: day-scattered
+  time: '15:00'
+  weather:
+    temperature: 23.2
+    wind_speed: 4.5
+    wind_direction: 330.0
+    visibility: 1593
+    cloud_type: scattered
+    cloud_height: 4000
+- name: day-overcast-rain
+  time: '15:00'
+  weather:
+    temperature: 16.4
+    wind_speed: 1.0
+    wind_direction: 80.0
+    visibility: 80000
+    cloud_type: overcast
+    precipitation: true
+    cloud_height: 2900
+- name: evening-scattered
+  time: sunset-90*60
+  weather:
+    temperature: 23.2
+    wind_speed: 4.5
+    wind_direction: 330.0
+    visibility: 1593
+    cloud_type: scattered
+    cloud_height: 4000

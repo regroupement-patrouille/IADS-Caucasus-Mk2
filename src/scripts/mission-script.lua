@@ -1,0 +1,2 @@
+-- mission-script.lua — custom Lua that mission.yaml cannot express (none yet).
+-- The IADS logic lives in missionSkynetLogic.lua (see custom_scripts in mission.yaml).

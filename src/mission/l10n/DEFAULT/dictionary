@@ -1,0 +1,48 @@
+dictionary = 
+{
+  DictKey_ActionRadioText_8 = "Relancer la mission",
+  DictKey_ActionText_9 = "",
+  DictKey_descriptionBlueTask_3 = "",
+  DictKey_descriptionNeutralsTask_4 = "",
+  DictKey_descriptionRedTask_2 = "",
+  DictKey_descriptionText_1 = "This mission provides quick scenarii to practice engaging, evading and destroying air defence systems that are part of an IADS managed by Skynet.\
+In addition to the ready-to-fire air starts, some free ground slots are available in Krasnodar and Kutaisi.\
+\
+Check your kneeboard for target coordinates and maps.\
+\
+*SA-2 defended. SA-2 sites with SA-15 point defences, deployed between Maykop and Shahe.\
+\
+*SA-2 undefended. SA-2 sites with no defences along the coast between Batumi and Poti.\
+\
+*SA-10. Full SA-10 sites with SA-15 point defences. One at Zelen for an over ground approach, one near Gudauta for an over water approch. A trickier one at Dzhvari with a protected approach and additional C-RAM defences.\
+\
+*SA-5. One SA-5 in Mozdok.\
+\
+*TALD training. SA-19 and SA-15 sites on the Turkish coast to experiment with TALD timings.\
+\
+*SLAM-ER training. SA-11 near Nadezhnaya.\
+\
+*Tbilisi. For a challenge, the Tbilisi zone is fully defended by SAM defences (SA-2, SA-5, SA-10 and more). The command center of the network is in the area: destroying it will do disrupt the IADS.\
+\
+",
+  DictKey_sortie_5 = "SEAD/DEAD training with Skynet IADS",
+  VEAF_DictKey_ActionText_12001 = "return false -- VEAF scripts loading mode (false = static, true = dynamic)",
+  VEAF_DictKey_ActionText_12002 = "return false -- Mission scripts loading mode (false = static, true = dynamic)",
+  VEAF_DictKey_ActionText_12003 = "return VEAF_DYNAMIC_SCRIPTSPATH~=nil",
+  VEAF_DictKey_ActionText_12004 = "return VEAF_DYNAMIC_SCRIPTSPATH==nil",
+  VEAF_DictKey_ActionText_12005 = "return VEAF_DYNAMIC_MISSIONPATH~=nil",
+  VEAF_DictKey_ActionText_12006 = "return VEAF_DYNAMIC_MISSIONPATH==nil",
+  VEAF_DictKey_ActionText_12007 = "return true -- declare the CTLD/CSAR sounds so the Mission Editor keeps them",
+  VEAF_DictKey_ActionText_12008 = "return VEAF_DYNAMIC_MISSIONPATH==nil -- deferred mission scripts (static mode only)",
+  VEAF_DictKey_ActionText_12009 = "return VEAF_DYNAMIC_MISSIONPATH==nil -- deferred mission scripts (static mode only)",
+  VEAF_DictKey_ActionText_12010 = "return VEAF_DYNAMIC_MISSIONPATH==nil -- deferred mission scripts (static mode only)",
+  VEAF_DictKey_ActionText_12011 = "return VEAF_DYNAMIC_MISSIONPATH==nil -- deferred mission scripts (static mode only)",
+  VEAF_DictKey_ActionText_12012 = "return VEAF_DYNAMIC_MISSIONPATH==nil -- deferred mission scripts (static mode only)",
+  VEAF_DictKey_ActionText_12013 = "return VEAF_DYNAMIC_MISSIONPATH==nil -- deferred mission scripts (static mode only)",
+  VEAF_DictKey_ActionText_12014 = "return VEAF_DYNAMIC_MISSIONPATH==nil -- deferred mission scripts (static mode only)",
+  VEAF_DictKey_ActionText_12015 = "return VEAF_DYNAMIC_MISSIONPATH==nil -- deferred mission scripts (static mode only)",
+  VEAF_DictKey_ActionText_12016 = "return VEAF_DYNAMIC_MISSIONPATH==nil -- deferred mission scripts (static mode only)",
+  VEAF_DictKey_ActionText_12017 = "return VEAF_DYNAMIC_MISSIONPATH==nil -- deferred mission scripts (static mode only)",
+  VEAF_DictKey_ActionText_12018 = "return VEAF_DYNAMIC_MISSIONPATH==nil -- deferred mission scripts (static mode only)",
+  VEAF_DictKey_ActionText_12019 = "return VEAF_DYNAMIC_MISSIONPATH==nil -- deferred mission scripts (static mode only)",
+}

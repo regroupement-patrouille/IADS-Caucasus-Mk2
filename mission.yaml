@@ -1,0 +1,132 @@
+# mission.yaml — IADS-Caucasus Mk2 (VEAF MCT v6)
+# Ported from the v5 mission D:\Projects\DcsMissions\IADS-Caucasus (VEAF MCT 5.103.3).
+#
+# Doc: https://veaf.github.io/documentation/dev/en/mission-maker/GUIDE/
+#      https://veaf.github.io/documentation/dev/en/MISSION_YAML_REFERENCE/
+#
+# Build:    python build.py             (veaf-tools.exe mission build, then the post-build steps)
+#           python build.py --hotload   (local testing: the .miz boots dcs-hotload)
+#
+# dcs-hotload is not part of this file: it boots from its own MISSION START trigger
+# ("dcs-hotload boot", in src/mission/), outside the VEAF framework. It boots only when
+# BASE_HOTLOAD_PATH names a folder holding dcs-hotload.lua; otherwise it logs one line.
+
+# ── Global log level ─────────────────────────────────────────────────────────
+# Values: error | warning | info | debug | trace — keep 'info' for players.
+global_log_level: info
+
+# ── Mission ─────────────────────────────────────────────────────────────────
+mission:
+  name: IADS-Caucasus
+  silence_atc_on_all_airbases: true
+
+# ── Security ──────────────────────────────────────────────────────────────────
+# No password: every marker command is open to every player.
+security:
+  disabled: true
+
+# ── Plain module settings (become `key = value` in veaf-config.lua) ─────────
+module_settings:
+  veaf.DEFAULT_GROUND_SPEED_KPH: 25
+  veafSkynet.DynamicSpawn: true      # SAMs spawned with map markers join the IADS
+  veafSkynet.DelayForStartup: 5
+
+# ── Modules ──────────────────────────────────────────────────────────────────
+# A module absent from this block is ENABLED with its defaults, so every module
+# this mission does not use is written out as `false`.
+modules:
+  # Infrastructure (mandatory, always active)
+  UNITS:
+  TIME:
+  CACHE:
+  EVENTS:
+  MARKERS:
+  COMMANDS:
+
+  # IADS
+  SKYNET:
+    enabled: true
+    # Started by src/scripts/missionSkynetLogic.lua, after src/scripts/skynet-iads-3.6.0.lua
+    # has replaced the Skynet version VEAF MCT bundles (3.5.0 in VMCT 6.36.0).
+    # Once VMCT bundles 3.6.0 or later: delete skynet-iads-3.6.0.lua, its custom_scripts
+    # entry, this flag and the veafSkynet.initialize() call in missionSkynetLogic.lua.
+    initialized_by_mission: true
+  # VeafSkynetMonitorDescriptor (used by the "Skynet Red" F10 menu) is in veaf-scripts.lua either
+  # way, and SKYNET_MONITOR's initialize() only logs. Left off on purpose: in VMCT 6.36.0, enabling
+  # it auto-adds a second SKYNET module that calls veafSkynet.initialize() in veaf-config.lua,
+  # before skynet-iads-3.6.0.lua loads, despite initialized_by_mission.
+  SKYNET_MONITOR: false
+  QRA:
+    enabled: true
+    silence_all: true
+    definitions:
+      - name: Qra_Tbilissi
+        coalition: RED
+        enemy_coalitions:
+          - BLUE
+        trigger_zone: Qra_Tbilissi
+        groups_by_enemy_count:
+          - enemy_count: 1
+            groups:
+              - Qra_Tbilissi-1
+              - Qra_Tbilissi-2
+              - Qra_Tbilissi-3
+              - Qra_Tbilissi-4
+              - Qra_Tbilissi-5
+              - Qra_Tbilissi-6
+              - Qra_Tbilissi-7
+            random_pick: 1
+        delay_before_rearming: 60
+        delay_before_activating: 10
+
+  # Map-marker toolbox (spawn extra SAMs / targets in flight)
+  SECURITY: true
+  RADIO: true
+  WEATHER: true
+  SPAWN: false
+  
+  # Not used by this mission
+  ASSETS: false
+  ASSIST: false
+  AIRBASES: false
+  AIRWAVES: false
+  CAMPAIGN: false
+  CARRIER: false
+  CASMISSION: false
+  COMBATLOG: false
+  COMBATMISSION: false
+  COMBATZONE: false
+  GRASS: false
+  MISSILEGUARDIAN: false
+  MOVE: false
+  REMOTE: false
+  SANCTUARY: false
+  TRANSPORTMISSION: false
+  SHORTCUTS: false
+  INTERPRETER: false
+  GROUNDAI: false
+  NAMEDPOINTS: false         # airbases and cities are added automatically
+  
+  # Community scripts (SKYNET is above)
+  MIST: false
+  STTS: false
+  CTLD: false
+  AIEN: false
+  CSAR: false
+  TUM: false
+
+# ── Mission scripts ──────────────────────────────────────────────────────────
+# Load order: veaf-config.lua → mission-script.lua → these, in this order.
+custom_scripts:
+  scripts:
+    - path: src/scripts/skynet-iads-3.6.0.lua
+    - path: src/scripts/missionSkynetLogic.lua
+
+# ── Build pipeline ────────────────────────────────────────────────────────────
+pipeline:
+  presets: false                  # src/presets.yaml (radio presets)
+  waypoints: false                # src/waypoints.yaml
+  spawnable_aircrafts: true      # src/spawnables.yaml (veafSpawn- groups for the marker toolbox)
+  dynamic_slot_templates: false  # the v5 mission had no dynamic slots
+  warehouses: false
+  weather: false                 # the v5 build skipped weather variants too (src/versions.yaml kept)

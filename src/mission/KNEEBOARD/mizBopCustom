@@ -1,0 +1,407 @@
+{
+  "PreferencesMap": {
+    "ProviderName": "Flappie",
+    "Zoom": 9.0,
+    "OverlayNames": [
+      "Flappie Overlays"
+    ],
+    "OpenAipApiKey": ""
+  },
+  "MapData": {
+    "CenterLatitude": 45.013,
+    "CenterLongitude": 37.36,
+    "Zoom": 9.0,
+    "CustomMarkers": []
+  },
+  "MizBopCoalitions": [
+    {
+      "CoalitionName": "red",
+      "BullseyeDescription": "",
+      "BullseyeWaypoint": 0,
+      "MapData": {
+        "CenterLatitude": 44.12606702796636,
+        "CenterLongitude": 40.81019009423298,
+        "Zoom": 9.0,
+        "CustomMarkers": []
+      }
+    },
+    {
+      "CoalitionName": "blue",
+      "BullseyeDescription": "",
+      "BullseyeWaypoint": 0,
+      "MapData": {
+        "CenterLatitude": 44.13126996891493,
+        "CenterLongitude": 40.81048359727873,
+        "Zoom": 9.0,
+        "CustomMarkers": []
+      }
+    },
+    {
+      "CoalitionName": "neutrals",
+      "BullseyeDescription": "",
+      "BullseyeWaypoint": 0,
+      "MapData": {
+        "CenterLatitude": 45.129497,
+        "CenterLongitude": 34.265515,
+        "Zoom": 9.0,
+        "CustomMarkers": []
+      }
+    }
+  ],
+  "MizBopAirbases": [],
+  "MizBopGroups": [],
+  "MizBopUnits": [],
+  "MizBopRoutePoints": [],
+  "BopBriefingFolders": [
+    {
+      "Guid": "8756cbdf-6698-4548-9f0b-73eb8697a5a0",
+      "Name": "Only",
+      "Kneeboards": [],
+      "CoalitionName": "blue",
+      "WeatherDisplay": 1,
+      "MeasurementSystem": 2,
+      "CoordinateDisplay": 4,
+      "HtmlCssStyle": "",
+      "ImageSize": "720, 1085",
+      "Inactive": false,
+      "Pages": [
+        {
+          "Guid": "0c42350b-35f4-4f9a-849a-4d8dc7f0fd07",
+          "Title": "Main",
+          "DisplayTitle": false,
+          "Render": 1,
+          "MapIncludeBaseLayers": true,
+          "HtmlFontSize": 15,
+          "Parts": [
+            {
+              "Guid": "5a02d336-0d01-4663-912a-516574f0c2b9",
+              "PartType": 3
+            },
+            {
+              "Weather": true,
+              "Bullseye": true,
+              "BullseyeWithDescription": false,
+              "Guid": "6e1484c1-6696-40d7-b389-892399ffb60e",
+              "PartType": 10
+            },
+            {
+              "Header": "Airbases",
+              "Airbases": [
+                {
+                  "Id": 13,
+                  "AirbaseType": 1
+                },
+                {
+                  "Id": 25,
+                  "AirbaseType": 1
+                },
+                {
+                  "Id": 29,
+                  "AirbaseType": 1
+                }
+              ],
+              "SelectedColumns": [
+                "Name",
+                "Radio"
+              ],
+              "Guid": "f21234e8-b485-4bea-b334-29734ee14f68",
+              "PartType": 5
+            },
+            {
+              "PartGroupType": 1,
+              "Header": "Assets",
+              "GroupOrUnits": [
+                {
+                  "Id": 171,
+                  "Object": "group"
+                }
+              ],
+              "SelectedTableColumns": [
+                "Name/type",
+                "Radio"
+              ],
+              "Guid": "0ea63ff9-1f27-443e-b45a-239e3cca60ee",
+              "PartType": 6
+            },
+            {
+              "Header": "",
+              "ImagePath": "\\illustration.PNG",
+              "Guid": "19e3c807-426a-41d2-9430-d9b69a7c0034",
+              "PartType": 8
+            }
+          ],
+          "MapData": {
+            "CenterLatitude": 44.13126996891493,
+            "CenterLongitude": 40.81048359727873,
+            "Zoom": 9.0,
+            "CustomMarkers": []
+          }
+        },
+        {
+          "Guid": "a32dc088-dc39-425b-b7f0-94f6d5bf13d6",
+          "Title": "SAM missions",
+          "DisplayTitle": true,
+          "Render": 3,
+          "MapIncludeBaseLayers": true,
+          "HtmlFontSize": 15,
+          "Parts": [
+            {
+              "PartGroupType": 1,
+              "Header": "SA-2 protected",
+              "GroupOrUnits": [
+                {
+                  "Id": 198,
+                  "Object": "group"
+                },
+                {
+                  "Id": 199,
+                  "Object": "group"
+                },
+                {
+                  "Id": 201,
+                  "Object": "group"
+                }
+              ],
+              "SelectedTableColumns": [
+                "Name",
+                "Localisation"
+              ],
+              "Guid": "eb83b2fa-fc85-4136-bacb-ca12b72f15f3",
+              "PartType": 6
+            },
+            {
+              "PartGroupType": 0,
+              "Header": "SA-2 unprotected",
+              "GroupOrUnits": [
+                {
+                  "Id": 215,
+                  "Object": "group"
+                },
+                {
+                  "Id": 216,
+                  "Object": "group"
+                },
+                {
+                  "Id": 217,
+                  "Object": "group"
+                }
+              ],
+              "SelectedTableColumns": [
+                "Name",
+                "Localisation"
+              ],
+              "Guid": "11084102-55ad-4e41-a59c-9b6dbd9661b4",
+              "PartType": 6
+            },
+            {
+              "PartGroupType": 1,
+              "Header": "SA-10",
+              "GroupOrUnits": [
+                {
+                  "Id": 174,
+                  "Object": "group"
+                },
+                {
+                  "Id": 212,
+                  "Object": "group"
+                },
+                {
+                  "Id": 219,
+                  "Object": "group"
+                }
+              ],
+              "SelectedTableColumns": [
+                "Name",
+                "Localisation"
+              ],
+              "Guid": "b6ca1f4a-0b57-4321-b376-8787424e2f68",
+              "PartType": 6
+            },
+            {
+              "PartGroupType": 1,
+              "Header": "SA-5",
+              "GroupOrUnits": [
+                {
+                  "Id": 27,
+                  "Object": "group"
+                }
+              ],
+              "SelectedTableColumns": [
+                "Name",
+                "Localisation"
+              ],
+              "Guid": "b10a9625-15c4-458b-a107-1a6d48f2ba2f",
+              "PartType": 6
+            },
+            {
+              "PartGroupType": 1,
+              "Header": "SA-11",
+              "GroupOrUnits": [
+                {
+                  "Id": 23,
+                  "Object": "group"
+                }
+              ],
+              "SelectedTableColumns": [
+                "Name",
+                "Localisation"
+              ],
+              "Guid": "679f29bf-6669-472c-a504-a1ea29090aa3",
+              "PartType": 6
+            },
+            {
+              "PartGroupType": 1,
+              "Header": "TALD",
+              "GroupOrUnits": [
+                {
+                  "Id": 38,
+                  "Object": "group"
+                },
+                {
+                  "Id": 36,
+                  "Object": "group"
+                }
+              ],
+              "SelectedTableColumns": [
+                "Name",
+                "Localisation"
+              ],
+              "Guid": "679a5547-b961-47b1-b705-680647569986",
+              "PartType": 6
+            },
+            {
+              "PartGroupType": 0,
+              "Header": "SA-6",
+              "GroupOrUnits": [
+                {
+                  "Id": 197,
+                  "Object": "group"
+                }
+              ],
+              "SelectedTableColumns": [
+                "Name",
+                "Localisation"
+              ],
+              "Guid": "1da71f9d-51bf-4456-82a0-6774148933dd",
+              "PartType": 6
+            }
+          ],
+          "MapData": {
+            "CenterLatitude": 42.90011265525328,
+            "CenterLongitude": 41.275634765625,
+            "Zoom": 7.0,
+            "CustomMarkers": []
+          }
+        },
+        {
+          "Guid": "8caa0e2b-62e8-4c9e-a55d-e386fddfa38e",
+          "Title": "Tbilisi area",
+          "DisplayTitle": true,
+          "Render": 3,
+          "MapIncludeBaseLayers": true,
+          "HtmlFontSize": 16,
+          "Parts": [
+            {
+              "PartGroupType": 1,
+              "Header": "",
+              "GroupOrUnits": [
+                {
+                  "Id": 58,
+                  "Object": "group"
+                },
+                {
+                  "Id": 57,
+                  "Object": "group"
+                },
+                {
+                  "Id": 140,
+                  "Object": "group"
+                },
+                {
+                  "Id": 185,
+                  "Object": "group"
+                }
+              ],
+              "SelectedTableColumns": [
+                "Name",
+                "Localisation"
+              ],
+              "Guid": "7d6663e4-02f3-4a01-8bbf-ea353b085677",
+              "PartType": 6
+            }
+          ],
+          "MapData": {
+            "CenterLatitude": 41.733404580183745,
+            "CenterLongitude": 44.927215576171875,
+            "Zoom": 10.0,
+            "CustomMarkers": []
+          }
+        },
+        {
+          "Guid": "9209ed4b-134c-4322-a875-7d984cba1210",
+          "Title": "EWR",
+          "DisplayTitle": true,
+          "Render": 3,
+          "MapIncludeBaseLayers": true,
+          "HtmlFontSize": 16,
+          "Parts": [
+            {
+              "PartGroupType": 1,
+              "Header": "",
+              "GroupOrUnits": [
+                {
+                  "Id": 9,
+                  "Object": "group"
+                },
+                {
+                  "Id": 10,
+                  "Object": "group"
+                },
+                {
+                  "Id": 11,
+                  "Object": "group"
+                },
+                {
+                  "Id": 12,
+                  "Object": "group"
+                },
+                {
+                  "Id": 13,
+                  "Object": "group"
+                },
+                {
+                  "Id": 14,
+                  "Object": "group"
+                },
+                {
+                  "Id": 17,
+                  "Object": "group"
+                },
+                {
+                  "Id": 15,
+                  "Object": "group"
+                },
+                {
+                  "Id": 140,
+                  "Object": "group"
+                }
+              ],
+              "SelectedTableColumns": [
+                "Name/type",
+                "Localisation"
+              ],
+              "Guid": "69632cb8-21ec-4824-8219-1ff4c1903ebb",
+              "PartType": 6
+            }
+          ],
+          "MapData": {
+            "CenterLatitude": 43.33316939281722,
+            "CenterLongitude": 41.429443359375206,
+            "Zoom": 7.0,
+            "CustomMarkers": []
+          }
+        }
+      ]
+    }
+  ]
+}
