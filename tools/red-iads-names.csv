@@ -1,0 +1,383 @@
+old_group,new_group,network,role,parent_site,old_unit,new_unit,unit_type
+SA-6 - Maykop,MAP-SAM SA-6 Maykop,MAP,SAM,,SA-6 - Maykop - STR,MAP-SAM SA-6 Maykop-01,Kub 1S91 str
+SA-6 - Maykop,MAP-SAM SA-6 Maykop,MAP,SAM,,-5-2,MAP-SAM SA-6 Maykop-02,Kub 2P25 ln
+SA-6 - Maykop,MAP-SAM SA-6 Maykop,MAP,SAM,,-5-3,MAP-SAM SA-6 Maykop-03,Kub 2P25 ln
+SA-6 - Maykop,MAP-SAM SA-6 Maykop,MAP,SAM,,-5-4,MAP-SAM SA-6 Maykop-04,Kub 2P25 ln
+SA-6 - Maykop,MAP-SAM SA-6 Maykop,MAP,SAM,,-5-5,MAP-SAM SA-6 Maykop-05,Kub 2P25 ln
+SA-6 - Maykop,MAP-SAM SA-6 Maykop,MAP,SAM,,-5-6,MAP-SAM SA-6 Maykop-06,Kub 2P25 ln
+SA-6 - Maykop,MAP-SAM SA-6 Maykop,MAP,SAM,,-5-7,MAP-SAM SA-6 Maykop-07,Kub 2P25 ln
+SA-6 - Maykop,MAP-SAM SA-6 Maykop,MAP,SAM,,-5-8,MAP-SAM SA-6 Maykop-08,Kub 2P25 ln
+SA-6 - Maykop,MAP-SAM SA-6 Maykop,MAP,SAM,,-5-9,MAP-SAM SA-6 Maykop-09,Kub 2P25 ln
+SA-6 - Maykop,MAP-SAM SA-6 Maykop,MAP,SAM,,-5-10,MAP-SAM SA-6 Maykop-10,Ural-4320T
+SA-2 - Maykop,MAP-SAM SA-2 Maykop,MAP,SAM,,SA-2 - Maykop - SR,MAP-SAM SA-2 Maykop-01,p-19 s-125 sr
+SA-2 - Maykop,MAP-SAM SA-2 Maykop,MAP,SAM,,SA-2 - Maykop - TR,MAP-SAM SA-2 Maykop-02,SNR_75V
+SA-2 - Maykop,MAP-SAM SA-2 Maykop,MAP,SAM,,-5-12,MAP-SAM SA-2 Maykop-03,S_75M_Volhov
+SA-2 - Maykop,MAP-SAM SA-2 Maykop,MAP,SAM,,-5-13,MAP-SAM SA-2 Maykop-04,S_75M_Volhov
+SA-2 - Maykop,MAP-SAM SA-2 Maykop,MAP,SAM,,-5-14,MAP-SAM SA-2 Maykop-05,S_75M_Volhov
+SA-2 - Maykop,MAP-SAM SA-2 Maykop,MAP,SAM,,-5-15,MAP-SAM SA-2 Maykop-06,S_75M_Volhov
+SA-2 - Maykop,MAP-SAM SA-2 Maykop,MAP,SAM,,-5-16,MAP-SAM SA-2 Maykop-07,S_75M_Volhov
+SA-2 - Maykop,MAP-SAM SA-2 Maykop,MAP,SAM,,-5-17,MAP-SAM SA-2 Maykop-08,S_75M_Volhov
+SA-2 - Maykop,MAP-SAM SA-2 Maykop,MAP,SAM,,-5-18,MAP-SAM SA-2 Maykop-09,S_75M_Volhov
+SA-2 - Maykop,MAP-SAM SA-2 Maykop,MAP,SAM,,-5-19,MAP-SAM SA-2 Maykop-10,S_75M_Volhov
+SA-2 - Maykop,MAP-SAM SA-2 Maykop,MAP,SAM,,-5-20,MAP-SAM SA-2 Maykop-11,Ural-4320T
+SA-2 - Mezmay,MAP-SAM SA-2 Mezmay,MAP,SAM,,SA-2 - Mezmay - SR,MAP-SAM SA-2 Mezmay-01,p-19 s-125 sr
+SA-2 - Mezmay,MAP-SAM SA-2 Mezmay,MAP,SAM,,SA-2 - Mezmay - TR ,MAP-SAM SA-2 Mezmay-02,SNR_75V
+SA-2 - Mezmay,MAP-SAM SA-2 Mezmay,MAP,SAM,,-5-21,MAP-SAM SA-2 Mezmay-03,S_75M_Volhov
+SA-2 - Mezmay,MAP-SAM SA-2 Mezmay,MAP,SAM,,-5-22,MAP-SAM SA-2 Mezmay-04,S_75M_Volhov
+SA-2 - Mezmay,MAP-SAM SA-2 Mezmay,MAP,SAM,,-5-23,MAP-SAM SA-2 Mezmay-05,S_75M_Volhov
+SA-2 - Mezmay,MAP-SAM SA-2 Mezmay,MAP,SAM,,-5-24,MAP-SAM SA-2 Mezmay-06,S_75M_Volhov
+SA-2 - Mezmay,MAP-SAM SA-2 Mezmay,MAP,SAM,,-5-25,MAP-SAM SA-2 Mezmay-07,S_75M_Volhov
+SA-2 - Mezmay,MAP-SAM SA-2 Mezmay,MAP,SAM,,-5-26,MAP-SAM SA-2 Mezmay-08,S_75M_Volhov
+SA-2 - Mezmay,MAP-SAM SA-2 Mezmay,MAP,SAM,,-5-27,MAP-SAM SA-2 Mezmay-09,S_75M_Volhov
+SA-2 - Mezmay,MAP-SAM SA-2 Mezmay,MAP,SAM,,-5-28,MAP-SAM SA-2 Mezmay-10,S_75M_Volhov
+SA-2 - Mezmay,MAP-SAM SA-2 Mezmay,MAP,SAM,,-5-29,MAP-SAM SA-2 Mezmay-11,Ural-4320T
+SA-2 - Shahe,MAP-SAM SA-2 Shahe,MAP,SAM,,SA-2 - Shahe - SR,MAP-SAM SA-2 Shahe-01,p-19 s-125 sr
+SA-2 - Shahe,MAP-SAM SA-2 Shahe,MAP,SAM,,SA-2 - Shahe - TR,MAP-SAM SA-2 Shahe-02,SNR_75V
+SA-2 - Shahe,MAP-SAM SA-2 Shahe,MAP,SAM,,-5-30,MAP-SAM SA-2 Shahe-03,S_75M_Volhov
+SA-2 - Shahe,MAP-SAM SA-2 Shahe,MAP,SAM,,-5-31,MAP-SAM SA-2 Shahe-04,S_75M_Volhov
+SA-2 - Shahe,MAP-SAM SA-2 Shahe,MAP,SAM,,-5-32,MAP-SAM SA-2 Shahe-05,S_75M_Volhov
+SA-2 - Shahe,MAP-SAM SA-2 Shahe,MAP,SAM,,-5-33,MAP-SAM SA-2 Shahe-06,S_75M_Volhov
+SA-2 - Shahe,MAP-SAM SA-2 Shahe,MAP,SAM,,-5-34,MAP-SAM SA-2 Shahe-07,S_75M_Volhov
+SA-2 - Shahe,MAP-SAM SA-2 Shahe,MAP,SAM,,-5-35,MAP-SAM SA-2 Shahe-08,S_75M_Volhov
+SA-2 - Shahe,MAP-SAM SA-2 Shahe,MAP,SAM,,-5-36,MAP-SAM SA-2 Shahe-09,S_75M_Volhov
+SA-2 - Shahe,MAP-SAM SA-2 Shahe,MAP,SAM,,-5-37,MAP-SAM SA-2 Shahe-10,S_75M_Volhov
+SA-2 - Shahe,MAP-SAM SA-2 Shahe,MAP,SAM,,-5-38,MAP-SAM SA-2 Shahe-11,Ural-4320T
+SA-2 - Tbilissi,TBS-SAM SA-2 Tbilissi,TBS,SAM,,SA-2 - Tbilissi - SR,TBS-SAM SA-2 Tbilissi-01,p-19 s-125 sr
+SA-2 - Tbilissi,TBS-SAM SA-2 Tbilissi,TBS,SAM,,SA-2 - Tbilissi - TR,TBS-SAM SA-2 Tbilissi-02,SNR_75V
+SA-2 - Tbilissi,TBS-SAM SA-2 Tbilissi,TBS,SAM,,-5-39,TBS-SAM SA-2 Tbilissi-03,S_75M_Volhov
+SA-2 - Tbilissi,TBS-SAM SA-2 Tbilissi,TBS,SAM,,-5-40,TBS-SAM SA-2 Tbilissi-04,S_75M_Volhov
+SA-2 - Tbilissi,TBS-SAM SA-2 Tbilissi,TBS,SAM,,-5-41,TBS-SAM SA-2 Tbilissi-05,S_75M_Volhov
+SA-2 - Tbilissi,TBS-SAM SA-2 Tbilissi,TBS,SAM,,-5-42,TBS-SAM SA-2 Tbilissi-06,S_75M_Volhov
+SA-2 - Tbilissi,TBS-SAM SA-2 Tbilissi,TBS,SAM,,-5-43,TBS-SAM SA-2 Tbilissi-07,S_75M_Volhov
+SA-2 - Tbilissi,TBS-SAM SA-2 Tbilissi,TBS,SAM,,-5-44,TBS-SAM SA-2 Tbilissi-08,S_75M_Volhov
+SA-2 - Tbilissi,TBS-SAM SA-2 Tbilissi,TBS,SAM,,-5-45,TBS-SAM SA-2 Tbilissi-09,S_75M_Volhov
+SA-2 - Tbilissi,TBS-SAM SA-2 Tbilissi,TBS,SAM,,-5-46,TBS-SAM SA-2 Tbilissi-10,S_75M_Volhov
+SA-2 - Tbilissi,TBS-SAM SA-2 Tbilissi,TBS,SAM,,-5-47,TBS-SAM SA-2 Tbilissi-11,Ural-4320T
+SA-2 - Vaziani,TBS-SAM SA-2 Vaziani,TBS,SAM,,SA-2 - Vaziani - SR,TBS-SAM SA-2 Vaziani-01,p-19 s-125 sr
+SA-2 - Vaziani,TBS-SAM SA-2 Vaziani,TBS,SAM,,SA-2 - Vaziani - TR,TBS-SAM SA-2 Vaziani-02,SNR_75V
+SA-2 - Vaziani,TBS-SAM SA-2 Vaziani,TBS,SAM,,-5-48,TBS-SAM SA-2 Vaziani-03,S_75M_Volhov
+SA-2 - Vaziani,TBS-SAM SA-2 Vaziani,TBS,SAM,,-5-49,TBS-SAM SA-2 Vaziani-04,S_75M_Volhov
+SA-2 - Vaziani,TBS-SAM SA-2 Vaziani,TBS,SAM,,-5-50,TBS-SAM SA-2 Vaziani-05,S_75M_Volhov
+SA-2 - Vaziani,TBS-SAM SA-2 Vaziani,TBS,SAM,,-5-51,TBS-SAM SA-2 Vaziani-06,S_75M_Volhov
+SA-2 - Vaziani,TBS-SAM SA-2 Vaziani,TBS,SAM,,-5-52,TBS-SAM SA-2 Vaziani-07,S_75M_Volhov
+SA-2 - Vaziani,TBS-SAM SA-2 Vaziani,TBS,SAM,,-5-53,TBS-SAM SA-2 Vaziani-08,S_75M_Volhov
+SA-2 - Vaziani,TBS-SAM SA-2 Vaziani,TBS,SAM,,-5-54,TBS-SAM SA-2 Vaziani-09,S_75M_Volhov
+SA-2 - Vaziani,TBS-SAM SA-2 Vaziani,TBS,SAM,,-5-55,TBS-SAM SA-2 Vaziani-10,S_75M_Volhov
+SA-2 - Vaziani,TBS-SAM SA-2 Vaziani,TBS,SAM,,-5-56,TBS-SAM SA-2 Vaziani-11,Ural-4320T
+SA-10 - Gudauta,MAP-SAM SA-10 Gudauta,MAP,SAM,,SA-10 - Gudauta - BB,MAP-SAM SA-10 Gudauta-01,S-300PS 64H6E sr
+SA-10 - Gudauta,MAP-SAM SA-10 Gudauta,MAP,SAM,,SA-10 - Gudauta - TR,MAP-SAM SA-10 Gudauta-02,S-300PS 40B6M tr
+SA-10 - Gudauta,MAP-SAM SA-10 Gudauta,MAP,SAM,,SA-10 - Gudauta - CS,MAP-SAM SA-10 Gudauta-03,S-300PS 40B6MD sr
+SA-10 - Gudauta,MAP-SAM SA-10 Gudauta,MAP,SAM,,-5-58,MAP-SAM SA-10 Gudauta-04,S-300PS 54K6 cp
+SA-10 - Gudauta,MAP-SAM SA-10 Gudauta,MAP,SAM,,-5-59,MAP-SAM SA-10 Gudauta-05,S-300PS 5P85C ln
+SA-10 - Gudauta,MAP-SAM SA-10 Gudauta,MAP,SAM,,-5-60,MAP-SAM SA-10 Gudauta-06,S-300PS 5P85D ln
+SA-10 - Gudauta,MAP-SAM SA-10 Gudauta,MAP,SAM,,-5-61,MAP-SAM SA-10 Gudauta-07,S-300PS 5P85D ln
+SA-10 - Gudauta,MAP-SAM SA-10 Gudauta,MAP,SAM,,-5-62,MAP-SAM SA-10 Gudauta-08,S-300PS 5P85C ln
+SA-10 - Gudauta,MAP-SAM SA-10 Gudauta,MAP,SAM,,-5-63,MAP-SAM SA-10 Gudauta-09,S-300PS 5P85D ln
+SA-10 - Gudauta,MAP-SAM SA-10 Gudauta,MAP,SAM,,-5-64,MAP-SAM SA-10 Gudauta-10,S-300PS 5P85D ln
+SA-10 - Gudauta,MAP-SAM SA-10 Gudauta,MAP,SAM,,-5-65,MAP-SAM SA-10 Gudauta-11,Ural-4320T
+SA-2 - Poti,MAP-SAM SA-2 Poti,MAP,SAM,,SA-2 - Poti - SR,MAP-SAM SA-2 Poti-01,p-19 s-125 sr
+SA-2 - Poti,MAP-SAM SA-2 Poti,MAP,SAM,,SA-2 - Poti - TR,MAP-SAM SA-2 Poti-02,SNR_75V
+SA-2 - Poti,MAP-SAM SA-2 Poti,MAP,SAM,,-5-57,MAP-SAM SA-2 Poti-03,S_75M_Volhov
+SA-2 - Poti,MAP-SAM SA-2 Poti,MAP,SAM,,-5-66,MAP-SAM SA-2 Poti-04,S_75M_Volhov
+SA-2 - Poti,MAP-SAM SA-2 Poti,MAP,SAM,,-5-67,MAP-SAM SA-2 Poti-05,S_75M_Volhov
+SA-2 - Poti,MAP-SAM SA-2 Poti,MAP,SAM,,-5-68,MAP-SAM SA-2 Poti-06,S_75M_Volhov
+SA-2 - Poti,MAP-SAM SA-2 Poti,MAP,SAM,,-5-69,MAP-SAM SA-2 Poti-07,S_75M_Volhov
+SA-2 - Poti,MAP-SAM SA-2 Poti,MAP,SAM,,-5-70,MAP-SAM SA-2 Poti-08,S_75M_Volhov
+SA-2 - Poti,MAP-SAM SA-2 Poti,MAP,SAM,,-5-71,MAP-SAM SA-2 Poti-09,S_75M_Volhov
+SA-2 - Poti,MAP-SAM SA-2 Poti,MAP,SAM,,-5-72,MAP-SAM SA-2 Poti-10,S_75M_Volhov
+SA-2 - Poti,MAP-SAM SA-2 Poti,MAP,SAM,,-5-73,MAP-SAM SA-2 Poti-11,Ural-4320T
+SA-2 - Batumi,MAP-SAM SA-2 Batumi,MAP,SAM,,SA-2 - Batumi - SR,MAP-SAM SA-2 Batumi-01,p-19 s-125 sr
+SA-2 - Batumi,MAP-SAM SA-2 Batumi,MAP,SAM,,SA-2 - Batumi - TR,MAP-SAM SA-2 Batumi-02,SNR_75V
+SA-2 - Batumi,MAP-SAM SA-2 Batumi,MAP,SAM,,-5-74,MAP-SAM SA-2 Batumi-03,S_75M_Volhov
+SA-2 - Batumi,MAP-SAM SA-2 Batumi,MAP,SAM,,-5-75,MAP-SAM SA-2 Batumi-04,S_75M_Volhov
+SA-2 - Batumi,MAP-SAM SA-2 Batumi,MAP,SAM,,-5-76,MAP-SAM SA-2 Batumi-05,S_75M_Volhov
+SA-2 - Batumi,MAP-SAM SA-2 Batumi,MAP,SAM,,-5-77,MAP-SAM SA-2 Batumi-06,S_75M_Volhov
+SA-2 - Batumi,MAP-SAM SA-2 Batumi,MAP,SAM,,-5-78,MAP-SAM SA-2 Batumi-07,S_75M_Volhov
+SA-2 - Batumi,MAP-SAM SA-2 Batumi,MAP,SAM,,-5-79,MAP-SAM SA-2 Batumi-08,S_75M_Volhov
+SA-2 - Batumi,MAP-SAM SA-2 Batumi,MAP,SAM,,-5-80,MAP-SAM SA-2 Batumi-09,S_75M_Volhov
+SA-2 - Batumi,MAP-SAM SA-2 Batumi,MAP,SAM,,-5-81,MAP-SAM SA-2 Batumi-10,S_75M_Volhov
+SA-2 - Batumi,MAP-SAM SA-2 Batumi,MAP,SAM,,-5-82,MAP-SAM SA-2 Batumi-11,Ural-4320T
+SA-2 - Kobuleti,MAP-SAM SA-2 Kobuleti,MAP,SAM,,SA-2 - Kobuleti - SR,MAP-SAM SA-2 Kobuleti-01,p-19 s-125 sr
+SA-2 - Kobuleti,MAP-SAM SA-2 Kobuleti,MAP,SAM,,SA-2 - Kobuleti - TR,MAP-SAM SA-2 Kobuleti-02,SNR_75V
+SA-2 - Kobuleti,MAP-SAM SA-2 Kobuleti,MAP,SAM,,-5-83,MAP-SAM SA-2 Kobuleti-03,S_75M_Volhov
+SA-2 - Kobuleti,MAP-SAM SA-2 Kobuleti,MAP,SAM,,-5-84,MAP-SAM SA-2 Kobuleti-04,S_75M_Volhov
+SA-2 - Kobuleti,MAP-SAM SA-2 Kobuleti,MAP,SAM,,-5-85,MAP-SAM SA-2 Kobuleti-05,S_75M_Volhov
+SA-2 - Kobuleti,MAP-SAM SA-2 Kobuleti,MAP,SAM,,-5-86,MAP-SAM SA-2 Kobuleti-06,S_75M_Volhov
+SA-2 - Kobuleti,MAP-SAM SA-2 Kobuleti,MAP,SAM,,-5-87,MAP-SAM SA-2 Kobuleti-07,S_75M_Volhov
+SA-2 - Kobuleti,MAP-SAM SA-2 Kobuleti,MAP,SAM,,-5-88,MAP-SAM SA-2 Kobuleti-08,S_75M_Volhov
+SA-2 - Kobuleti,MAP-SAM SA-2 Kobuleti,MAP,SAM,,-5-89,MAP-SAM SA-2 Kobuleti-09,S_75M_Volhov
+SA-2 - Kobuleti,MAP-SAM SA-2 Kobuleti,MAP,SAM,,-5-90,MAP-SAM SA-2 Kobuleti-10,S_75M_Volhov
+SA-2 - Kobuleti,MAP-SAM SA-2 Kobuleti,MAP,SAM,,-5-91,MAP-SAM SA-2 Kobuleti-11,Ural-4320T
+SA-10 - Dzhvari,MAP-SAM SA-10 Dzhvari,MAP,SAM,,SA-10 - Dzhvari - BB,MAP-SAM SA-10 Dzhvari-01,S-300PS 64H6E sr
+SA-10 - Dzhvari,MAP-SAM SA-10 Dzhvari,MAP,SAM,,SA-10 - Dzhvari - TR,MAP-SAM SA-10 Dzhvari-02,S-300PS 40B6M tr
+SA-10 - Dzhvari,MAP-SAM SA-10 Dzhvari,MAP,SAM,,SA-10 - Dzhvari - CS,MAP-SAM SA-10 Dzhvari-03,S-300PS 40B6MD sr
+SA-10 - Dzhvari,MAP-SAM SA-10 Dzhvari,MAP,SAM,,-1-4,MAP-SAM SA-10 Dzhvari-04,S-300PS 54K6 cp
+SA-10 - Dzhvari,MAP-SAM SA-10 Dzhvari,MAP,SAM,,-1-5,MAP-SAM SA-10 Dzhvari-05,S-300PS 5P85C ln
+SA-10 - Dzhvari,MAP-SAM SA-10 Dzhvari,MAP,SAM,,-1-6,MAP-SAM SA-10 Dzhvari-06,S-300PS 5P85D ln
+SA-10 - Dzhvari,MAP-SAM SA-10 Dzhvari,MAP,SAM,,-1-7,MAP-SAM SA-10 Dzhvari-07,S-300PS 5P85D ln
+SA-10 - Dzhvari,MAP-SAM SA-10 Dzhvari,MAP,SAM,,-1-8,MAP-SAM SA-10 Dzhvari-08,S-300PS 5P85C ln
+SA-10 - Dzhvari,MAP-SAM SA-10 Dzhvari,MAP,SAM,,-1-9,MAP-SAM SA-10 Dzhvari-09,S-300PS 5P85D ln
+SA-10 - Dzhvari,MAP-SAM SA-10 Dzhvari,MAP,SAM,,-1-10,MAP-SAM SA-10 Dzhvari-10,S-300PS 5P85D ln
+SA-10 - Dzhvari,MAP-SAM SA-10 Dzhvari,MAP,SAM,,-1-11,MAP-SAM SA-10 Dzhvari-11,Ural-4320T
+SA-2 - Ochamchira,MAP-SAM SA-2 Ochamchira,MAP,SAM,,SA-2 - Ochamchira - SR,MAP-SAM SA-2 Ochamchira-01,p-19 s-125 sr
+SA-2 - Ochamchira,MAP-SAM SA-2 Ochamchira,MAP,SAM,,SA-2 - Ochamchira - TR,MAP-SAM SA-2 Ochamchira-02,SNR_75V
+SA-2 - Ochamchira,MAP-SAM SA-2 Ochamchira,MAP,SAM,,-1-12,MAP-SAM SA-2 Ochamchira-03,S_75M_Volhov
+SA-2 - Ochamchira,MAP-SAM SA-2 Ochamchira,MAP,SAM,,-1-13,MAP-SAM SA-2 Ochamchira-04,S_75M_Volhov
+SA-2 - Ochamchira,MAP-SAM SA-2 Ochamchira,MAP,SAM,,-1-14,MAP-SAM SA-2 Ochamchira-05,S_75M_Volhov
+SA-2 - Ochamchira,MAP-SAM SA-2 Ochamchira,MAP,SAM,,-1-15,MAP-SAM SA-2 Ochamchira-06,S_75M_Volhov
+SA-2 - Ochamchira,MAP-SAM SA-2 Ochamchira,MAP,SAM,,-1-16,MAP-SAM SA-2 Ochamchira-07,S_75M_Volhov
+SA-2 - Ochamchira,MAP-SAM SA-2 Ochamchira,MAP,SAM,,-1-17,MAP-SAM SA-2 Ochamchira-08,S_75M_Volhov
+SA-2 - Ochamchira,MAP-SAM SA-2 Ochamchira,MAP,SAM,,-1-18,MAP-SAM SA-2 Ochamchira-09,S_75M_Volhov
+SA-2 - Ochamchira,MAP-SAM SA-2 Ochamchira,MAP,SAM,,-1-19,MAP-SAM SA-2 Ochamchira-10,S_75M_Volhov
+SA-2 - Ochamchira,MAP-SAM SA-2 Ochamchira,MAP,SAM,,-1-20,MAP-SAM SA-2 Ochamchira-11,Ural-4320T
+SA-2 - Muhuri,MAP-SAM SA-2 Muhuri,MAP,SAM,,SA-2 - Muhuri - SR,MAP-SAM SA-2 Muhuri-01,p-19 s-125 sr
+SA-2 - Muhuri,MAP-SAM SA-2 Muhuri,MAP,SAM,,SA-2 - Muhuri - TR,MAP-SAM SA-2 Muhuri-02,SNR_75V
+SA-2 - Muhuri,MAP-SAM SA-2 Muhuri,MAP,SAM,,-1-21,MAP-SAM SA-2 Muhuri-03,S_75M_Volhov
+SA-2 - Muhuri,MAP-SAM SA-2 Muhuri,MAP,SAM,,-1-22,MAP-SAM SA-2 Muhuri-04,S_75M_Volhov
+SA-2 - Muhuri,MAP-SAM SA-2 Muhuri,MAP,SAM,,-1-23,MAP-SAM SA-2 Muhuri-05,S_75M_Volhov
+SA-2 - Muhuri,MAP-SAM SA-2 Muhuri,MAP,SAM,,-1-24,MAP-SAM SA-2 Muhuri-06,S_75M_Volhov
+SA-2 - Muhuri,MAP-SAM SA-2 Muhuri,MAP,SAM,,-1-25,MAP-SAM SA-2 Muhuri-07,S_75M_Volhov
+SA-2 - Muhuri,MAP-SAM SA-2 Muhuri,MAP,SAM,,-1-26,MAP-SAM SA-2 Muhuri-08,S_75M_Volhov
+SA-2 - Muhuri,MAP-SAM SA-2 Muhuri,MAP,SAM,,-1-27,MAP-SAM SA-2 Muhuri-09,S_75M_Volhov
+SA-2 - Muhuri,MAP-SAM SA-2 Muhuri,MAP,SAM,,-1-28,MAP-SAM SA-2 Muhuri-10,S_75M_Volhov
+SA-2 - Muhuri,MAP-SAM SA-2 Muhuri,MAP,SAM,,-1-29,MAP-SAM SA-2 Muhuri-11,Ural-4320T
+SA-2 - Gudauta,MAP-SAM SA-2 Gudauta,MAP,SAM,,SA-2 - Gudauta - SR,MAP-SAM SA-2 Gudauta-01,p-19 s-125 sr
+SA-2 - Gudauta,MAP-SAM SA-2 Gudauta,MAP,SAM,,SA-2 - Gudauta - TR,MAP-SAM SA-2 Gudauta-02,SNR_75V
+SA-2 - Gudauta,MAP-SAM SA-2 Gudauta,MAP,SAM,,-3-3,MAP-SAM SA-2 Gudauta-03,S_75M_Volhov
+SA-2 - Gudauta,MAP-SAM SA-2 Gudauta,MAP,SAM,,-3-4,MAP-SAM SA-2 Gudauta-04,S_75M_Volhov
+SA-2 - Gudauta,MAP-SAM SA-2 Gudauta,MAP,SAM,,-3-5,MAP-SAM SA-2 Gudauta-05,S_75M_Volhov
+SA-2 - Gudauta,MAP-SAM SA-2 Gudauta,MAP,SAM,,-3-6,MAP-SAM SA-2 Gudauta-06,S_75M_Volhov
+SA-2 - Gudauta,MAP-SAM SA-2 Gudauta,MAP,SAM,,-3-7,MAP-SAM SA-2 Gudauta-07,S_75M_Volhov
+SA-2 - Gudauta,MAP-SAM SA-2 Gudauta,MAP,SAM,,-3-8,MAP-SAM SA-2 Gudauta-08,S_75M_Volhov
+SA-2 - Gudauta,MAP-SAM SA-2 Gudauta,MAP,SAM,,-3-9,MAP-SAM SA-2 Gudauta-09,S_75M_Volhov
+SA-2 - Gudauta,MAP-SAM SA-2 Gudauta,MAP,SAM,,-3-10,MAP-SAM SA-2 Gudauta-10,S_75M_Volhov
+SA-2 - Gudauta,MAP-SAM SA-2 Gudauta,MAP,SAM,,-3-11,MAP-SAM SA-2 Gudauta-11,Ural-4320T
+Awacs #3,TBS-EW Awacs Tbilisi,TBS,EW,,Awacs #3,TBS-EW Awacs Tbilisi,A-50
+Awacs #1,MAP-EW Awacs Mozdok,MAP,EW,,Awacs #1,MAP-EW Awacs Mozdok,A-50
+Awacs #2,MAP-EW Awacs Turkey,MAP,EW,,Awacs #2,MAP-EW Awacs Turkey,A-50
+Awacs #4,MAP-EW Awacs Dzhvari,MAP,EW,,Awacs #4,MAP-EW Awacs Dzhvari,A-50
+CommandCenterRed,TBS-CC Tbilissi,TBS,CC,,CommandCenterRed,TBS-CC Tbilissi,.Command Center
+Static Diesel Power Station 5I57A-1,TBS-CC Tbilissi Power,TBS,CC,,Static Diesel Power Station 5I57A-1,TBS-CC Tbilissi Power,generator_5i57
+EWR - Kobuleti,MAP-EW Kobuleti,MAP,EW,,EWR - Kobuleti,MAP-EW Kobuleti,55G6 EWR
+EWR - Kutaisi,MAP-EW Kutaisi,MAP,EW,,EWR - Kutaisi,MAP-EW Kutaisi,55G6 EWR
+EWR - Gelen,MAP-EW Gelen,MAP,EW,,EWR - Laza,MAP-EW Gelen,55G6 EWR
+EWR - Nadez,MAP-EW Nadez,MAP,EW,,EWR - Nadez,MAP-EW Nadez,55G6 EWR
+EWR - Pervo,MAP-EW Pervo,MAP,EW,,EWR - Pervo,MAP-EW Pervo,55G6 EWR
+EWR - Pro,MAP-EW Pro,MAP,EW,,EWR - Pro,MAP-EW Pro,55G6 EWR
+EWR - Sochi,MAP-EW Sochi,MAP,EW,,EWR - Sochi,MAP-EW Sochi,55G6 EWR
+EWR - Sukhumi,MAP-EW Sukhumi,MAP,EW,,EWR - Sukhumi,MAP-EW Sukhumi,55G6 EWR
+EWR - Tbilissi,TBS-EW Tbilissi,TBS,EW,,EWR - Tbilissi,TBS-EW Tbilissi,55G6 EWR
+EWR - Turquie,MAP-EW Turquie,MAP,EW,,EWR - Turquie,MAP-EW Turquie,55G6 EWR
+SA10 - Kumisi,TBS-SAM SA-10 Kumisi,TBS,SAM,,SA10 - Kumisi - BB,TBS-SAM SA-10 Kumisi-01,S-300PS 64H6E sr
+SA10 - Kumisi,TBS-SAM SA-10 Kumisi,TBS,SAM,,SA10 - Kumisi - TR,TBS-SAM SA-10 Kumisi-02,S-300PS 40B6M tr
+SA10 - Kumisi,TBS-SAM SA-10 Kumisi,TBS,SAM,,SA10 - Kumisi - CS,TBS-SAM SA-10 Kumisi-03,S-300PS 40B6MD sr
+SA10 - Kumisi,TBS-SAM SA-10 Kumisi,TBS,SAM,,ctjs-1,TBS-SAM SA-10 Kumisi-04,S-300PS 54K6 cp
+SA10 - Kumisi,TBS-SAM SA-10 Kumisi,TBS,SAM,,ctjs-23,TBS-SAM SA-10 Kumisi-05,S-300PS 5P85C ln
+SA10 - Kumisi,TBS-SAM SA-10 Kumisi,TBS,SAM,,ctjs-22,TBS-SAM SA-10 Kumisi-06,S-300PS 5P85D ln
+SA10 - Kumisi,TBS-SAM SA-10 Kumisi,TBS,SAM,,ctjs-21,TBS-SAM SA-10 Kumisi-07,S-300PS 5P85D ln
+SA10 - Kumisi,TBS-SAM SA-10 Kumisi,TBS,SAM,,ctjs-20,TBS-SAM SA-10 Kumisi-08,S-300PS 5P85C ln
+SA10 - Kumisi,TBS-SAM SA-10 Kumisi,TBS,SAM,,ctjs-19,TBS-SAM SA-10 Kumisi-09,S-300PS 5P85D ln
+SA10 - Kumisi,TBS-SAM SA-10 Kumisi,TBS,SAM,,ctjs-25,TBS-SAM SA-10 Kumisi-10,S-300PS 5P85D ln
+SA10 - Kumisi,TBS-SAM SA-10 Kumisi,TBS,SAM,,ctjs-24,TBS-SAM SA-10 Kumisi-11,Ural-375
+SA10 - Martkobi,TBS-SAM SA-10 Martkobi,TBS,SAM,,SA10 - Martkobi - BB,TBS-SAM SA-10 Martkobi-01,S-300PS 64H6E sr
+SA10 - Martkobi,TBS-SAM SA-10 Martkobi,TBS,SAM,,SA10 - Martkobi - TR,TBS-SAM SA-10 Martkobi-02,S-300PS 40B6M tr
+SA10 - Martkobi,TBS-SAM SA-10 Martkobi,TBS,SAM,,SA10 - Martkobi - CS,TBS-SAM SA-10 Martkobi-03,S-300PS 40B6MD sr
+SA10 - Martkobi,TBS-SAM SA-10 Martkobi,TBS,SAM,,ctjs-16,TBS-SAM SA-10 Martkobi-04,S-300PS 54K6 cp
+SA10 - Martkobi,TBS-SAM SA-10 Martkobi,TBS,SAM,,ctjs-15,TBS-SAM SA-10 Martkobi-05,S-300PS 5P85C ln
+SA10 - Martkobi,TBS-SAM SA-10 Martkobi,TBS,SAM,,ctjs-14,TBS-SAM SA-10 Martkobi-06,S-300PS 5P85D ln
+SA10 - Martkobi,TBS-SAM SA-10 Martkobi,TBS,SAM,,ctjs-13,TBS-SAM SA-10 Martkobi-07,S-300PS 5P85D ln
+SA10 - Martkobi,TBS-SAM SA-10 Martkobi,TBS,SAM,,ctjs-12,TBS-SAM SA-10 Martkobi-08,S-300PS 5P85C ln
+SA10 - Martkobi,TBS-SAM SA-10 Martkobi,TBS,SAM,,ctjs-10,TBS-SAM SA-10 Martkobi-09,S-300PS 5P85D ln
+SA10 - Martkobi,TBS-SAM SA-10 Martkobi,TBS,SAM,,ctjs-18,TBS-SAM SA-10 Martkobi-10,S-300PS 5P85D ln
+SA10 - Martkobi,TBS-SAM SA-10 Martkobi,TBS,SAM,,ctjs-17,TBS-SAM SA-10 Martkobi-11,Ural-4320T
+SA10 - Zelen,MAP-SAM SA-10 Zelen,MAP,SAM,,SA10 - Zelen - BB,MAP-SAM SA-10 Zelen-01,S-300PS 64H6E sr
+SA10 - Zelen,MAP-SAM SA-10 Zelen,MAP,SAM,,SA10 - Zelen - TR,MAP-SAM SA-10 Zelen-02,S-300PS 40B6M tr
+SA10 - Zelen,MAP-SAM SA-10 Zelen,MAP,SAM,,SA10 - Zelen - CS,MAP-SAM SA-10 Zelen-03,S-300PS 40B6MD sr
+SA10 - Zelen,MAP-SAM SA-10 Zelen,MAP,SAM,,ctjs-26,MAP-SAM SA-10 Zelen-04,S-300PS 54K6 cp
+SA10 - Zelen,MAP-SAM SA-10 Zelen,MAP,SAM,,ctjs-27,MAP-SAM SA-10 Zelen-05,S-300PS 5P85C ln
+SA10 - Zelen,MAP-SAM SA-10 Zelen,MAP,SAM,,ctjs-28,MAP-SAM SA-10 Zelen-06,S-300PS 5P85D ln
+SA10 - Zelen,MAP-SAM SA-10 Zelen,MAP,SAM,,ctjs-29,MAP-SAM SA-10 Zelen-07,S-300PS 5P85D ln
+SA10 - Zelen,MAP-SAM SA-10 Zelen,MAP,SAM,,ctjs-30,MAP-SAM SA-10 Zelen-08,S-300PS 5P85C ln
+SA10 - Zelen,MAP-SAM SA-10 Zelen,MAP,SAM,,ctjs-31,MAP-SAM SA-10 Zelen-09,S-300PS 5P85D ln
+SA10 - Zelen,MAP-SAM SA-10 Zelen,MAP,SAM,,ctjs-32,MAP-SAM SA-10 Zelen-10,S-300PS 5P85D ln
+SA10 - Zelen,MAP-SAM SA-10 Zelen,MAP,SAM,,ctjs-34,MAP-SAM SA-10 Zelen-11,Ural-375
+SA-11 - Nadezhnaya,MAP-SAM SA-11 Nadezhnaya,MAP,SAM,,Nadezhnaya - SR 9S18M1,MAP-SAM SA-11 Nadezhnaya-01,SA-11 Buk SR 9S18M1
+SA-11 - Nadezhnaya,MAP-SAM SA-11 Nadezhnaya,MAP,SAM,,Nadezhnaya - LN 9A310M1-1,MAP-SAM SA-11 Nadezhnaya-02,SA-11 Buk LN 9A310M1
+SA-11 - Nadezhnaya,MAP-SAM SA-11 Nadezhnaya,MAP,SAM,,Nadezhnaya - LN 9A310M1-2,MAP-SAM SA-11 Nadezhnaya-03,SA-11 Buk LN 9A310M1
+SA-11 - Nadezhnaya,MAP-SAM SA-11 Nadezhnaya,MAP,SAM,,Nadezhnaya - LN 9A310M1-3,MAP-SAM SA-11 Nadezhnaya-04,SA-11 Buk LN 9A310M1
+SA-11 - Nadezhnaya,MAP-SAM SA-11 Nadezhnaya,MAP,SAM,,Nadezhnaya - LN 9A310M1-4,MAP-SAM SA-11 Nadezhnaya-05,SA-11 Buk LN 9A310M1
+SA-11 - Nadezhnaya,MAP-SAM SA-11 Nadezhnaya,MAP,SAM,,CTJS-419,MAP-SAM SA-11 Nadezhnaya-06,Ural-375
+SA-11 - Nadezhnaya,MAP-SAM SA-11 Nadezhnaya,MAP,SAM,,CTJS-106,MAP-SAM SA-11 Nadezhnaya-07,SA-11 Buk CC 9S470M1
+SA15 - Turquie,MAP-SAM SA-15 Turquie,MAP,SAM,,-10-9,MAP-SAM SA-15 Turquie-01,CHAP_TorM2
+SA15 - Turquie,MAP-SAM SA-15 Turquie,MAP,SAM,,-10-11,MAP-SAM SA-15 Turquie-02,Ural-4320T
+SA19 - Tbilissi-1,TBS-SAM SA-19 Tbilissi-1,TBS,SAM,,-10-25,TBS-SAM SA-19 Tbilissi-1-01,2S6 Tunguska
+SA19 - Tbilissi-2,TBS-SAM SA-19 Tbilissi-2,TBS,SAM,,-10-27,TBS-SAM SA-19 Tbilissi-2-01,2S6 Tunguska
+SA19 - Tbilissi-3,TBS-SAM SA-19 Tbilissi-3,TBS,SAM,,-10-26,TBS-SAM SA-19 Tbilissi-3-01,2S6 Tunguska
+SA19 - Turquie,MAP-SAM SA-19 Turquie,MAP,SAM,,-10-5,MAP-SAM SA-19 Turquie-01,2S6 Tunguska
+SA19 - Turquie,MAP-SAM SA-19 Turquie,MAP,SAM,,-10-1,MAP-SAM SA-19 Turquie-02,Ural-4320T
+SA5 - Mozdok,MAP-SAM SA-5 Mozdok,MAP,SAM,,SA5 - Mozdok - SR,MAP-SAM SA-5 Mozdok-01,RLS_19J6
+SA5 - Mozdok,MAP-SAM SA-5 Mozdok,MAP,SAM,,SA5 - Mozdok - TR,MAP-SAM SA-5 Mozdok-02,RPC_5N62V
+SA5 - Mozdok,MAP-SAM SA-5 Mozdok,MAP,SAM,,CTJS-108,MAP-SAM SA-5 Mozdok-03,S-200_Launcher
+SA5 - Mozdok,MAP-SAM SA-5 Mozdok,MAP,SAM,,CTJS-109,MAP-SAM SA-5 Mozdok-04,S-200_Launcher
+SA5 - Mozdok,MAP-SAM SA-5 Mozdok,MAP,SAM,,CTJS-110,MAP-SAM SA-5 Mozdok-05,S-200_Launcher
+SA5 - Mozdok,MAP-SAM SA-5 Mozdok,MAP,SAM,,CTJS-111,MAP-SAM SA-5 Mozdok-06,S-200_Launcher
+SA5 - Mozdok,MAP-SAM SA-5 Mozdok,MAP,SAM,,CTJS-112,MAP-SAM SA-5 Mozdok-07,S-200_Launcher
+SA5 - Mozdok,MAP-SAM SA-5 Mozdok,MAP,SAM,,CTJS-113,MAP-SAM SA-5 Mozdok-08,S-200_Launcher
+SA5 - Mozdok,MAP-SAM SA-5 Mozdok,MAP,SAM,,CTJS-114,MAP-SAM SA-5 Mozdok-09,S-200_Launcher
+SA5 - Mozdok,MAP-SAM SA-5 Mozdok,MAP,SAM,,CTJS-115,MAP-SAM SA-5 Mozdok-10,S-200_Launcher
+SA5 - Mozdok,MAP-SAM SA-5 Mozdok,MAP,SAM,,CTJS-117,MAP-SAM SA-5 Mozdok-11,Ural-375
+SA5 - Tbilissi,TBS-SAM SA-5 Tbilissi,TBS,SAM,,SA5 - Tbilissi - SR,TBS-SAM SA-5 Tbilissi-01,RLS_19J6
+SA5 - Tbilissi,TBS-SAM SA-5 Tbilissi,TBS,SAM,,SA5 - Tbilissi - TR,TBS-SAM SA-5 Tbilissi-02,RPC_5N62V
+SA5 - Tbilissi,TBS-SAM SA-5 Tbilissi,TBS,SAM,,ctjs-2,TBS-SAM SA-5 Tbilissi-03,S-200_Launcher
+SA5 - Tbilissi,TBS-SAM SA-5 Tbilissi,TBS,SAM,,ctjs-3,TBS-SAM SA-5 Tbilissi-04,S-200_Launcher
+SA5 - Tbilissi,TBS-SAM SA-5 Tbilissi,TBS,SAM,,ctjs-4,TBS-SAM SA-5 Tbilissi-05,S-200_Launcher
+SA5 - Tbilissi,TBS-SAM SA-5 Tbilissi,TBS,SAM,,ctjs-5,TBS-SAM SA-5 Tbilissi-06,S-200_Launcher
+SA5 - Tbilissi,TBS-SAM SA-5 Tbilissi,TBS,SAM,,ctjs-6,TBS-SAM SA-5 Tbilissi-07,S-200_Launcher
+SA5 - Tbilissi,TBS-SAM SA-5 Tbilissi,TBS,SAM,,ctjs-7,TBS-SAM SA-5 Tbilissi-08,S-200_Launcher
+SA5 - Tbilissi,TBS-SAM SA-5 Tbilissi,TBS,SAM,,ctjs-8,TBS-SAM SA-5 Tbilissi-09,S-200_Launcher
+SA5 - Tbilissi,TBS-SAM SA-5 Tbilissi,TBS,SAM,,ctjs-9,TBS-SAM SA-5 Tbilissi-10,S-200_Launcher
+SA5 - Tbilissi,TBS-SAM SA-5 Tbilissi,TBS,SAM,,ctjs-11,TBS-SAM SA-5 Tbilissi-11,Ural-375
+SA-15 - Dzhvari-5,MAP-SAM SA-15 Dzhvari-5,MAP,SAM,,-10-21,MAP-SAM SA-15 Dzhvari-5-01,CHAP_TorM2
+SA-15 - Dzhvari-5,MAP-SAM SA-15 Dzhvari-5,MAP,SAM,,-2,MAP-SAM SA-15 Dzhvari-5-02,Ural-375
+SA-15 - Dzhvari-4,MAP-SAM SA-15 Dzhvari-4,MAP,SAM,,-10-22,MAP-SAM SA-15 Dzhvari-4-01,CHAP_TorM2
+SA-15 - Dzhvari-4,MAP-SAM SA-15 Dzhvari-4,MAP,SAM,,-2-2,MAP-SAM SA-15 Dzhvari-4-02,Ural-375
+SA-15 - Dzhvari-6,MAP-SAM SA-15 Dzhvari-6,MAP,SAM,,-10-23,MAP-SAM SA-15 Dzhvari-6-01,CHAP_TorM2
+SA-15 - Dzhvari-6,MAP-SAM SA-15 Dzhvari-6,MAP,SAM,,-1-2,MAP-SAM SA-15 Dzhvari-6-02,Ural-375
+SA11 - Dzhvari,MAP-SAM SA-11 Dzhvari,MAP,SAM,,Dzhvari - SR 9S18M1,MAP-SAM SA-11 Dzhvari-01,SA-11 Buk SR 9S18M1
+SA11 - Dzhvari,MAP-SAM SA-11 Dzhvari,MAP,SAM,,Dzhvari - LN 9A310M1-1,MAP-SAM SA-11 Dzhvari-02,SA-11 Buk LN 9A310M1
+SA11 - Dzhvari,MAP-SAM SA-11 Dzhvari,MAP,SAM,,Dzhvari - LN 9A310M1-2,MAP-SAM SA-11 Dzhvari-03,SA-11 Buk LN 9A310M1
+SA11 - Dzhvari,MAP-SAM SA-11 Dzhvari,MAP,SAM,,Dzhvari - LN 9A310M1-3,MAP-SAM SA-11 Dzhvari-04,SA-11 Buk LN 9A310M1
+SA11 - Dzhvari,MAP-SAM SA-11 Dzhvari,MAP,SAM,,Dzhvari - LN 9A310M1-4,MAP-SAM SA-11 Dzhvari-05,SA-11 Buk LN 9A310M1
+SA11 - Dzhvari,MAP-SAM SA-11 Dzhvari,MAP,SAM,,-1-33,MAP-SAM SA-11 Dzhvari-06,Ural-375
+SA11 - Dzhvari,MAP-SAM SA-11 Dzhvari,MAP,SAM,,-1-34,MAP-SAM SA-11 Dzhvari-07,SA-11 Buk CC 9S470M1
+Rapier - Dzhvari,MAP-SAM Rapier Dzhvari,MAP,SAM,,-2-9,MAP-SAM Rapier Dzhvari-01,rapier_fsa_blindfire_radar
+Rapier - Dzhvari,MAP-SAM Rapier Dzhvari,MAP,SAM,,-2-10,MAP-SAM Rapier Dzhvari-02,rapier_fsa_optical_tracker_unit
+Rapier - Dzhvari,MAP-SAM Rapier Dzhvari,MAP,SAM,,-2-11,MAP-SAM Rapier Dzhvari-03,rapier_fsa_launcher
+Rapier - Dzhvari,MAP-SAM Rapier Dzhvari,MAP,SAM,,-2-12,MAP-SAM Rapier Dzhvari-04,rapier_fsa_launcher
+Rapier - Dzhvari,MAP-SAM Rapier Dzhvari,MAP,SAM,,-2-13,MAP-SAM Rapier Dzhvari-05,rapier_fsa_launcher
+Rapier - Dzhvari,MAP-SAM Rapier Dzhvari,MAP,SAM,,-2-14,MAP-SAM Rapier Dzhvari-06,rapier_fsa_launcher
+Rapier - Dzhvari,MAP-SAM Rapier Dzhvari,MAP,SAM,,-2-15,MAP-SAM Rapier Dzhvari-07,Ural-375
+Rapier - Dzhvari,MAP-SAM Rapier Dzhvari,MAP,SAM,,-2-16,MAP-SAM Rapier Dzhvari-08,Ural-375
+Rapier - Dzhvari,MAP-SAM Rapier Dzhvari,MAP,SAM,,-2-17,MAP-SAM Rapier Dzhvari-09,Ural-375
+Rapier - Dzhvari,MAP-SAM Rapier Dzhvari,MAP,SAM,,-2-18,MAP-SAM Rapier Dzhvari-10,Ural-375
+Rapier - Dzhvari,MAP-SAM Rapier Dzhvari,MAP,SAM,,-2-19,MAP-SAM Rapier Dzhvari-11,Ural-375
+IRIS-T - Gelendzhik,MAP-SAM IRIS-T Gelendzhik,MAP,SAM,,IRIS-T - Gelendzhik - STR,MAP-SAM IRIS-T Gelendzhik-01,CHAP_IRISTSLM_STR
+IRIS-T - Gelendzhik,MAP-SAM IRIS-T Gelendzhik,MAP,SAM,,-2-21,MAP-SAM IRIS-T Gelendzhik-02,CHAP_IRISTSLM_CP
+IRIS-T - Gelendzhik,MAP-SAM IRIS-T Gelendzhik,MAP,SAM,,-2-22,MAP-SAM IRIS-T Gelendzhik-03,CHAP_IRISTSLM_LN
+IRIS-T - Gelendzhik,MAP-SAM IRIS-T Gelendzhik,MAP,SAM,,-2-23,MAP-SAM IRIS-T Gelendzhik-04,CHAP_IRISTSLM_LN
+IRIS-T - Gelendzhik,MAP-SAM IRIS-T Gelendzhik,MAP,SAM,,-2-24,MAP-SAM IRIS-T Gelendzhik-05,CHAP_IRISTSLM_LN
+IRIS-T - Gelendzhik,MAP-SAM IRIS-T Gelendzhik,MAP,SAM,,-2-25,MAP-SAM IRIS-T Gelendzhik-06,CHAP_IRISTSLM_LN
+IRIS-T - Gelendzhik,MAP-SAM IRIS-T Gelendzhik,MAP,SAM,,-2-26,MAP-SAM IRIS-T Gelendzhik-07,Ural-4320-31
+SA-22 Pantsir - Turquie,MAP-SAM SA-22 Turquie,MAP,SAM,,-10-6,MAP-SAM SA-22 Turquie-01,CHAP_PantsirS1
+SA-22 Pantsir - Turquie,MAP-SAM SA-22 Turquie,MAP,SAM,,-10-7,MAP-SAM SA-22 Turquie-02,Ural-4320T
+IRIS-T - Turquie,MAP-SAM IRIS-T Turquie,MAP,SAM,,IRIS-T - Turquie - STR,MAP-SAM IRIS-T Turquie-01,CHAP_IRISTSLM_STR
+IRIS-T - Turquie,MAP-SAM IRIS-T Turquie,MAP,SAM,,-1-36,MAP-SAM IRIS-T Turquie-02,CHAP_IRISTSLM_CP
+IRIS-T - Turquie,MAP-SAM IRIS-T Turquie,MAP,SAM,,-1-37,MAP-SAM IRIS-T Turquie-03,CHAP_IRISTSLM_LN
+IRIS-T - Turquie,MAP-SAM IRIS-T Turquie,MAP,SAM,,-1-38,MAP-SAM IRIS-T Turquie-04,CHAP_IRISTSLM_LN
+IRIS-T - Turquie,MAP-SAM IRIS-T Turquie,MAP,SAM,,-1-39,MAP-SAM IRIS-T Turquie-05,CHAP_IRISTSLM_LN
+IRIS-T - Turquie,MAP-SAM IRIS-T Turquie,MAP,SAM,,-1-40,MAP-SAM IRIS-T Turquie-06,CHAP_IRISTSLM_LN
+IRIS-T - Turquie,MAP-SAM IRIS-T Turquie,MAP,SAM,,-1-41,MAP-SAM IRIS-T Turquie-07,Ural-4320-31
+SA-22 - Dzhvari,MAP-SAM SA-22 Dzhvari,MAP,SAM,,-10-34,MAP-SAM SA-22 Dzhvari-01,CHAP_PantsirS1
+SA-22 - Dzhvari,MAP-SAM SA-22 Dzhvari,MAP,SAM,,-10-36,MAP-SAM SA-22 Dzhvari-02,Ural-4320T
+HQ7 - Dzhvari,MAP-SAM HQ-7 Dzhvari,MAP,SAM,,HQ7 - Dzhvari - SR,MAP-SAM HQ-7 Dzhvari-01,HQ-7_STR_SP
+HQ7 - Dzhvari,MAP-SAM HQ-7 Dzhvari,MAP,SAM,,-1-65,MAP-SAM HQ-7 Dzhvari-02,HQ-7_LN_SP
+HQ7 - Dzhvari,MAP-SAM HQ-7 Dzhvari,MAP,SAM,,-1-64,MAP-SAM HQ-7 Dzhvari-03,HQ-7_LN_SP
+HQ7 - Dzhvari,MAP-SAM HQ-7 Dzhvari,MAP,SAM,,-1-63,MAP-SAM HQ-7 Dzhvari-04,HQ-7_LN_SP
+HQ7 - Dzhvari,MAP-SAM HQ-7 Dzhvari,MAP,SAM,,-1-61,MAP-SAM HQ-7 Dzhvari-05,HQ-7_LN_SP
+HQ7 - Dzhvari,MAP-SAM HQ-7 Dzhvari,MAP,SAM,,-1-66,MAP-SAM HQ-7 Dzhvari-06,Ural-4320-31
+SA11 - Turquie,MAP-SAM SA-11 Turquie,MAP,SAM,,SA11 - Turquie,MAP-SAM SA-11 Turquie-01,SA-11 Buk LN 9A310M1
+SA11 - Turquie,MAP-SAM SA-11 Turquie,MAP,SAM,,SA19 - Turquie-1-2,MAP-SAM SA-11 Turquie-02,Ural-4320T
+SA-11 Nadezhnaya - Sol-1,MAP-SAM SA-11 Nadezhnaya #1,MAP,SAM,SA-11 Nadezhnaya,-10-32,MAP-SAM SA-11 Nadezhnaya #1-01,ZSU-23-4 Shilka
+EWR - Pervo - Sol-1,MAP-EW Pervo #1,MAP,EW,Pervo,-4-2,MAP-EW Pervo #1,Dog Ear radar
+EWR - Pervo - Sol-2,MAP-SAM Pervo #2,MAP,SAM,Pervo,-10-33,MAP-SAM Pervo #2-01,ZSU-23-4 Shilka
+EWR - Pervo - Sol-3,MAP-PD Pervo #3,MAP,PD,Pervo,-10-16,MAP-PD Pervo #3-01,CHAP_TorM2
+EWR - Pervo - Sol-4,MAP-SAM Pervo #4,MAP,SAM,Pervo,-10-24,MAP-SAM Pervo #4-01,2S6 Tunguska
+EWR - Pervo - Sol-5,Pervo #5,,none,Pervo,-10-75,Pervo #5-01,Ural-375
+SA19 - Tbilissi-1 - Sol-1,TBS-SAM SA-19 Tbilissi-1 #1,TBS,SAM,SA-19 Tbilissi-1,-10-29,TBS-SAM SA-19 Tbilissi-1 #1-01,ZSU-23-4 Shilka
+SA19 - Tbilissi-1 - Sol-2,SA-19 Tbilissi-1 #2,,none,SA-19 Tbilissi-1,-10-53,SA-19 Tbilissi-1 #2-01,Ural-375
+SA19 - Tbilissi-1 - Sol-3,SA-19 Tbilissi-1 #3,,none,SA-19 Tbilissi-1,-10-54,SA-19 Tbilissi-1 #3-01,SA-18 Igla comm
+SA19 - Tbilissi-1 - Sol-3,SA-19 Tbilissi-1 #3,,none,SA-19 Tbilissi-1,-10-39,SA-19 Tbilissi-1 #3-02,SA-18 Igla manpad
+SA19 - Tbilissi-1 - Sol-3,SA-19 Tbilissi-1 #3,,none,SA-19 Tbilissi-1,-10-55,SA-19 Tbilissi-1 #3-03,SA-18 Igla manpad
+SA19 - Tbilissi-1 - Sol-3,SA-19 Tbilissi-1 #3,,none,SA-19 Tbilissi-1,-10-56,SA-19 Tbilissi-1 #3-04,SA-18 Igla manpad
+SA19 - Tbilissi-1 - Sol-4,TBS-EW SA-19 Tbilissi-1 #4,TBS,EW,SA-19 Tbilissi-1,-10-58,TBS-EW SA-19 Tbilissi-1 #4,Dog Ear radar
+SA19 - Tbilissi-1 - Sol-5,SA-19 Tbilissi-1 #5,,none,SA-19 Tbilissi-1,-10-59,SA-19 Tbilissi-1 #5-01,Ural-375
+SA19 - Tbilissi-1 - Sol-6,TBS-SAM SA-19 Tbilissi-1 #6,TBS,SAM,SA-19 Tbilissi-1,-10-8,TBS-SAM SA-19 Tbilissi-1 #6-01,ZSU-23-4 Shilka
+SA19 - Tbilissi-3 - Sol-1,TBS-SAM SA-19 Tbilissi-3 #1,TBS,SAM,SA-19 Tbilissi-3,-10-30,TBS-SAM SA-19 Tbilissi-3 #1-01,ZSU-23-4 Shilka
+SA19 - Tbilissi-3 - Sol-2,SA-19 Tbilissi-3 #2,,none,SA-19 Tbilissi-3,-10-64,SA-19 Tbilissi-3 #2-01,SA-18 Igla-S comm
+SA19 - Tbilissi-3 - Sol-2,SA-19 Tbilissi-3 #2,,none,SA-19 Tbilissi-3,-10-65,SA-19 Tbilissi-3 #2-02,SA-18 Igla-S manpad
+SA19 - Tbilissi-3 - Sol-2,SA-19 Tbilissi-3 #2,,none,SA-19 Tbilissi-3,-10-66,SA-19 Tbilissi-3 #2-03,SA-18 Igla-S manpad
+SA19 - Tbilissi-3 - Sol-2,SA-19 Tbilissi-3 #2,,none,SA-19 Tbilissi-3,-10-67,SA-19 Tbilissi-3 #2-04,SA-18 Igla-S manpad
+SA19 - Tbilissi-3 - Sol-3,SA-19 Tbilissi-3 #3,,none,SA-19 Tbilissi-3,-10-68,SA-19 Tbilissi-3 #3-01,Ural-375
+EWR - Tbilissi - Sol-1,TBS-PD Tbilissi #1,TBS,PD,Tbilissi,-10-28,TBS-PD Tbilissi #1-01,CHAP_PantsirS1
+EWR - Tbilissi - Sol-2,TBS-SAM Tbilissi #2,TBS,SAM,Tbilissi,-10-31,TBS-SAM Tbilissi #2-01,ZSU-23-4 Shilka
+EWR - Tbilissi - Sol-3,Tbilissi #3,,none,Tbilissi,-10-69,Tbilissi #3-01,Ural-375
+EWR - Tbilissi - Sol-4,Tbilissi #4,,none,Tbilissi,-10-70,Tbilissi #4-01,SA-18 Igla-S comm
+EWR - Tbilissi - Sol-4,Tbilissi #4,,none,Tbilissi,-10-71,Tbilissi #4-02,SA-18 Igla-S manpad
+EWR - Tbilissi - Sol-4,Tbilissi #4,,none,Tbilissi,-10-72,Tbilissi #4-03,SA-18 Igla-S manpad
+EWR - Tbilissi - Sol-4,Tbilissi #4,,none,Tbilissi,-10-73,Tbilissi #4-04,SA-18 Igla-S manpad
+SA19 - Tbilissi-2 - Sol-1,SA-19 Tbilissi-2 #1,,none,SA-19 Tbilissi-2,-10-60,SA-19 Tbilissi-2 #1-01,SA-18 Igla comm
+SA19 - Tbilissi-2 - Sol-1,SA-19 Tbilissi-2 #1,,none,SA-19 Tbilissi-2,-10-61,SA-19 Tbilissi-2 #1-02,SA-18 Igla manpad
+SA19 - Tbilissi-2 - Sol-1,SA-19 Tbilissi-2 #1,,none,SA-19 Tbilissi-2,-10-62,SA-19 Tbilissi-2 #1-03,SA-18 Igla manpad
+SA19 - Tbilissi-2 - Sol-1,SA-19 Tbilissi-2 #1,,none,SA-19 Tbilissi-2,-10-63,SA-19 Tbilissi-2 #1-04,SA-18 Igla manpad
+SA10 - Kumisi - Sol-1,TBS-PD SA-10 Kumisi #1,TBS,PD,SA-10 Kumisi,-10-17,TBS-PD SA-10 Kumisi #1-01,CHAP_TorM2
+SA10 - Martkobi - Sol-1,TBS-PD SA-10 Martkobi #1,TBS,PD,SA-10 Martkobi,-10-19,TBS-PD SA-10 Martkobi #1-01,CHAP_TorM2
+SA2 - Maykop - Sol-1,MAP-PD SA-2 Maykop #1,MAP,PD,SA-2 Maykop,-10-12,MAP-PD SA-2 Maykop #1-01,CHAP_TorM2
+SA2- Maykop - Sol-2,MAP-PD SA-2 Maykop #2,MAP,PD,SA-2 Maykop,-10-50,MAP-PD SA-2 Maykop #2-01,HEMTT_C-RAM_Phalanx
+SA-2 - Mezmay - Sol-1,MAP-PD SA-2 Mezmay #1,MAP,PD,SA-2 Mezmay,-10-13,MAP-PD SA-2 Mezmay #1-01,CHAP_TorM2
+SA-2 - Mezmay - Sol-2,MAP-PD SA-2 Mezmay #2,MAP,PD,SA-2 Mezmay,-10-51,MAP-PD SA-2 Mezmay #2-01,HEMTT_C-RAM_Phalanx
+SA5 - Mozdok - Sol-1,MAP-PD SA-5 Mozdok #1,MAP,PD,SA-5 Mozdok,-10-15,MAP-PD SA-5 Mozdok #1-01,CHAP_TorM2
+SA-2 - Shahe - Sol-1,MAP-PD SA-2 Shahe #1,MAP,PD,SA-2 Shahe,-10-52,MAP-PD SA-2 Shahe #1-01,HEMTT_C-RAM_Phalanx
+SA-2 - Shahe- Sol-1,MAP-PD SA-2 Shahe #2,MAP,PD,SA-2 Shahe,-10-14,MAP-PD SA-2 Shahe #2-01,CHAP_TorM2
+SA5 - Tbilissi - Sol-1,TBS-PD SA-5 Tbilissi #1,TBS,PD,SA-5 Tbilissi,-10-18,TBS-PD SA-5 Tbilissi #1-01,CHAP_TorM2
+SA10 - Zelen - Sol-1,MAP-PD SA-10 Zelen #1,MAP,PD,SA-10 Zelen,-10-20,MAP-PD SA-10 Zelen #1-01,CHAP_TorM2
+SA-10 - Dzhvari - Sol-1,MAP-SAM SA-10 Dzhvari #1,MAP,SAM,SA-10 Dzhvari,-10-2,MAP-SAM SA-10 Dzhvari #1-01,SA-11 Buk LN 9A310M1
+SA-10 - Dzhvari - Sol-2,MAP-PD SA-10 Dzhvari #2,MAP,PD,SA-10 Dzhvari,-10-10,MAP-PD SA-10 Dzhvari #2-01,CHAP_TorM2
+SA-10 - Dzhvari - Sol-3,MAP-PD SA-10 Dzhvari #3,MAP,PD,SA-10 Dzhvari,-10-38,MAP-PD SA-10 Dzhvari #3-01,HEMTT_C-RAM_Phalanx
+SA-10 - Dzhvari - Sol-4,MAP-SAM SA-10 Dzhvari #4,MAP,SAM,SA-10 Dzhvari,-10-43,MAP-SAM SA-10 Dzhvari #4-01,Gepard
+SA-10 - Dzhvari - Sol-5,MAP-SAM SA-10 Dzhvari #5,MAP,SAM,SA-10 Dzhvari,-10-44,MAP-SAM SA-10 Dzhvari #5-01,Gepard
+SA11 - Dzhvari - Sol-1,MAP-SAM SA-11 Dzhvari #1,MAP,SAM,SA-11 Dzhvari,-1-31,MAP-SAM SA-11 Dzhvari #1-01,Gepard
+SA11 - Dzhvari - Sol-2,MAP-SAM SA-11 Dzhvari #2,MAP,SAM,SA-11 Dzhvari,-2-4,MAP-SAM SA-11 Dzhvari #2-01,Gepard
+SA11 - Dzhvari - Sol-3,MAP-PD SA-11 Dzhvari #3,MAP,PD,SA-11 Dzhvari,-10-35,MAP-PD SA-11 Dzhvari #3-01,HEMTT_C-RAM_Phalanx
+SA11 - Dzhvari - Sol-4,MAP-SAM SA-11 Dzhvari #4,MAP,SAM,SA-11 Dzhvari,-1-32,MAP-SAM SA-11 Dzhvari #4-01,2S6 Tunguska
+SA11 - Dzhvari - Sol-5,SA-11 Dzhvari #5,,none,SA-11 Dzhvari,-1-46,SA-11 Dzhvari #5-01,SA-18 Igla-S comm
+SA11 - Dzhvari - Sol-5,SA-11 Dzhvari #5,,none,SA-11 Dzhvari,-1-47,SA-11 Dzhvari #5-02,SA-18 Igla-S manpad
+SA11 - Dzhvari - Sol-5,SA-11 Dzhvari #5,,none,SA-11 Dzhvari,-1-48,SA-11 Dzhvari #5-03,SA-18 Igla-S manpad
+SA11 - Dzhvari - Sol-5,SA-11 Dzhvari #5,,none,SA-11 Dzhvari,-1-49,SA-11 Dzhvari #5-04,SA-18 Igla-S manpad
+SA11 - Dzhvari - Sol-5,SA-11 Dzhvari #5,,none,SA-11 Dzhvari,-1-50,SA-11 Dzhvari #5-05,Ural-4320T
+SA11 - Dzhvari - Sol-6,MAP-EW SA-11 Dzhvari #6,MAP,EW,SA-11 Dzhvari,-10-74,MAP-EW SA-11 Dzhvari #6,Dog Ear radar
+SA-10 - Gudauta - Sol-1,MAP-PD SA-10 Gudauta #1,MAP,PD,SA-10 Gudauta,-1-1,MAP-PD SA-10 Gudauta #1-01,CHAP_TorM2
+SA-10 - Gudauta - Sol-2,MAP-SAM SA-10 Gudauta #2,MAP,SAM,SA-10 Gudauta,-2-1,MAP-SAM SA-10 Gudauta #2-01,SA-11 Buk LN 9A310M1
+SA-10 - Gudauta - Sol-3,MAP-EW SA-10 Gudauta #3,MAP,EW,SA-10 Gudauta,-1-3,MAP-EW SA-10 Gudauta #3,Dog Ear radar
+SA-10 - Gudauta - Sol-4,MAP-SAM SA-10 Gudauta #4,MAP,SAM,SA-10 Gudauta,-1-30,MAP-SAM SA-10 Gudauta #4-01,Gepard
+SA-10 - Gudauta - Sol-5,MAP-SAM SA-10 Gudauta #5,MAP,SAM,SA-10 Gudauta,-4-1,MAP-SAM SA-10 Gudauta #5-01,2S6 Tunguska
+SA-10 - Gudauta - Sol-6,MAP-SAM SA-10 Gudauta #6,MAP,SAM,SA-10 Gudauta,-2-3,MAP-SAM SA-10 Gudauta #6-01,ZSU-23-4 Shilka
+SA-15 - Dzhvari-4 - Sol-1,SA-15 Dzhvari-4 #1,,none,SA-15 Dzhvari-4,-2-5,SA-15 Dzhvari-4 #1-01,SA-18 Igla-S comm
+SA-15 - Dzhvari-4 - Sol-1,SA-15 Dzhvari-4 #1,,none,SA-15 Dzhvari-4,-2-6,SA-15 Dzhvari-4 #1-02,SA-18 Igla-S manpad
+SA-15 - Dzhvari-4 - Sol-1,SA-15 Dzhvari-4 #1,,none,SA-15 Dzhvari-4,-2-7,SA-15 Dzhvari-4 #1-03,SA-18 Igla-S manpad
+SA-15 - Dzhvari-4 - Sol-1,SA-15 Dzhvari-4 #1,,none,SA-15 Dzhvari-4,-2-8,SA-15 Dzhvari-4 #1-04,SA-18 Igla-S manpad
+SA-15 - Dzhvari-4 - Sol-2,MAP-SAM SA-15 Dzhvari-4 #2,MAP,SAM,SA-15 Dzhvari-4,-10-40,MAP-SAM SA-15 Dzhvari-4 #2-01,ZSU-23-4 Shilka
+IRIS-T - Gelendzhik - Sol-1,MAP-PD IRIS-T Gelendzhik #1,MAP,PD,IRIS-T Gelendzhik,-10-3,MAP-PD IRIS-T Gelendzhik #1-01,CHAP_PantsirS1
+IRIS-T - Gelendzhik - Sol-2,MAP-PD IRIS-T Gelendzhik #2,MAP,PD,IRIS-T Gelendzhik,-10-4,MAP-PD IRIS-T Gelendzhik #2-01,CHAP_TorM2
+SA-2 - Muhuri - Sol-1,SA-2 Muhuri #1,,none,SA-2 Muhuri,-1-35,SA-2 Muhuri #1-01,SA-18 Igla-S comm
+SA-2 - Muhuri - Sol-1,SA-2 Muhuri #1,,none,SA-2 Muhuri,-1-42,SA-2 Muhuri #1-02,SA-18 Igla-S manpad
+SA-2 - Muhuri - Sol-1,SA-2 Muhuri #1,,none,SA-2 Muhuri,-1-43,SA-2 Muhuri #1-03,SA-18 Igla-S manpad
+SA-2 - Muhuri - Sol-1,SA-2 Muhuri #1,,none,SA-2 Muhuri,-1-44,SA-2 Muhuri #1-04,SA-18 Igla-S manpad
+SA-2 - Muhuri - Sol-1,SA-2 Muhuri #1,,none,SA-2 Muhuri,-1-45,SA-2 Muhuri #1-05,Ural-4320T
+SA-2 - Muhuri - Sol-2,MAP-PD SA-2 Muhuri #2,MAP,PD,SA-2 Muhuri,-10-37,MAP-PD SA-2 Muhuri #2-01,CHAP_PantsirS1
+SA-2 - Muhuri - Sol-3,MAP-SAM SA-2 Muhuri #3,MAP,SAM,SA-2 Muhuri,-10-47,MAP-SAM SA-2 Muhuri #3-01,2S6 Tunguska
+SA-22 - Dzhvari - Sol-1,SA-22 Dzhvari #1,,none,SA-22 Dzhvari,-1-51,SA-22 Dzhvari #1-01,SA-18 Igla-S comm
+SA-22 - Dzhvari - Sol-1,SA-22 Dzhvari #1,,none,SA-22 Dzhvari,-1-52,SA-22 Dzhvari #1-02,SA-18 Igla-S manpad
+SA-22 - Dzhvari - Sol-1,SA-22 Dzhvari #1,,none,SA-22 Dzhvari,-1-53,SA-22 Dzhvari #1-03,SA-18 Igla-S manpad
+SA-22 - Dzhvari - Sol-1,SA-22 Dzhvari #1,,none,SA-22 Dzhvari,-1-54,SA-22 Dzhvari #1-04,SA-18 Igla-S manpad
+SA-22 - Dzhvari - Sol-1,SA-22 Dzhvari #1,,none,SA-22 Dzhvari,-1-55,SA-22 Dzhvari #1-05,Ural-4320T
+SA-22 - Dzhvari - Sol-2,MAP-SAM SA-22 Dzhvari #2,MAP,SAM,SA-22 Dzhvari,-10-42,MAP-SAM SA-22 Dzhvari #2-01,Gepard
+Rapier - Dzhvari - Sol-1,Rapier Dzhvari #1,,none,Rapier Dzhvari,-1-56,Rapier Dzhvari #1-01,SA-18 Igla-S comm
+Rapier - Dzhvari - Sol-1,Rapier Dzhvari #1,,none,Rapier Dzhvari,-1-57,Rapier Dzhvari #1-02,SA-18 Igla-S manpad
+Rapier - Dzhvari - Sol-1,Rapier Dzhvari #1,,none,Rapier Dzhvari,-1-58,Rapier Dzhvari #1-03,SA-18 Igla-S manpad
+Rapier - Dzhvari - Sol-1,Rapier Dzhvari #1,,none,Rapier Dzhvari,-1-59,Rapier Dzhvari #1-04,SA-18 Igla-S manpad
+Rapier - Dzhvari - Sol-1,Rapier Dzhvari #1,,none,Rapier Dzhvari,-1-60,Rapier Dzhvari #1-05,Ural-4320T
+Rapier - Dzhvari - Sol-2,MAP-SAM Rapier Dzhvari #2,MAP,SAM,Rapier Dzhvari,-10-41,MAP-SAM Rapier Dzhvari #2-01,ZSU-23-4 Shilka
+Rapier - Dzhvari - Sol-3,MAP-SAM Rapier Dzhvari #3,MAP,SAM,Rapier Dzhvari,-10-49,MAP-SAM Rapier Dzhvari #3-01,2S6 Tunguska
+HQ7 - Dzhvari - Sol-1,MAP-PD HQ-7 Dzhvari #1,MAP,PD,HQ-7 Dzhvari,-10-45,MAP-PD HQ-7 Dzhvari #1-01,HEMTT_C-RAM_Phalanx
+HQ7 - Dzhvari - Sol-2,MAP-SAM HQ-7 Dzhvari #2,MAP,SAM,HQ-7 Dzhvari,-10-46,MAP-SAM HQ-7 Dzhvari #2-01,ZSU-23-4 Shilka
+HQ7 - Dzhvari - Sol-3,MAP-SAM HQ-7 Dzhvari #3,MAP,SAM,HQ-7 Dzhvari,-10-48,MAP-SAM HQ-7 Dzhvari #3-01,2S6 Tunguska
