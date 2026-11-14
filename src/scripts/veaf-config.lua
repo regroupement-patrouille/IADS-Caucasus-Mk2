@@ -5,7 +5,7 @@
 ---------------------------------------------------------------------------------------------------------------------------------------------
 
 -- ── Mission identity ─────────────────────────────────────────────────────────
-veaf.config.MISSION_NAME = "IADS-Caucasus"
+veaf.config.MISSION_NAME = "IADS-Caucasus-Mk2"
 veaf.config.era = veaf.ERA.MODERN
 veaf.silenceAtcOnAllAirbases()
 
@@ -184,12 +184,5 @@ veaf.setConfig("stts", "enable", false)
 veaf.setConfig("ctld", "enable", false)
 veaf.setConfig("aien", "enable", false)
 veaf.setConfig("csar", "enable", false)
+veaf.setConfig("skynet", "enable", false)
 veaf.setConfig("tum", "enable", false)
-
--- ── Skynet-IADS ──────────────────────────────────────────────────────────────
-veaf.setConfig("SKYNET", "initializedByMission", true)
--- SKYNET: initialized by the mission's own scripts (initialized_by_mission)
-veafGuardedInit("SKYNET", function()
-if veafSkynet then
-end
-end)

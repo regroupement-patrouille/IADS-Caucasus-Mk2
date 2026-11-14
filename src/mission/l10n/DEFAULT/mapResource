@@ -1,11 +1,10 @@
 mapResource = 
 {
   ResKey_ImageBriefing_7 = "illustration.PNG",
-  VEAF_MapKey_ActionText_10000 = "skynet-iads-compiled.lua",
-  VEAF_MapKey_ActionText_10001 = "veaf-scripts.lua",
+  VEAF_MapKey_ActionText_10000 = "veaf-scripts.lua",
   VEAF_MapKey_ActionText_11000 = "veaf-config.lua",
   VEAF_MapKey_ActionText_11001 = "mission-script.lua",
-  VEAF_MapKey_ActionText_11002 = "skynet-iads-3.6.0.lua",
+  VEAF_MapKey_ActionText_11002 = "skynet-iads-vendored.lua",
   VEAF_MapKey_ActionText_11003 = "missionSkynetLogic.lua",
   VEAF_MapKey_SpawnData = "veaf-spawn-data.lua",
 }

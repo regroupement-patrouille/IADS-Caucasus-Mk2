@@ -35,7 +35,7 @@ VEAF MCT v6 has no post-build hook, so `build.py` runs `.\veaf-tools.exe mission
 
 - `mission.yaml` — enabled modules (Skynet, QRA, map-marker toolbox), scripts, build steps.
 - `src/mission/` — the mission as saved by the DCS Mission Editor. After editing a built `.miz` in the editor, extract it back with `.\veaf-tools.exe mission extract <file>.miz .`.
-- `src/scripts/` — `missionSkynetLogic.lua` (starts the IADS and builds the "Skynet Red" F10 menu) and `skynet-iads-3.6.0.lua` (replaces the Skynet version bundled with VEAF MCT until it ships 3.6.0).
+- `src/scripts/` — `skynet-iads-vendored.lua` (Skynet IADS 3.6.0) and `missionSkynetLogic.lua` (starts the IADS and builds the "Skynet Red" F10 menu). The mission loads and starts Skynet itself: VEAF MCT's SKYNET module is off, so the Skynet it bundles is not in the `.miz`. Keep SKYNET and SKYNET_MONITOR off in `mission.yaml`, otherwise VMCT loads its own copy as well. To update Skynet, replace `skynet-iads-vendored.lua` with the new release's compiled script.
 
 ### dcs-hotload
 

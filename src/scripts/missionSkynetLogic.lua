@@ -92,14 +92,6 @@ local function SkynetNetworkSwitchDisplayStateSwitch(iCoalition)
     SkynetNetworkDisplayState(veafSkynetNetwork, bDisplay)
 end
 
-local function SkynetNetworkKillAwacs(iCoalition)
-    if (iCoalition == coalition.side.RED) then
-        Group.destroy(Group.getByName("Awacs #1"))
-        Group.destroy(Group.getByName("Awacs #2"))
-        Group.destroy(Group.getByName("Awacs #3"))    
-    end
-end
-
 -------------------------------------------------------------------------------------------------------------------------------------------------------------
 -- Initialization
 -------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -179,8 +171,10 @@ if (DebugMode) then
     veaf.loggers.get(veafSkynetMonitor.Id):setLevel("trace")
 end
 
--- The mission starts Skynet itself (mission.yaml: SKYNET.initialized_by_mission), after
--- skynet-iads-3.6.0.lua has replaced the Skynet version bundled with VEAF MCT.
+-- The mission starts Skynet itself (mission.yaml: SKYNET module off), with the Skynet loaded
+-- just before this file from skynet-iads-vendored.lua (Skynet IADS 3.6.0).
+-- That Skynet loads after veaf-scripts.lua, so VeafSkynetMonitorTaskContacts and
+-- VeafSkynetMonitorTaskDescriptor (set up at load time only if SkynetIADS exists) are unusable here.
 veafSkynet.PointDefenceMode = veafSkynet.PointDefenceModes.Skynet
 veafSkynet.initialize(
     false, --includeRedInRadio
