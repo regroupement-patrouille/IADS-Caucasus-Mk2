@@ -8,7 +8,7 @@ local scriptsToLoad =
     { name = "veaf-config.lua" },
     { name = "mission-script.lua" },
     { name = "skynet-iads-vendored.lua" },
-    { name = "mission-iads-init.lua" },
+    { name = "mission-iads.lua" },
 }
 
 if (VEAF_DYNAMIC_MISSIONPATH) then

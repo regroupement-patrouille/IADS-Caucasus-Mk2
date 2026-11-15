@@ -43,7 +43,7 @@ modules:
 
   # IADS
   # Off: the mission loads its own Skynet (src/scripts/skynet-iads-vendored.lua, see custom_scripts)
-  # and builds its two red networks itself in mission-iads-init.lua, from group/unit name prefixes.
+  # and builds its two red networks itself in mission-iads.lua, from group/unit name prefixes.
   # Keep SKYNET_MONITOR off too: enabling it brings SKYNET back, and VMCT would then also load its
   # bundled skynet-iads-compiled.lua.
   SKYNET: false
@@ -112,7 +112,7 @@ modules:
 custom_scripts:
   scripts:
     - path: src/scripts/skynet-iads-vendored.lua   # Skynet IADS 3.6.0, loaded after veaf-scripts.lua
-    - path: src/scripts/mission-iads-init.lua      # builds the TBS and MAP networks, F10 "IADS ..." menus
+    - path: src/scripts/mission-iads.lua      # builds the TBS and MAP networks, F10 "IADS ..." menus
 
 # ── Build pipeline ────────────────────────────────────────────────────────────
 pipeline:
