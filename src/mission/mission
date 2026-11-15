@@ -68208,7 +68208,7 @@ mission =
       [2] = 0,
     },
   },
-  currentKey = 376686,
+  currentKey = 381613,
   date = {
     Day = 21,
     Month = 6,
@@ -70306,16 +70306,16 @@ mission =
       mmint = 1,
       prob = 100,
     },
-    autopilot = {
-      id = "autopilot",
+    AUTOPILOT = {
+      id = "AUTOPILOT",
       enable = false,
       hh = 0,
       mm = 0,
       mmint = 1,
       prob = 100,
     },
-    AUTOPILOT = {
-      id = "AUTOPILOT",
+    autopilot = {
+      id = "autopilot",
       enable = false,
       hh = 0,
       mm = 0,
@@ -81313,7 +81313,7 @@ mission =
   },
   map = {
     centerX = -264193.10416285,
-    centerY = 619952.99966683,
+    centerY = 619952.99966682,
     zoom = 1422441.8335985,
   },
   maxDictId = 11,
