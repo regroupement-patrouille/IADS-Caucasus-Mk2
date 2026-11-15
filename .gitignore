@@ -25,3 +25,7 @@ __pycache__/
 
 # dcs-hotload runtime output
 /dcs-hotload/user-outbox/
+
+# superpowers working directory
+/docs/superpowers/
+/.superpowers/
