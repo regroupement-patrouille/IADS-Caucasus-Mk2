@@ -17,6 +17,7 @@ local function element(name, kind)
   function e:finishHarmDefence() record("finishHarmDefence", self.name) end
   function e:cleanUp() record("cleanUp", self.name) end
   function e:goLive() record("goLive", self.name) end
+  function e:getDCSRepresentation() return self.dcs end
   return e
 end
 

@@ -140,12 +140,60 @@ function MissionIads.build(network)
   return iads
 end
 
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- F10 menu
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
+MissionIads.CommandCenterExplosionPower = 200 -- the default explosion may not be enough for a bunker
+
+function MissionIads.toggleStatus(network)
+  MissionIads.setStatusDisplay(network, not network.iads:getDebugSettings().IADSStatus)
+end
+
+--- The IADS stops; every site goes live and fights on its own.
+function MissionIads.deactivate(network)
+  local iads = network.iads
+  iads:deactivate()
+  local elements = {}
+  for _, e in ipairs(iads:getEarlyWarningRadars() or {}) do table.insert(elements, e) end
+  for _, e in ipairs(iads:getSAMSites() or {}) do table.insert(elements, e) end
+  for _, e in ipairs(elements) do
+    e:finishHarmDefence()
+    e:cleanUp()
+    e:goLive() -- will not always turn the radar on, e.g. a site out of ammo stays off
+  end
+  MissionIads.log(network.menu .. " deactivated: every site is on its own")
+end
+
+function MissionIads.destroyCommandCenter(network)
+  for _, cc in ipairs(network.iads:getCommandCenters() or {}) do
+    local dcsObject = cc:getDCSRepresentation()
+    if dcsObject and dcsObject:isExist() then
+      trigger.action.explosion(dcsObject:getPosition().p, MissionIads.CommandCenterExplosionPower)
+      MissionIads.log(network.menu .. ": command center " .. dcsObject:getName() .. " blown up")
+    end
+  end
+end
+
+function MissionIads.addMenus()
+  for _, network in ipairs(MissionIads.Networks) do
+    if network.iads then
+      local menu = missionCommands.addSubMenu(network.menu)
+      missionCommands.addCommand("Display/hide Skynet status", menu, MissionIads.toggleStatus, network)
+      missionCommands.addCommand("Deactivate network", menu, MissionIads.deactivate, network)
+      if network.commandCenter then
+        missionCommands.addCommand("Disable network (destroy CC)", menu, MissionIads.destroyCommandCenter, network)
+      end
+    end
+  end
+end
+
 local function activateAll()
   for _, network in ipairs(MissionIads.Networks) do
     if network.iads then
       network.iads:activate()
     end
   end
+  MissionIads.addMenus()
   return nil
 end
 
