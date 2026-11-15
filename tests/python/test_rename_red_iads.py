@@ -53,6 +53,12 @@ class CheckNamesTest(unittest.TestCase):
         self.assertEqual(check_names(entries), [])
 
 
+class RealMissionTest(unittest.TestCase):
+    def test_real_mission_follows_naming_rule(self):
+        text = (ROOT / "src" / "mission" / "mission").read_text(encoding="utf-8")
+        self.assertEqual(check_names(read_entries(text)), [])
+
+
 class ApplyTableTest(unittest.TestCase):
     def test_apply_from_csv_on_fixture(self):
         rows = [

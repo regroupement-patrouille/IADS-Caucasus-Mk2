@@ -1,12 +1,23 @@
 """Tests for tools/make_red_iads_names.py."""
 
 import math
+import subprocess
 import sys
 import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "tools"))
+
+# The generator's input: the mission as it was before the renames (commit "Add red IADS rename table").
+PRE_RENAME_COMMIT = "ecf2e40"
+
+
+def _pre_rename_mission() -> str:
+    return subprocess.run(
+        ["git", "show", f"{PRE_RENAME_COMMIT}:src/mission/mission"],
+        cwd=ROOT, capture_output=True, check=True,
+    ).stdout.decode("utf-8")
 
 from make_red_iads_names import (  # noqa: E402
     NameRuleError,
@@ -17,7 +28,7 @@ from make_red_iads_names import (  # noqa: E402
 )
 from mission_names import Entry, read_entries  # noqa: E402
 
-REAL_ENTRIES = read_entries((ROOT / "src" / "mission" / "mission").read_text(encoding="utf-8"))
+REAL_ENTRIES = read_entries(_pre_rename_mission())
 
 
 class ParseTest(unittest.TestCase):

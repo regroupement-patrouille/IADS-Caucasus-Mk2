@@ -36,10 +36,10 @@ class ReadEntriesTest(unittest.TestCase):
     def test_real_mission_parses(self):
         entries = read_entries(REAL_MISSION.read_text(encoding="utf-8"))
         by_name = {e.group_name: e for e in entries}
-        self.assertIn("CommandCenterRed", by_name)
-        self.assertIn("Awacs #3", by_name)
-        self.assertEqual(len(by_name["SA10 - Kumisi"].unit_names), 11)
-        self.assertEqual(by_name["SA10 - Kumisi"].coalition, "red")
+        self.assertIn("TBS-CC Tbilissi", by_name)
+        self.assertIn("TBS-EW Awacs Tbilisi", by_name)
+        self.assertEqual(len(by_name["TBS-SAM SA-10 Kumisi"].unit_names), 11)
+        self.assertEqual(by_name["TBS-SAM SA-10 Kumisi"].coalition, "red")
 
 
 class ApplyRenamesTest(unittest.TestCase):
