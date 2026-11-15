@@ -214,6 +214,50 @@ test("test_report_after_activation", function()
   ok(anyLine(Stubs.infos, "MISSION IADS: IADS Map:"), "report ran")
 end)
 
+local function withWorld(extra)
+  local w = {}
+  for k, v in pairs(WORLD) do w[k] = v end
+  for k, v in pairs(extra) do w[k] = v end
+  return w
+end
+
+local function loadWorld(world)
+  Stubs.reset(world)
+  MISSION_IADS_TEST = true
+  MissionIads = nil
+  dofile("src/scripts/mission-iads-init.lua")
+  return MissionIads
+end
+
+test("test_one_network_activation_failure_spares_the_other", function()
+  local M = loadWorld(withWorld({ failActivate = { ["IADS Tbilissi"] = true } }))
+  M.start()
+  Stubs.scheduled[1].fn(Stubs.scheduled[1].arg, 105)
+  ok(Stubs.called("activate IADS Map"), "MAP still activated")
+  ok(anyLine(Stubs.warnings, "IADS Tbilissi"), "warning names the failed network")
+  ok(anyLine(Stubs.infos, "MISSION IADS: IADS Map:"), "report still ran")
+  eq(#Stubs.menus, 2, "menus still added")
+end)
+
+test("test_build_step_failure_keeps_the_other_steps", function()
+  local M = loadWorld(withWorld({ failSamPrefix = { ["TBS-SAM"] = true } }))
+  M.build(network("TBS"))
+  ok(Stubs.called("addCommandCenter TBS-CC Tbilissi"), "CC still added")
+  ok(Stubs.called("addSAMSite TBS-PD SA-10 Kumisi #1"), "PDs still added")
+  ok(anyLine(Stubs.warnings, "TBS-SAM"), "warning names the failed step")
+end)
+
+test("test_ew_unit_skynet_cannot_use_warns", function()
+  local groups = {}
+  for _, g in ipairs(WORLD.groups) do table.insert(groups, g) end
+  table.insert(groups, { name = "MAP-EW Truck", units = { { name = "MAP-EW Truck", type = "Ural-375" } } })
+  local M = loadWorld(withWorld({ groups = groups }))
+  M.build(network("MAP"))
+  M.report()
+  ok(anyLine(Stubs.warnings, "MAP-EW Truck"), "radar-less EW warned")
+  ok(not anyLine(Stubs.warnings, "MAP-EW Pervo"), "real EW radar not warned")
+end)
+
 test("test_file_runs_start_outside_tests", function()
   Stubs.reset(WORLD)
   MISSION_IADS_TEST = nil

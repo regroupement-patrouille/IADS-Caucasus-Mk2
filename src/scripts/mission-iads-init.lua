@@ -128,15 +128,25 @@ local function addCommandCenter(network, iads)
   end
 end
 
+--- Run one step; a failure is logged with the step's name and does not stop the next steps.
+local function guarded(what, fn, ...)
+  local ok, err = pcall(fn, ...)
+  if not ok then
+    MissionIads.warn(string.format("%s failed: %s", what, tostring(err)))
+  end
+  return ok
+end
+
 --- Create the network's IADS and fill it from the names; stores it in network.iads.
 function MissionIads.build(network)
   local iads = SkynetIADS:create(network.menu)
   network.iads = iads
-  iads:addEarlyWarningRadarsByPrefix(network.code .. "-EW")
-  iads:addSAMSitesByPrefix(network.code .. "-SAM")
-  addPointDefences(network, iads)
-  addCommandCenter(network, iads)
-  MissionIads.setStatusDisplay(network, MissionIads.DebugMode)
+  local ewPrefix, samPrefix = network.code .. "-EW", network.code .. "-SAM"
+  guarded(network.menu .. ": EW radars " .. ewPrefix, iads.addEarlyWarningRadarsByPrefix, iads, ewPrefix)
+  guarded(network.menu .. ": SAM sites " .. samPrefix, iads.addSAMSitesByPrefix, iads, samPrefix)
+  guarded(network.menu .. ": point defences", addPointDefences, network, iads)
+  guarded(network.menu .. ": command center", addCommandCenter, network, iads)
+  guarded(network.menu .. ": debug settings", MissionIads.setStatusDisplay, network, MissionIads.DebugMode)
   return iads
 end
 
@@ -190,6 +200,13 @@ local function reportNetwork(network)
       if unitName:sub(1, #network.code + 4) == network.code .. "-EW " and not iads:getEarlyWarningRadarByUnitName(unitName) then
         MissionIads.warn(unitName .. ": named as an EW radar, but Skynet did not take it")
       end
+    end
+  end
+
+  -- Skynet takes any unit named as an EW radar, even one without a radar it knows: say so
+  for _, ew in ipairs(iads:getEarlyWarningRadars() or {}) do
+    if #(ew:getSearchRadars() or {}) == 0 then
+      MissionIads.warn(ew:getDCSName() .. ": named as an EW radar, but Skynet knows no search radar in it")
     end
   end
 end
@@ -273,7 +290,7 @@ end
 local function activateAll()
   for _, network in ipairs(MissionIads.Networks) do
     if network.iads then
-      network.iads:activate()
+      guarded(network.menu .. ": activation", network.iads.activate, network.iads)
     end
   end
   local ok, err = pcall(MissionIads.report)

@@ -18,6 +18,7 @@ local function element(name, kind)
   function e:cleanUp() record("cleanUp", self.name) end
   function e:goLive() record("goLive", self.name) end
   function e:getDCSRepresentation() return self.dcs end
+  function e:getSearchRadars() return self.searchRadars or {} end
   return e
 end
 
@@ -92,7 +93,16 @@ function Stubs.reset(world)
       record("addEarlyWarningRadarsByPrefix", prefix)
       for _, g in ipairs(groups) do
         for _, u in ipairs(g.units) do
-          if startsWith(u.name, prefix) then table.insert(self.ews, element(u.name, "EW")) end
+          if startsWith(u.name, prefix) then
+            local e = element(u.name, "EW")
+            e.dcs = u
+            -- like SkynetIADSEWRadar:setupElements: a search radar only for a type listed as one in the database
+            e.searchRadars = {}
+            for _, entry in pairs(SkynetIADS.database) do
+              if (entry.searchRadar or {})[u.type] then e.searchRadars = { u } end
+            end
+            table.insert(self.ews, e)
+          end
         end
       end
     end
@@ -105,6 +115,7 @@ function Stubs.reset(world)
       return e
     end
     function iads:addSAMSitesByPrefix(prefix)
+      if (Stubs.world.failSamPrefix or {})[prefix] then error("prefix exploded") end
       record("addSAMSitesByPrefix", prefix)
       for _, g in ipairs(groups) do
         if startsWith(g.name, prefix) and not g.unusable then table.insert(self.samSites, element(g.name, "SAM")) end
@@ -127,7 +138,10 @@ function Stubs.reset(world)
     function iads:getEarlyWarningRadars() return self.ews end
     function iads:getCommandCenters() return self.ccs end
     function iads:getDebugSettings() return self.debug end
-    function iads:activate() record("activate", self.name) end
+    function iads:activate()
+      if (Stubs.world.failActivate or {})[self.name] then error("activate exploded") end
+      record("activate", self.name)
+    end
     function iads:deactivate() record("deactivate", self.name) end
     return iads
   end
