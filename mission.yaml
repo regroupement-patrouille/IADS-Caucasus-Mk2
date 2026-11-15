@@ -28,8 +28,6 @@ security:
 # ── Plain module settings (become `key = value` in veaf-config.lua) ─────────
 module_settings:
   veaf.DEFAULT_GROUND_SPEED_KPH: 25
-  veafSkynet.DynamicSpawn: true      # SAMs spawned with map markers join the IADS
-  veafSkynet.DelayForStartup: 5
 
 # ── Modules ──────────────────────────────────────────────────────────────────
 # A module absent from this block is ENABLED with its defaults, so every module
@@ -45,9 +43,9 @@ modules:
 
   # IADS
   # Off: the mission loads its own Skynet (src/scripts/skynet-iads-vendored.lua, see custom_scripts)
-  # and starts the IADS itself in missionSkynetLogic.lua. Keep SKYNET_MONITOR off too: enabling it
-  # brings SKYNET back, and VMCT would then also load its bundled skynet-iads-compiled.lua.
-  # The veafSkynet helpers stay available either way (they are part of veaf-scripts.lua).
+  # and builds its two red networks itself in mission-iads-init.lua, from group/unit name prefixes.
+  # Keep SKYNET_MONITOR off too: enabling it brings SKYNET back, and VMCT would then also load its
+  # bundled skynet-iads-compiled.lua.
   SKYNET: false
   SKYNET_MONITOR: false
   QRA:
@@ -114,7 +112,7 @@ modules:
 custom_scripts:
   scripts:
     - path: src/scripts/skynet-iads-vendored.lua   # Skynet IADS 3.6.0, loaded after veaf-scripts.lua
-    - path: src/scripts/missionSkynetLogic.lua
+    - path: src/scripts/mission-iads-init.lua      # builds the TBS and MAP networks, F10 "IADS ..." menus
 
 # ── Build pipeline ────────────────────────────────────────────────────────────
 pipeline:

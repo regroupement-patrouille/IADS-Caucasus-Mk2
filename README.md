@@ -19,7 +19,9 @@ Check your kneeboard for target coordinates and maps.
 
 *SLAM-ER training. SA-11 near Nadezhnaya.
 
-*Tbilisi. For a challenge, the Tbilisi zone is fully defended by SAM defences (SA-2, SA-5, SA-10 and more). The command center of the network is in the area: destroying it will do disrupt the IADS.
+*Tbilisi. For a challenge, the Tbilisi zone is fully defended by SAM defences (SA-2, SA-5, SA-10 and more). It is an IADS of its own, separate from the rest of the map, and its command center is in the area: destroying the command center bunker, or the diesel generator next to it that powers it, will disrupt the Tbilisi IADS (its sites go autonomous). The other scenarios are not affected.
+
+The F10 menus "IADS Tbilissi" and "IADS Map" show or hide the Skynet status of each network and can deactivate it (every site then fights on its own); "IADS Tbilissi" can also blow up the command center.
 
 ## Building the mission
 
@@ -35,7 +37,24 @@ VEAF MCT v6 has no post-build hook, so `build.py` runs `.\veaf-tools.exe mission
 
 - `mission.yaml` — enabled modules (Skynet, QRA, map-marker toolbox), scripts, build steps.
 - `src/mission/` — the mission as saved by the DCS Mission Editor. After editing a built `.miz` in the editor, extract it back with `.\veaf-tools.exe mission extract <file>.miz .`.
-- `src/scripts/` — `skynet-iads-vendored.lua` (Skynet IADS 3.6.0) and `missionSkynetLogic.lua` (starts the IADS and builds the "Skynet Red" F10 menu). The mission loads and starts Skynet itself: VEAF MCT's SKYNET module is off, so the Skynet it bundles is not in the `.miz`. Keep SKYNET and SKYNET_MONITOR off in `mission.yaml`, otherwise VMCT loads its own copy as well. To update Skynet, replace `skynet-iads-vendored.lua` with the new release's compiled script.
+- `src/scripts/` — `skynet-iads-vendored.lua` (Skynet IADS 3.6.0) and `mission-iads-init.lua` (builds the two red networks from names, logs a `MISSION IADS:` report to `dcs.log`, adds the F10 menus). The mission loads and starts Skynet itself: VEAF MCT's SKYNET module is off, so the Skynet it bundles is not in the `.miz`. Keep SKYNET and SKYNET_MONITOR off in `mission.yaml`, otherwise VMCT loads its own copy as well. To update Skynet, replace `skynet-iads-vendored.lua` with the new release's compiled script. VMCT loads every `.lua` in `src/scripts/`, so keep nothing else there.
+- `tools/` and `tests/` — the one-off rename to the naming scheme below (`red-iads-names.csv`, `rename_red_iads.py`) and the tests (`python -m unittest discover -s tests/python`, `lua tests/lua/test_iads_init.lua` from the repo root).
+
+### Red IADS naming
+
+The IADS is built from names, so red ground units must follow this scheme (network `TBS` = Tbilisi, `MAP` = the rest of the map):
+
+| What | Group name | Unit names |
+|---|---|---|
+| EW radar | `<NET>-EW <Site>` | same as the group (Skynet matches EW radars by **unit** name) |
+| SAM site | `<NET>-SAM <Site>` | `<group>-01`, `-02`… |
+| Point defence of a site | `<NET>-PD <Site> #<n>` | `<group>-01`… |
+| Escort in the IADS (SHORAD, Dog Ear) | `<NET>-SAM <Site> #<n>` / `<NET>-EW <Site> #<n>` | as above |
+| Escort outside the IADS (Igla, trucks) | `<Site> #<n>` | `<group>-01`… |
+| A-50 | `<NET>-EW Awacs <Place>` | same as the group |
+| Tbilisi command center / its generator | `TBS-CC Tbilissi` / `TBS-CC Tbilissi Power` | |
+
+`<Site>` is `<system> <place>` (`SA-10 Gudauta`), or just `<place>` for an EW site. A point defence protects the site whose name follows its `PD` (`MAP-PD SA-10 Gudauta #1` protects `MAP-SAM SA-10 Gudauta`). After editing red units in the Mission Editor and extracting, run `python tools/rename_red_iads.py src/mission/mission tools/red-iads-names.csv --check`; the `MISSION IADS:` lines in `dcs.log` also list every red group left out of the IADS.
 
 ### dcs-hotload
 

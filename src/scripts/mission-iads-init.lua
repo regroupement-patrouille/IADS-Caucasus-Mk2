@@ -141,6 +141,89 @@ function MissionIads.build(network)
 end
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- Startup report (dcs.log): what each network holds, and what is in none
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
+local NOT_OURS = { "^Qra_Tbilissi%-", "^veafSpawn%-" } -- red aircraft that are not IADS material
+
+local function skynetUnitTypes()
+  local types = {}
+  for _, entry in pairs((SkynetIADS and SkynetIADS.database) or {}) do
+    for _, list in ipairs({ "searchRadar", "trackingRadar", "launchers", "misc" }) do
+      for unitType in pairs(entry[list] or {}) do
+        types[unitType] = true
+      end
+    end
+  end
+  return types
+end
+
+local function names(elements)
+  local list = {}
+  for _, e in ipairs(elements or {}) do table.insert(list, e:getDCSName()) end
+  table.sort(list)
+  return list
+end
+
+local function reportNetwork(network)
+  local iads = network.iads
+  local ews, sams = names(iads:getEarlyWarningRadars()), names(iads:getSAMSites())
+  local pds = network.pointDefences or {}
+  MissionIads.log(string.format("%s: %d EW radars, %d SAM sites (%d of them point defences)", network.menu, #ews, #sams, #pds))
+  MissionIads.log("  EW: " .. table.concat(ews, ", "))
+  MissionIads.log("  SAM: " .. table.concat(sams, ", "))
+  for _, pd in ipairs(pds) do
+    MissionIads.log(string.format("  PD: %s -> %s", pd.name, pd.parent or "(no parent)"))
+  end
+  if network.commandCenter then
+    local ccs = names(iads:getCommandCenters())
+    MissionIads.log(string.format("  command center %s, power %s", ccs[1] or "MISSING", network.powerSource or "none"))
+  end
+
+  -- prefixed names Skynet did not take
+  for _, group in ipairs(coalition.getGroups(coalition.side.RED) or {}) do
+    local groupName = group:getName()
+    if groupName:sub(1, #network.code + 5) == network.code .. "-SAM " and not iads:getSAMSiteByGroupName(groupName) then
+      MissionIads.warn(groupName .. ": named as a SAM site, but Skynet did not take it (no usable unit?)")
+    end
+    for _, unit in ipairs(group:getUnits() or {}) do
+      local unitName = unit:getName()
+      if unitName:sub(1, #network.code + 4) == network.code .. "-EW " and not iads:getEarlyWarningRadarByUnitName(unitName) then
+        MissionIads.warn(unitName .. ": named as an EW radar, but Skynet did not take it")
+      end
+    end
+  end
+end
+
+function MissionIads.report()
+  for _, network in ipairs(MissionIads.Networks) do
+    if network.iads then
+      reportNetwork(network)
+    end
+  end
+
+  local skynetTypes = skynetUnitTypes()
+  local outside = {}
+  for _, group in ipairs(coalition.getGroups(coalition.side.RED) or {}) do
+    local groupName = group:getName()
+    local ours = true
+    for _, pattern in ipairs(NOT_OURS) do
+      if groupName:find(pattern) then ours = false end
+    end
+    if ours and not MissionIads.networkCodeOf(groupName) then
+      table.insert(outside, groupName)
+      for _, unit in ipairs(group:getUnits() or {}) do
+        if skynetTypes[unit:getTypeName()] then
+          MissionIads.warn(groupName .. ": has a unit Skynet could use (" .. unit:getTypeName() .. ") but no network prefix; typo?")
+          break
+        end
+      end
+    end
+  end
+  table.sort(outside)
+  MissionIads.log(string.format("%d red groups not in any IADS: %s", #outside, table.concat(outside, ", ")))
+end
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
 -- F10 menu
 -------------------------------------------------------------------------------------------------------------------------------------------------------------
 MissionIads.CommandCenterExplosionPower = 200 -- the default explosion may not be enough for a bunker
@@ -192,6 +275,10 @@ local function activateAll()
     if network.iads then
       network.iads:activate()
     end
+  end
+  local ok, err = pcall(MissionIads.report)
+  if not ok then
+    MissionIads.warn("report failed: " .. tostring(err))
   end
   MissionIads.addMenus()
   return nil

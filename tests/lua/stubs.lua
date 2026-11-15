@@ -78,7 +78,13 @@ function Stubs.reset(world)
     addCommand = function(name, parent, fn, arg) table.insert(parent.commands, { name = name, fn = fn, arg = arg }) end,
   }
 
-  SkynetIADS = {}
+  SkynetIADS = {
+    database = {
+      ["Tor M2"] = { type = "single", searchRadar = { ["CHAP_TorM2"] = {} }, launchers = { ["CHAP_TorM2"] = {} } },
+      ["S-300"] = { type = "complex", trackingRadar = { ["S-300PS 40B6M tr"] = {} } },
+      ["55G6 EWR"] = { type = "ewr", searchRadar = { ["55G6 EWR"] = {} } },
+    },
+  }
   function SkynetIADS:create(name)
     record("create", name)
     local iads = { name = name, samSites = {}, ews = {}, ccs = {}, debug = { IADSStatus = false } }

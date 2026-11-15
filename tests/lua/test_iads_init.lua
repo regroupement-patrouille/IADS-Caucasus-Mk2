@@ -17,6 +17,9 @@ local WORLD = {
     { name = "MAP-SAM SA-2 Broken", units = { { name = "MAP-SAM SA-2 Broken-01", type = "Ural-375" } }, unusable = true },
     { name = "MAP-PD SA-2 Broken #1", units = { { name = "MAP-PD SA-2 Broken #1-01", type = "Ural-375" } }, unusable = true },
     { name = "Rapier Dzhvari #1", units = { { name = "Rapier Dzhvari #1-01", type = "Ural-375" } } },
+    { name = "SA-15 Somewhere", units = { { name = "SA-15 Somewhere-01", type = "CHAP_TorM2" } } },
+    { name = "Qra_Tbilissi-1", units = { { name = "Qra pilot", type = "MiG-29S" } }, category = 0 },
+    { name = "Transport plane", units = { { name = "Transport plane-01", type = "Il-76MD" } }, category = 0 },
   },
   statics = {
     ["TBS-CC Tbilissi"] = { x = 1, y = 0, z = 2 },
@@ -181,6 +184,34 @@ test("test_deactivate", function()
     ok(f and c and l, name .. " finish/cleanUp/goLive")
     ok(d < f and f < c and c < l, name .. " in order")
   end
+end)
+
+local function anyLine(lines, needle)
+  for _, l in ipairs(lines) do if l:find(needle, 1, true) then return l end end
+end
+
+test("test_report", function()
+  local M = load()
+  M.build(network("TBS")); M.build(network("MAP"))
+  Stubs.warnings = {}
+  M.report()
+  ok(anyLine(Stubs.infos, "MISSION IADS: IADS Tbilissi:"), "TBS header")
+  ok(anyLine(Stubs.infos, "TBS-PD SA-10 Kumisi #1 -> TBS-SAM SA-10 Kumisi"), "PD with parent")
+  ok(anyLine(Stubs.infos, "command center TBS-CC Tbilissi, power TBS-CC Tbilissi Power"), "CC line")
+  local none = anyLine(Stubs.infos, "not in any IADS")
+  ok(none and none:find("Rapier Dzhvari #1", 1, true), "Rapier escort in no network")
+  ok(none:find("Transport plane", 1, true), "other red aircraft listed")
+  ok(not none:find("Qra_Tbilissi", 1, true), "QRA left out")
+  ok(anyLine(Stubs.warnings, "SA-15 Somewhere"), "unprefixed group with a Skynet type warned")
+  ok(not anyLine(Stubs.warnings, "Rapier Dzhvari #1"), "unprefixed group without Skynet types not warned")
+  ok(anyLine(Stubs.warnings, "MAP-SAM SA-2 Broken"), "prefixed group Skynet refused warned")
+end)
+
+test("test_report_after_activation", function()
+  local M = load()
+  M.start()
+  Stubs.scheduled[1].fn(Stubs.scheduled[1].arg, 105)
+  ok(anyLine(Stubs.infos, "MISSION IADS: IADS Map:"), "report ran")
 end)
 
 test("test_file_runs_start_outside_tests", function()

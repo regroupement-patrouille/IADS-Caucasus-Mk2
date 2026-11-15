@@ -19,8 +19,6 @@ veaf.ForcedLogLevel = "info"
 
 -- ── Module settings ──────────────────────────────────────────────────────────
 veaf.DEFAULT_GROUND_SPEED_KPH = 25
-veafSkynet.DynamicSpawn = true
-veafSkynet.DelayForStartup = 5
 
 -- ── Module configuration + initialization ────────────────────────────────────
 
