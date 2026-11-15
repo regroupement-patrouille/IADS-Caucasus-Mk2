@@ -17,7 +17,7 @@ global_log_level: info
 
 # ── Mission ─────────────────────────────────────────────────────────────────
 mission:
-  name: IADS-Caucasus
+  name: IADS-Caucasus-Mk2
   silence_atc_on_all_airbases: true
 
 # ── Security ──────────────────────────────────────────────────────────────────
@@ -28,8 +28,6 @@ security:
 # ── Plain module settings (become `key = value` in veaf-config.lua) ─────────
 module_settings:
   veaf.DEFAULT_GROUND_SPEED_KPH: 25
-  veafSkynet.DynamicSpawn: true      # SAMs spawned with map markers join the IADS
-  veafSkynet.DelayForStartup: 5
 
 # ── Modules ──────────────────────────────────────────────────────────────────
 # A module absent from this block is ENABLED with its defaults, so every module
@@ -44,17 +42,11 @@ modules:
   COMMANDS:
 
   # IADS
-  SKYNET:
-    enabled: true
-    # Started by src/scripts/missionSkynetLogic.lua, after src/scripts/skynet-iads-3.6.0.lua
-    # has replaced the Skynet version VEAF MCT bundles (3.5.0 in VMCT 6.36.0).
-    # Once VMCT bundles 3.6.0 or later: delete skynet-iads-3.6.0.lua, its custom_scripts
-    # entry, this flag and the veafSkynet.initialize() call in missionSkynetLogic.lua.
-    initialized_by_mission: true
-  # VeafSkynetMonitorDescriptor (used by the "Skynet Red" F10 menu) is in veaf-scripts.lua either
-  # way, and SKYNET_MONITOR's initialize() only logs. Left off on purpose: in VMCT 6.36.0, enabling
-  # it auto-adds a second SKYNET module that calls veafSkynet.initialize() in veaf-config.lua,
-  # before skynet-iads-3.6.0.lua loads, despite initialized_by_mission.
+  # Off: the mission loads its own Skynet (src/scripts/skynet-iads-vendored.lua, see custom_scripts)
+  # and builds its two red networks itself in mission-iads.lua, from group/unit name prefixes.
+  # Keep SKYNET_MONITOR off too: enabling it brings SKYNET back, and VMCT would then also load its
+  # bundled skynet-iads-compiled.lua.
+  SKYNET: false
   SKYNET_MONITOR: false
   QRA:
     enabled: true
@@ -119,8 +111,8 @@ modules:
 # Load order: veaf-config.lua → mission-script.lua → these, in this order.
 custom_scripts:
   scripts:
-    - path: src/scripts/skynet-iads-3.6.0.lua
-    - path: src/scripts/missionSkynetLogic.lua
+    - path: src/scripts/skynet-iads-vendored.lua   # Skynet IADS 3.6.0, loaded after veaf-scripts.lua
+    - path: src/scripts/mission-iads.lua      # builds the TBS and MAP networks, F10 "IADS ..." menus
 
 # ── Build pipeline ────────────────────────────────────────────────────────────
 pipeline:
