@@ -38,8 +38,6 @@ VEAF MCT v6 has no post-build hook, so `build.py` runs `.\veaf-tools.exe mission
 - `mission.yaml` — enabled modules (Skynet, QRA, map-marker toolbox), scripts, build steps.
 - `src/mission/` — the mission as saved by the DCS Mission Editor. After editing a built `.miz` in the editor, extract it back with `.\veaf-tools.exe mission extract <file>.miz .`. If that `.miz` came from `python build.py --hotload`, first run `python dcs-hotload/bin/hotload-setup.py boot-path --miz <file>.miz --clear`: otherwise the extract brings this machine's `BASE_HOTLOAD_PATH` into `src/mission/`, where it would be committed (`build.py` clears it in the `.miz` it writes, but a bare `.\veaf-tools.exe mission build` would keep it).
 - `src/scripts/` — `skynet-iads-vendored.lua` (Skynet IADS 3.6.0) and `mission-iads.lua` (builds the two red networks from names, logs a `MISSION IADS:` report to `dcs.log`, adds the F10 menus). The mission loads and starts Skynet itself: VEAF MCT's SKYNET module is off, so the Skynet it bundles is not in the `.miz`. Keep SKYNET and SKYNET_MONITOR off in `mission.yaml`, otherwise VMCT loads its own copy as well. To update Skynet, replace `skynet-iads-vendored.lua` with the new release's compiled script. VMCT loads every `.lua` in `src/scripts/`, so keep nothing else there.
-- `tools/` and `tests/` — `check_red_iads_names.py`, which checks the red names against the scheme below, and the tests (`python -m unittest discover -s tests/python`, `lua tests/lua/test_iads_init.lua` from the repo root).
-
 ### Red IADS naming
 
 The IADS is built from names, so red ground units must follow this scheme (network `TBS` = Tbilisi, `MAP` = the rest of the map):
@@ -54,7 +52,7 @@ The IADS is built from names, so red ground units must follow this scheme (netwo
 | A-50 | `<NET>-EW Awacs <Place>` | same as the group |
 | Tbilisi command center / its generator | `TBS-CC Tbilissi` / `TBS-CC Tbilissi Power` | |
 
-`<Site>` is `<system> <place>` (`SA-10 Gudauta`), or just `<place>` for an EW site. A point defence protects the site whose name follows its `PD` (`MAP-PD SA-10 Gudauta #1` protects `MAP-SAM SA-10 Gudauta`). After editing red units in the Mission Editor and extracting, run `python tools/check_red_iads_names.py src/mission/mission`: it catches what the game does not report, such as a copied `TBS-EW` group whose unit kept its old name (Skynet then silently skips that radar); the `MISSION IADS:` lines in `dcs.log` also list every red group left out of the IADS.
+`<Site>` is `<system> <place>` (`SA-10 Gudauta`), or just `<place>` for an EW site. A point defence protects the site whose name follows its `PD` (`MAP-PD SA-10 Gudauta #1` protects `MAP-SAM SA-10 Gudauta`). The `MISSION IADS:` lines in `dcs.log` count each network's EW radars and SAM sites, and list every group with a unit Skynet could use but no network prefix. They do not catch a copied `TBS-EW` group whose unit kept its old name (Skynet then silently skips that radar), so after editing red units in the Mission Editor, check the EW radar counts.
 
 ### dcs-hotload
 
