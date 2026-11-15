@@ -1,4 +1,4 @@
-"""Tests for tools/rename_red_iads.py."""
+"""Tests for tools/check_red_iads_names.py."""
 
 import sys
 import unittest
@@ -8,10 +8,7 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "tools"))
 
 from mission_names import Entry, read_entries  # noqa: E402
-from rename_red_iads import apply_table, check_names  # noqa: E402
-
-FIXTURE = (Path(__file__).parent / "fixtures" / "mini_mission.lua").read_text(encoding="utf-8")
-
+from check_red_iads_names import check_names  # noqa: E402
 
 def entry(group, units, coalition="red", category="vehicle"):
     return Entry(coalition, category, group, units, ["x"] * len(units), 0.0, 0.0)
@@ -52,34 +49,18 @@ class CheckNamesTest(unittest.TestCase):
         ]
         self.assertEqual(check_names(entries), [])
 
+    def test_check_names_ignores_unprefixed_static(self):
+        # the Mission Editor names a static's unit like its group: a decoration must not be flagged
+        self.assertEqual(check_names([entry("Static Bunker-1", ["Static Bunker-1"], category="static")]), [])
+
+    def test_check_names_checks_prefixed_static(self):
+        self.assertEqual(len(check_names([entry("TBS-CC Tbilissi", ["Unit #1"], category="static")])), 1)
+
 
 class RealMissionTest(unittest.TestCase):
     def test_real_mission_follows_naming_rule(self):
         text = (ROOT / "src" / "mission" / "mission").read_text(encoding="utf-8")
         self.assertEqual(check_names(read_entries(text)), [])
-
-
-class ApplyTableTest(unittest.TestCase):
-    def test_apply_from_csv_on_fixture(self):
-        rows = [
-            dict(old_group="SA-2 - Poti", new_group="MAP-SAM SA-2 Poti", old_unit="SA-2 - Poti-unit-1", new_unit="MAP-SAM SA-2 Poti-01"),
-            dict(old_group="SA-2 - Poti", new_group="MAP-SAM SA-2 Poti", old_unit="SA-2 - Poti-unit-2", new_unit="MAP-SAM SA-2 Poti-02"),
-            dict(old_group="CommandCenterRed", new_group="TBS-CC Tbilissi", old_unit="CommandCenterRed", new_unit="TBS-CC Tbilissi"),
-            dict(old_group="Awacs #3", new_group="TBS-EW Awacs Tbilisi", old_unit="Awacs #3", new_unit="TBS-EW Awacs Tbilisi"),
-        ]
-        out = apply_table(FIXTURE, rows)
-        entries = read_entries(out)
-        names = [(e.coalition, e.group_name, e.unit_names) for e in entries]
-        self.assertEqual(
-            names,
-            [
-                ("blue", "SA-2 - Poti-unit-1", ["Blue radar"]),
-                ("red", "MAP-SAM SA-2 Poti", ["MAP-SAM SA-2 Poti-01", "MAP-SAM SA-2 Poti-02"]),
-                ("red", "TBS-CC Tbilissi", ["TBS-CC Tbilissi"]),
-                ("red", "TBS-EW Awacs Tbilisi", ["TBS-EW Awacs Tbilisi"]),
-            ],
-        )
-        self.assertEqual(check_names(entries), [])
 
 
 if __name__ == "__main__":

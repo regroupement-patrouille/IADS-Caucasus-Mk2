@@ -55,16 +55,14 @@ function MissionIads.networkCodeOf(name)
   return nil
 end
 
---- The same Skynet debug outputs today's missionSkynetLogic.lua toggled.
+--- The Skynet debug outputs the old missionSkynetLogic.lua toggled, minus the keys Skynet 3.6.0 does not read.
 function MissionIads.setStatusDisplay(network, bDisplay)
   local debug = network.iads:getDebugSettings()
   debug.IADSStatus = bDisplay
   debug.radarWentDark = bDisplay
   debug.contacts = bDisplay
   debug.radarWentLive = bDisplay
-  debug.noWorkingCommmandCenter = bDisplay
   debug.harmDefence = bDisplay
-  debug.ewRadarNoConnection = false
   debug.samNoConnection = false
   debug.jammerProbability = false
   debug.addedEWRadar = false

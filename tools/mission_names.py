@@ -1,32 +1,17 @@
-"""Read and rename group and unit names in a DCS `mission` file (the Lua table the Mission Editor saves).
+"""Read the groups and units of a DCS `mission` file (the Lua table the Mission Editor saves).
 
-Only the `name` of groups and of their units is ever touched: the path
-`mission.coalition.<side>.country[i].<category>.group[j].name` and `...units[k].name`. Waypoint names,
-script text and everything else stay byte-identical. Standard library only.
+`read_entries` walks `mission.coalition.<side>.country[i].<category>.group[j]` and returns each group's
+name, unit names and unit types. Standard library only.
 """
 
 from __future__ import annotations
 
 import re
-from dataclasses import dataclass, field
-from typing import Callable
-
-
-class RenameError(Exception):
-    """A rename was refused; the text was not changed."""
+from dataclasses import dataclass
 
 
 class LuaSyntaxError(Exception):
     """The file is not the Lua table subset this reader understands."""
-
-
-@dataclass
-class NameSpan:
-    """The content of a string literal: text[start:end] is the raw (still escaped) content."""
-
-    start: int
-    end: int
-    value: str
 
 
 @dataclass
@@ -38,8 +23,6 @@ class Entry:
     unit_types: list[str]
     x: float
     y: float
-    group_span: NameSpan = field(repr=False, compare=False, default=None)
-    unit_spans: list[NameSpan] = field(repr=False, compare=False, default_factory=list)
 
 
 # ── Reader ────────────────────────────────────────────────────────────────────
@@ -47,12 +30,6 @@ class Entry:
 _ESCAPES = {"n": "\n", "t": "\t", "r": "\r", "\\": "\\", '"': '"', "'": "'", "\n": "\n", "a": "\a", "b": "\b", "f": "\f", "v": "\v"}
 _NUMBER = re.compile(r"-?(?:0[xX][0-9a-fA-F]+|(?:\d+\.?\d*|\.\d+)(?:[eE][+-]?\d+)?)")
 _NAME = re.compile(r"[A-Za-z_][A-Za-z0-9_]*")
-
-
-class _Str(str):
-    """A decoded string that remembers where its literal sits in the text."""
-
-    span: NameSpan
 
 
 class _Parser:
@@ -82,7 +59,7 @@ class _Parser:
             self.error(f"expected {s!r}")
         self.i += len(s)
 
-    def string(self) -> _Str:
+    def string(self) -> str:
         quote = self.t[self.i]
         start = self.i + 1
         j, out = start, []
@@ -104,10 +81,8 @@ class _Parser:
                 continue
             out.append(c)
             j += 1
-        s = _Str("".join(out))
-        s.span = NameSpan(start, j, str(s))
         self.i = j + 1
-        return s
+        return "".join(out)
 
     def value(self):
         self.skip()
@@ -189,7 +164,7 @@ def read_entries(text: str) -> list[Entry]:
                 for group in _ordered(block["group"]):
                     units = _ordered(group.get("units"))
                     gname = group.get("name")
-                    if not isinstance(gname, _Str):
+                    if not isinstance(gname, str):
                         continue
                     first = units[0] if units else {}
                     entries.append(
@@ -201,66 +176,7 @@ def read_entries(text: str) -> list[Entry]:
                             unit_types=[str(u.get("type")) for u in units],
                             x=float(first.get("x", 0)),
                             y=float(first.get("y", 0)),
-                            group_span=gname.span,
-                            unit_spans=[u["name"].span for u in units if isinstance(u.get("name"), _Str)],
                         )
                     )
     return entries
 
-
-# ── Renamer ───────────────────────────────────────────────────────────────────
-
-
-def _encode(name: str) -> str:
-    return name.replace("\\", "\\\\").replace('"', '\\"').replace("\n", "\\n")
-
-
-def apply_renames(text: str, groups: dict[str, str], units: dict[str, str], scope: Callable[[Entry], bool]) -> str:
-    """Rename groups and units of the entries in `scope`; return the new text.
-
-    Raises RenameError, changing nothing, when an old name is not found exactly once among the names
-    in scope, or when a new name would equal a name that remains in the file after the renames.
-    """
-    entries = read_entries(text)
-    in_scope = [e for e in entries if scope(e)]
-
-    found: dict[tuple[str, str], list[NameSpan]] = {}
-    for e in in_scope:
-        found.setdefault(("group", e.group_name), []).append(e.group_span)
-        for uname, span in zip(e.unit_names, e.unit_spans):
-            found.setdefault(("unit", uname), []).append(span)
-
-    problems = []
-    edits: list[tuple[NameSpan, str]] = []
-    for kind, mapping in (("group", groups), ("unit", units)):
-        for old, new in mapping.items():
-            spans = found.get((kind, old), [])
-            if len(spans) != 1:
-                problems.append(f"{kind} {old!r}: found {len(spans)} times in scope (expected 1)")
-            else:
-                edits.append((spans[0], new))
-
-    # DCS keeps group names and unit names apart: a group and a unit may share a name (EW sites,
-    # statics), two groups or two units may not.
-    remaining = {"group": set(), "unit": set()}
-    for e in entries:
-        if not (scope(e) and e.group_name in groups):
-            remaining["group"].add(e.group_name)
-        for uname in e.unit_names:
-            if not (scope(e) and uname in units):
-                remaining["unit"].add(uname)
-    for kind, mapping in (("group", groups), ("unit", units)):
-        new_names = list(mapping.values())
-        for new in new_names:
-            if new in remaining[kind]:
-                problems.append(f"new {kind} name {new!r} collides with an existing {kind} name")
-        for new in sorted({n for n in new_names if new_names.count(n) > 1}):
-            problems.append(f"new {kind} name {new!r} is given more than once")
-
-    if problems:
-        raise RenameError("; ".join(problems))
-
-    out = text
-    for span, new in sorted(edits, key=lambda e: e[0].start, reverse=True):
-        out = out[: span.start] + _encode(new) + out[span.end :]
-    return out

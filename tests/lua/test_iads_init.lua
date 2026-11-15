@@ -155,7 +155,7 @@ test("test_toggle_status", function()
   local M = load()
   local tbs = network("TBS")
   M.build(tbs)
-  local keys = { "IADSStatus", "radarWentDark", "contacts", "radarWentLive", "noWorkingCommmandCenter", "harmDefence" }
+  local keys = { "IADSStatus", "radarWentDark", "contacts", "radarWentLive", "harmDefence" }
   M.toggleStatus(tbs)
   for _, k in ipairs(keys) do eq(tbs.iads:getDebugSettings()[k], true, k) end
   M.toggleStatus(tbs)
