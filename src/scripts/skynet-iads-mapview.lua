@@ -6,10 +6,10 @@
 --   iads:setMapViewOption("coverage" | "pointDefence" | "rangeCircles" | "labels", false)  -- leave part of it out (all on by default)
 --
 -- Legend:
---   EW radar (or a SAM site acting as EW)   square          blue live, grey dark, purple silenced by a HARM
---   SAM site                                triangle        fill red live, grey dark, purple silenced by a HARM;
+--   EW radar (or a SAM site acting as EW)   square          blue live, grey dark, black silenced by a HARM
+--   SAM site                                triangle        fill red live, grey dark, black silenced by a HARM;
 --                                                           outline orange when autonomous, else as the fill
---   point defence                           small triangle, pointing down: as a SAM site
+--   point defence                           small triangle, pointing down: as a SAM site, purple while point defending
 --   command center                          rectangle       green powered, orange unpowered, red destroyed
 --   command center power source             small square    green alive, red destroyed
 --   destroyed element                       dashed outline, at its last known position
@@ -40,6 +40,7 @@ SkynetIADSMapView.Colours = {
   orange = { 1, 0.55, 0 },
   purple = { 0.65, 0.2, 0.85 },
   green = { 0, 0.75, 0 },
+  black = { 0, 0, 0 },
 }
 -- metres; halved after a first look in game, where the shapes swamped the sites
 SkynetIADSMapView.Sizes = {
@@ -135,7 +136,9 @@ function SkynetIADSMapView.radarElementStyle(element, isEwRadar)
   if element:isDestroyed() then
     style.fill = "grey"
   elseif element:isDefendingHARM() then
-    style.fill = "purple"
+    style.fill = "black"
+  elseif element:getIsPointDefending() then
+    style.fill = "purple" -- held live to shoot down a HARM aimed at the site it protects
   elseif element:isActive() then
     style.fill = style.shape == "square" and "blue" or "red"
   else
