@@ -3,6 +3,7 @@
 --
 --   iads:setMapView(true)   -- show it (for every coalition)
 --   iads:setMapView(false)  -- erase it
+--   iads:setMapViewOption("coverage" | "pointDefence" | "rangeCircles" | "labels", false)  -- leave part of it out (all on by default)
 --
 -- Legend:
 --   EW radar (or a SAM site acting as EW)   square          blue live, grey dark, purple silenced by a HARM
@@ -59,6 +60,14 @@ SkynetIADSMapView.RelationStyles = {
   pointDefence = { colour = "grey", dashed = true }, -- point defence -> site it protects
   pointDefending = { colour = "red", dashed = false }, -- the same, while held live against a HARM
   power = { colour = "green", dashed = true }, -- command center -> its power source
+}
+
+--- What a map view can leave out, per network (iads:setMapViewOption). All on by default.
+SkynetIADSMapView.OptionDefaults = {
+  coverage = true, -- coverage lines, EW radar -> SAM site
+  pointDefence = true, -- point defence lines
+  rangeCircles = true, -- engagement range of live SAM sites
+  labels = true, -- names under the shapes
 }
 
 SkynetIADSMapView.shownIads = SkynetIADSMapView.shownIads or {}
@@ -282,15 +291,19 @@ end
 function SkynetIADSMapView.relationsOf(iads)
   local relations = {}
   local samSites = iads:getSAMSites() or {}
-  for _, sam in ipairs(samSites) do
-    for _, parent in ipairs(SkynetIADSMapView.coveringParentsOf(sam)) do
-      table.insert(relations, { from = parent, to = sam, kind = "coverage" })
+  if iads:getMapViewOption("coverage") then
+    for _, sam in ipairs(samSites) do
+      for _, parent in ipairs(SkynetIADSMapView.coveringParentsOf(sam)) do
+        table.insert(relations, { from = parent, to = sam, kind = "coverage" })
+      end
     end
   end
-  for _, list in ipairs({ iads:getEarlyWarningRadars() or {}, samSites }) do
-    for _, protected in ipairs(list) do
-      for _, pd in ipairs(protected:getPointDefences() or {}) do
-        table.insert(relations, { from = pd, to = protected, kind = pd:getIsPointDefending() and "pointDefending" or "pointDefence" })
+  if iads:getMapViewOption("pointDefence") then
+    for _, list in ipairs({ iads:getEarlyWarningRadars() or {}, samSites }) do
+      for _, protected in ipairs(list) do
+        for _, pd in ipairs(protected:getPointDefences() or {}) do
+          table.insert(relations, { from = pd, to = protected, kind = pd:getIsPointDefending() and "pointDefending" or "pointDefence" })
+        end
       end
     end
   end
@@ -362,8 +375,10 @@ function SkynetIADSMapView.drawRadarElement(iads, marks, element, isEwRadar)
       SkynetIADSMapView.drawCircle(marks, position, range, "red")
     end
     SkynetIADSMapView.drawShape(marks, position, style)
-    local fontSize = style.shape == "invertedTriangle" and SkynetIADSMapView.LabelFontSizes.small or SkynetIADSMapView.LabelFontSizes.large
-    SkynetIADSMapView.drawLabel(marks, position, style.size, style.outline, SkynetIADSMapView.nameOf(iads, element), fontSize)
+    if iads:getMapViewOption("labels") then
+      local fontSize = style.shape == "invertedTriangle" and SkynetIADSMapView.LabelFontSizes.small or SkynetIADSMapView.LabelFontSizes.large
+      SkynetIADSMapView.drawLabel(marks, position, style.size, style.outline, SkynetIADSMapView.nameOf(iads, element), fontSize)
+    end
   end
 end
 
@@ -373,7 +388,9 @@ function SkynetIADSMapView.drawCommandCenter(iads, marks, commandCenter)
     local sizes = SkynetIADSMapView.Sizes
     local style = SkynetIADSMapView.commandCenterStyle(commandCenter)
     SkynetIADSMapView.drawRectangle(marks, position, sizes.commandCenterHalfWidth, sizes.commandCenterHalfHeight, style)
-    SkynetIADSMapView.drawLabel(marks, position, sizes.commandCenterHalfHeight, style.outline, SkynetIADSMapView.nameOf(iads, commandCenter), SkynetIADSMapView.LabelFontSizes.large)
+    if iads:getMapViewOption("labels") then
+      SkynetIADSMapView.drawLabel(marks, position, sizes.commandCenterHalfHeight, style.outline, SkynetIADSMapView.nameOf(iads, commandCenter), SkynetIADSMapView.LabelFontSizes.large)
+    end
   end
 end
 
@@ -388,7 +405,9 @@ function SkynetIADSMapView.drawPowerSource(iads, marks, powerSource)
     local style = SkynetIADSMapView.isAlive(powerSource) and { fill = "green", outline = "green", dashed = false } or { fill = "red", outline = "red", dashed = true }
     local size = SkynetIADSMapView.Sizes.powerSource
     SkynetIADSMapView.drawRectangle(marks, position, size, size, style)
-    SkynetIADSMapView.drawLabel(marks, position, size, style.outline, SkynetIADSMapView.nameOf(iads, powerSource))
+    if iads:getMapViewOption("labels") then
+      SkynetIADSMapView.drawLabel(marks, position, size, style.outline, SkynetIADSMapView.nameOf(iads, powerSource))
+    end
   end
 end
 
@@ -416,9 +435,10 @@ function SkynetIADSMapView.drawRelation(iads, marks, relation)
   )
 end
 
---- The range circle drawn around a radar element, in metres: 0 for an EW radar, a dark site or a destroyed one.
+--- The range circle drawn around a radar element, in metres: 0 for an EW radar, a dark site or a destroyed one, or when the network's
+--- view leaves range circles out.
 function SkynetIADSMapView.drawnEngagementRange(element, isEwRadar)
-  if isEwRadar or not element:isActive() or element:isDestroyed() then
+  if isEwRadar or (element.iads and not element.iads:getMapViewOption("rangeCircles")) or not element:isActive() or element:isDestroyed() then
     return 0
   end
   return SkynetIADSMapView.engagementRange(element)
@@ -472,12 +492,13 @@ function SkynetIADSMapView.itemState(iads, item)
       tostring(style.dashed),
       SkynetIADSMapView.drawnEngagementRange(item.object, item.isEwRadar),
       SkynetIADSMapView.nameOf(iads, item.object),
+      tostring(iads:getMapViewOption("labels")),
     }, "|")
   elseif item.kind == "commandCenter" then
     local style = SkynetIADSMapView.commandCenterStyle(item.object)
-    return table.concat({ style.fill, tostring(style.dashed), SkynetIADSMapView.nameOf(iads, item.object) }, "|")
+    return table.concat({ style.fill, tostring(style.dashed), SkynetIADSMapView.nameOf(iads, item.object), tostring(iads:getMapViewOption("labels")) }, "|")
   elseif item.kind == "powerSource" then
-    return tostring(SkynetIADSMapView.isAlive(item.object)) .. "|" .. SkynetIADSMapView.nameOf(iads, item.object)
+    return table.concat({ tostring(SkynetIADSMapView.isAlive(item.object)), SkynetIADSMapView.nameOf(iads, item.object), tostring(iads:getMapViewOption("labels")) }, "|")
   end
   return item.kind -- a relation: its kind is in its key, its look depends only on where its ends are
 end
@@ -648,6 +669,27 @@ end
 
 function SkynetIADS:getMapView()
   return SkynetIADSMapView.shownIads[self] == true
+end
+
+--- Include (true) or leave out (false) part of the drawing: "coverage", "pointDefence", "rangeCircles" or "labels".
+function SkynetIADS:setMapViewOption(name, bEnabled)
+  if SkynetIADSMapView.OptionDefaults[name] == nil then
+    SkynetIADSMapView.warn(string.format("%s: no map view option %s", tostring(self.name), tostring(name)))
+    return self
+  end
+  self.mapViewOptions = self.mapViewOptions or {}
+  self.mapViewOptions[name] = bEnabled == true
+  self:markMapViewDirty()
+  return self
+end
+
+--- Whether an option is on; nil for an option that does not exist.
+function SkynetIADS:getMapViewOption(name)
+  local chosen = self.mapViewOptions and self.mapViewOptions[name]
+  if chosen ~= nil then
+    return chosen
+  end
+  return SkynetIADSMapView.OptionDefaults[name]
 end
 
 --- Ask for an update at the next refresh. While the view is hidden, the refresh only remembers element positions.

@@ -295,11 +295,33 @@ function MissionIads.toggleMapView(managedIads)
   managedIads.skynetIads:setMapView(not managedIads.skynetIads:getMapView())
 end
 
+-- the parts of the map view that can be switched off, as F10 menu entries
+MissionIads.MapViewOptionMenus = {
+  { option = "coverage", title = "Show/hide coverage lines (EW -> SAM)" },
+  { option = "pointDefence", title = "Show/hide point defence lines" },
+  { option = "rangeCircles", title = "Show/hide range circles" },
+  { option = "labels", title = "Show/hide labels" },
+}
+
+--- `choice` is { managedIads = ..., option = ... }: an F10 command passes a single argument.
+function MissionIads.toggleMapViewOption(choice)
+  local skynetIads = choice.managedIads.skynetIads
+  skynetIads:setMapViewOption(choice.option, not skynetIads:getMapViewOption(choice.option))
+end
+
+function MissionIads.addMapViewOptionsMenu(managedIads, parentMenu)
+  local optionsMenu = missionCommands.addSubMenu("Map view options", parentMenu)
+  for _, entry in ipairs(MissionIads.MapViewOptionMenus) do
+    missionCommands.addCommand(entry.title, optionsMenu, MissionIads.toggleMapViewOption, { managedIads = managedIads, option = entry.option })
+  end
+end
+
 function MissionIads.addMenus()
   for _, managedIads in ipairs(MissionIads.ManagedIads) do
     if managedIads.skynetIads then
       local menu = missionCommands.addSubMenu(managedIads.name)
       missionCommands.addCommand("Show/hide map view", menu, MissionIads.toggleMapView, managedIads)
+      MissionIads.addMapViewOptionsMenu(managedIads, menu)
       missionCommands.addCommand("Display/hide Skynet status", menu, MissionIads.toggleStatusDisplay, managedIads)
       if managedIads.commandCenter then
         missionCommands.addCommand("Disable network (destroy CC)", menu, MissionIads.destroyCommandCenter, managedIads)

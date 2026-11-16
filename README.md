@@ -38,6 +38,8 @@ The F10 menus "IADS Tbilissi" and "IADS Map" show or hide the Skynet status of e
 
 A destroyed element keeps its shape, with a dashed outline. Each shape carries its name.
 
+"Map view options", under the same menus, switches parts of the drawing on or off for that network: coverage lines (the heaviest part), point defence lines, range circles and labels. All are on by default. From a script: `iads:setMapViewOption("coverage", false)` (also `"pointDefence"`, `"rangeCircles"`, `"labels"`).
+
 ## Building the mission
 
 Built with [VEAF Mission Creation Tools](https://github.com/VEAF/VEAF-Mission-Creation-Tools) v6 and [Skynet IADS](https://github.com/VEAF/Skynet-IADS) 3.6.0.
