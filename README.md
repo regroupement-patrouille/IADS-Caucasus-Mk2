@@ -32,7 +32,7 @@ The F10 menus "IADS Tbilissi" and "IADS Map" show or hide the Skynet status of e
 | rectangle | command center | green powered, orange unpowered, red destroyed |
 | small square | command center power source | green, red destroyed |
 | red circle | engagement range of a live SAM site | |
-| solid blue line | coverage: radar → SAM site it covers | |
+| solid blue line | coverage: EW radar → SAM site it covers (none to an autonomous site) | |
 | dashed grey line | point defence → the site it protects (solid red while held live against a HARM) | |
 | dashed green line | command center → power source | |
 

@@ -13,7 +13,7 @@
 --   command center power source             small square    green alive, red destroyed
 --   destroyed element                       dashed outline, at its last known position
 --   live SAM site                           red circle: the engagement range of its longest-reaching launcher
---   coverage (parent radar -> SAM site)     solid blue line
+--   coverage (EW radar -> SAM site)         solid blue line, only while Skynet counts the site as covered by it
 --   point defence -> protected site         dashed grey line; solid red while held live against a HARM
 --   command center -> power source          dashed green line
 -- Each shape carries its DCS name.
@@ -256,9 +256,19 @@ function SkynetIADSMapView.coversSite(parent)
   return parent:getActAsEW() == true and parent:isDestroyed() == false and parent:hasWorkingPowerSource() == true and parent:hasActiveConnectionNode() == true
 end
 
+--- Can this site be covered at all? The site's half of Skynet's hasValidParentRadar(): it is linked to its network, and the network's
+--- command center works. When it does not (its power source blown up, say), every site goes autonomous and no radar covers any.
+function SkynetIADSMapView.canBeCovered(site)
+  return site:hasActiveConnectionNode() == true and site.iads:isCommandCenterUsable() == true
+end
+
 --- The parents of a site that really cover it.
 function SkynetIADSMapView.coveringParentsOf(site)
   local covering = {}
+  local asked, coverable = pcall(SkynetIADSMapView.canBeCovered, site)
+  if not (asked and coverable) then
+    return covering
+  end
   for _, parent in ipairs(site:getParentRadars() or {}) do
     local ok, covers = pcall(SkynetIADSMapView.coversSite, parent)
     if ok and covers then
