@@ -18,8 +18,9 @@
 --   command center -> power source          dashed green line
 -- Each shape carries its DCS name.
 --
--- A redraw removes every mark drawn last time and draws anew (DCS marks cannot be edited). It runs on a short timer, only for
--- networks that are shown, marked dirty by a wrapped Skynet function, and whose state signature has actually changed.
+-- The drawing is a set of items (an element with its label and range circle, a power source, a relation line), each with its own
+-- marks. A short timer updates the networks that are shown and were marked dirty by a wrapped Skynet function: only the items whose
+-- state changed, or that moved far enough, are erased and drawn again (DCS marks cannot be edited), and items that are gone are erased.
 --
 -- Load order: after Skynet (skynet-iads-vendored.lua), before any script that builds an IADS. Uses nothing from VEAF.
 -------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -81,10 +82,10 @@ function SkynetIADSMapView.newMarkId()
   return SkynetIADSMapView.lastMarkId
 end
 
---- A new mark id, remembered by the IADS so the next redraw removes it.
-function SkynetIADSMapView.newIadsMarkId(iads)
+--- A new mark id, appended to `marks` (the list of the item being drawn) so that item can be erased on its own.
+function SkynetIADSMapView.newMarkIdIn(marks)
   local id = SkynetIADSMapView.newMarkId()
-  table.insert(iads.mapViewMarkIds, id)
+  table.insert(marks, id)
   return id
 end
 
@@ -161,12 +162,12 @@ function SkynetIADSMapView.lineTypeOf(style)
 end
 
 --- Rectangle centred on `centre`, `halfHeight` north-south (x) and `halfWidth` east-west (z).
-function SkynetIADSMapView.drawRectangle(iads, centre, halfWidth, halfHeight, style)
+function SkynetIADSMapView.drawRectangle(marks, centre, halfWidth, halfHeight, style)
   local corner1 = { x = centre.x + halfHeight, y = centre.y, z = centre.z - halfWidth }
   local corner2 = { x = centre.x - halfHeight, y = centre.y, z = centre.z + halfWidth }
   trigger.action.rectToAll(
     -1,
-    SkynetIADSMapView.newIadsMarkId(iads),
+    SkynetIADSMapView.newMarkIdIn(marks),
     corner1,
     corner2,
     SkynetIADSMapView.colour(style.outline),
@@ -177,7 +178,7 @@ function SkynetIADSMapView.drawRectangle(iads, centre, halfWidth, halfHeight, st
 end
 
 --- Triangle on a circle of radius `radius` around `centre`, apex north (south when `inverted`).
-function SkynetIADSMapView.drawTriangle(iads, centre, radius, style, inverted)
+function SkynetIADSMapView.drawTriangle(marks, centre, radius, style, inverted)
   local points = {}
   for i = 0, 2 do
     local angle = i * 2 * math.pi / 3 + (inverted and math.pi or 0)
@@ -186,7 +187,7 @@ function SkynetIADSMapView.drawTriangle(iads, centre, radius, style, inverted)
   trigger.action.markupToAll(
     7, -- freeform polygon
     -1,
-    SkynetIADSMapView.newIadsMarkId(iads),
+    SkynetIADSMapView.newMarkIdIn(marks),
     points[1],
     points[2],
     points[3],
@@ -197,18 +198,18 @@ function SkynetIADSMapView.drawTriangle(iads, centre, radius, style, inverted)
   )
 end
 
-function SkynetIADSMapView.drawShape(iads, centre, style)
+function SkynetIADSMapView.drawShape(marks, centre, style)
   if style.shape == "triangle" or style.shape == "invertedTriangle" then
-    SkynetIADSMapView.drawTriangle(iads, centre, style.size, style, style.shape == "invertedTriangle")
+    SkynetIADSMapView.drawTriangle(marks, centre, style.size, style, style.shape == "invertedTriangle")
   else
-    SkynetIADSMapView.drawRectangle(iads, centre, style.size, style.size, style)
+    SkynetIADSMapView.drawRectangle(marks, centre, style.size, style.size, style)
   end
 end
 
-function SkynetIADSMapView.drawLine(iads, from, to, colourName, dashed)
+function SkynetIADSMapView.drawLine(marks, from, to, colourName, dashed)
   trigger.action.lineToAll(
     -1,
-    SkynetIADSMapView.newIadsMarkId(iads),
+    SkynetIADSMapView.newMarkIdIn(marks),
     from,
     to,
     SkynetIADSMapView.colour(colourName),
@@ -217,10 +218,10 @@ function SkynetIADSMapView.drawLine(iads, from, to, colourName, dashed)
   )
 end
 
-function SkynetIADSMapView.drawCircle(iads, centre, radius, colourName)
+function SkynetIADSMapView.drawCircle(marks, centre, radius, colourName)
   trigger.action.circleToAll(
     -1,
-    SkynetIADSMapView.newIadsMarkId(iads),
+    SkynetIADSMapView.newMarkIdIn(marks),
     centre,
     radius,
     SkynetIADSMapView.colour(colourName),
@@ -231,11 +232,11 @@ function SkynetIADSMapView.drawCircle(iads, centre, radius, colourName)
 end
 
 --- A label south of a shape of size `size` centred on `centre`.
-function SkynetIADSMapView.drawLabel(iads, centre, size, colourName, text)
+function SkynetIADSMapView.drawLabel(marks, centre, size, colourName, text)
   local point = { x = centre.x - size - SkynetIADSMapView.LabelOffset, y = centre.y, z = centre.z }
   trigger.action.textToAll(
     -1,
-    SkynetIADSMapView.newIadsMarkId(iads),
+    SkynetIADSMapView.newMarkIdIn(marks),
     point,
     SkynetIADSMapView.colour(colourName),
     SkynetIADSMapView.colour(colourName, 0),
@@ -329,40 +330,59 @@ function SkynetIADSMapView.nameOf(iads, object)
 end
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------
--- Drawing a network
+-- Drawing a network, one item at a time
+--
+-- Every mark DCS adds or removes fires S_EVENT_MARK_ADDED / S_EVENT_MARK_REMOVED to every event handler of the mission, and Skynet
+-- registers each of its elements as a handler: measured on the MAP network, one full redraw (607 marks out, 607 in) cost 121 400
+-- Skynet handler calls and froze the game for about a second. So the drawing is split into items (an element with its label and range
+-- circle, a power source, a relation line), each with its own marks, and a refresh redraws only the items that changed.
 -------------------------------------------------------------------------------------------------------------------------------------------------------------
-function SkynetIADSMapView.drawRadarElement(iads, element, isEwRadar)
+--- Metres a ground element must move before it is redrawn where it is.
+SkynetIADSMapView.GroundMoveThreshold = 2000
+--- Metres an airborne element (an AWACS used as an EW radar) must move before it is redrawn: it never stops, and each move redraws its
+--- square, its label and every coverage line it carries.
+SkynetIADSMapView.AirMoveThreshold = 10000
+
+function SkynetIADSMapView.drawRadarElement(iads, marks, element, isEwRadar)
   local position = SkynetIADSMapView.positionOf(iads, element)
   if position then
     local style = SkynetIADSMapView.radarElementStyle(element, isEwRadar)
-    SkynetIADSMapView.drawShape(iads, position, style)
-    SkynetIADSMapView.drawLabel(iads, position, style.size, style.outline, SkynetIADSMapView.nameOf(iads, element))
+    local range = SkynetIADSMapView.drawnEngagementRange(element, isEwRadar)
+    if range > 0 then
+      SkynetIADSMapView.drawCircle(marks, position, range, "red")
+    end
+    SkynetIADSMapView.drawShape(marks, position, style)
+    SkynetIADSMapView.drawLabel(marks, position, style.size, style.outline, SkynetIADSMapView.nameOf(iads, element))
   end
 end
 
-function SkynetIADSMapView.drawCommandCenter(iads, commandCenter)
+function SkynetIADSMapView.drawCommandCenter(iads, marks, commandCenter)
   local position = SkynetIADSMapView.positionOf(iads, commandCenter)
   if position then
     local sizes = SkynetIADSMapView.Sizes
     local style = SkynetIADSMapView.commandCenterStyle(commandCenter)
-    SkynetIADSMapView.drawRectangle(iads, position, sizes.commandCenterHalfWidth, sizes.commandCenterHalfHeight, style)
-    SkynetIADSMapView.drawLabel(iads, position, sizes.commandCenterHalfHeight, style.outline, SkynetIADSMapView.nameOf(iads, commandCenter))
+    SkynetIADSMapView.drawRectangle(marks, position, sizes.commandCenterHalfWidth, sizes.commandCenterHalfHeight, style)
+    SkynetIADSMapView.drawLabel(marks, position, sizes.commandCenterHalfHeight, style.outline, SkynetIADSMapView.nameOf(iads, commandCenter))
   end
 end
 
-function SkynetIADSMapView.drawPowerSource(iads, powerSource)
+function SkynetIADSMapView.isAlive(dcsObject)
+  local asked, alive = pcall(dcsObject.isExist, dcsObject)
+  return asked and alive == true
+end
+
+function SkynetIADSMapView.drawPowerSource(iads, marks, powerSource)
   local position = SkynetIADSMapView.positionOf(iads, powerSource)
   if position then
-    local asked, alive = pcall(powerSource.isExist, powerSource)
-    local style = (asked and alive) and { fill = "green", outline = "green", dashed = false } or { fill = "red", outline = "red", dashed = true }
+    local style = SkynetIADSMapView.isAlive(powerSource) and { fill = "green", outline = "green", dashed = false } or { fill = "red", outline = "red", dashed = true }
     local size = SkynetIADSMapView.Sizes.powerSource
-    SkynetIADSMapView.drawRectangle(iads, position, size, size, style)
-    SkynetIADSMapView.drawLabel(iads, position, size, style.outline, SkynetIADSMapView.nameOf(iads, powerSource))
+    SkynetIADSMapView.drawRectangle(marks, position, size, size, style)
+    SkynetIADSMapView.drawLabel(marks, position, size, style.outline, SkynetIADSMapView.nameOf(iads, powerSource))
   end
 end
 
 --- A relation's line, each end pulled back off the shape it touches; nothing when the two shapes overlap.
-function SkynetIADSMapView.drawRelation(iads, relation)
+function SkynetIADSMapView.drawRelation(iads, marks, relation)
   local from, to = SkynetIADSMapView.positionOf(iads, relation.from), SkynetIADSMapView.positionOf(iads, relation.to)
   if not from or not to then
     return
@@ -377,7 +397,7 @@ function SkynetIADSMapView.drawRelation(iads, relation)
   local ux, uz = dx / length, dz / length
   local style = SkynetIADSMapView.RelationStyles[relation.kind]
   SkynetIADSMapView.drawLine(
-    iads,
+    marks,
     { x = from.x + ux * fromGap, y = from.y, z = from.z + uz * fromGap },
     { x = to.x - ux * toGap, y = to.y, z = to.z - uz * toGap },
     style.colour,
@@ -385,17 +405,15 @@ function SkynetIADSMapView.drawRelation(iads, relation)
   )
 end
 
-function SkynetIADSMapView.drawEngagementRange(iads, samSite)
-  if samSite:isActive() and not samSite:isDestroyed() then
-    local range = SkynetIADSMapView.engagementRange(samSite)
-    local position = SkynetIADSMapView.positionOf(iads, samSite)
-    if range > 0 and position then
-      SkynetIADSMapView.drawCircle(iads, position, range, "red")
-    end
+--- The range circle drawn around a radar element, in metres: 0 for an EW radar, a dark site or a destroyed one.
+function SkynetIADSMapView.drawnEngagementRange(element, isEwRadar)
+  if isEwRadar or not element:isActive() or element:isDestroyed() then
+    return 0
   end
+  return SkynetIADSMapView.engagementRange(element)
 end
 
---- Run one drawing step; a failure is logged and the rest of the redraw goes on.
+--- Run one drawing step; a failure is logged and the rest of the update goes on.
 function SkynetIADSMapView.guardedDraw(what, fn, ...)
   local ok, err = pcall(fn, ...)
   if not ok then
@@ -403,110 +421,156 @@ function SkynetIADSMapView.guardedDraw(what, fn, ...)
   end
 end
 
-function SkynetIADSMapView.erase(iads)
-  for _, id in ipairs(iads.mapViewMarkIds or {}) do
-    pcall(trigger.action.removeMark, id)
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- Items: what is drawn, and when it must be drawn again
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
+--- Everything the view draws for a network: { key, kind = "radar" | "commandCenter" | "powerSource" | "relation", object, isEwRadar,
+--- relation, anchors = <the objects whose position the drawing depends on> }. A key is the element or DCS object itself, or a string for
+--- a relation, so an item keeps its key from one update to the next.
+function SkynetIADSMapView.itemsOf(iads)
+  local items = {}
+  for _, ew in ipairs(iads:getEarlyWarningRadars() or {}) do
+    table.insert(items, { key = ew, kind = "radar", object = ew, isEwRadar = true, anchors = { ew } })
   end
-  iads.mapViewMarkIds = {}
-end
-
---- Erase and draw the whole network: range circles underneath, then shapes and labels, then the relations.
-function SkynetIADSMapView.redraw(iads)
-  SkynetIADSMapView.erase(iads)
-  iads.mapViewDirty = false
-  local ews, sams, ccs = iads:getEarlyWarningRadars() or {}, iads:getSAMSites() or {}, iads:getCommandCenters() or {}
   -- point defences are SAM sites too
-  for _, sam in ipairs(sams) do
-    SkynetIADSMapView.guardedDraw(SkynetIADSMapView.nameOf(iads, sam), SkynetIADSMapView.drawEngagementRange, iads, sam)
+  for _, sam in ipairs(iads:getSAMSites() or {}) do
+    table.insert(items, { key = sam, kind = "radar", object = sam, isEwRadar = false, anchors = { sam } })
   end
-  for _, ew in ipairs(ews) do
-    SkynetIADSMapView.guardedDraw(SkynetIADSMapView.nameOf(iads, ew), SkynetIADSMapView.drawRadarElement, iads, ew, true)
-  end
-  for _, sam in ipairs(sams) do
-    SkynetIADSMapView.guardedDraw(SkynetIADSMapView.nameOf(iads, sam), SkynetIADSMapView.drawRadarElement, iads, sam, false)
-  end
-  for _, cc in ipairs(ccs) do
-    SkynetIADSMapView.guardedDraw(SkynetIADSMapView.nameOf(iads, cc), SkynetIADSMapView.drawCommandCenter, iads, cc)
+  for _, cc in ipairs(iads:getCommandCenters() or {}) do
+    table.insert(items, { key = cc, kind = "commandCenter", object = cc, anchors = { cc } })
     for _, powerSource in ipairs(cc:getPowerSources() or {}) do
-      SkynetIADSMapView.guardedDraw(SkynetIADSMapView.nameOf(iads, powerSource), SkynetIADSMapView.drawPowerSource, iads, powerSource)
+      table.insert(items, { key = powerSource, kind = "powerSource", object = powerSource, anchors = { powerSource } })
     end
   end
   for _, relation in ipairs(SkynetIADSMapView.relationsOf(iads)) do
-    SkynetIADSMapView.guardedDraw(relation.kind .. " relation", SkynetIADSMapView.drawRelation, iads, relation)
+    local key = relation.kind .. ":" .. SkynetIADSMapView.nameOf(iads, relation.from) .. ">" .. SkynetIADSMapView.nameOf(iads, relation.to)
+    table.insert(items, { key = key, kind = "relation", relation = relation, anchors = { relation.from, relation.to } })
   end
+  return items
+end
+
+--- Everything an item's drawing depends on, its position aside, as a string: two equal states draw the same marks.
+function SkynetIADSMapView.itemState(iads, item)
+  if item.kind == "radar" then
+    local style = SkynetIADSMapView.radarElementStyle(item.object, item.isEwRadar)
+    return table.concat({
+      style.shape,
+      style.size,
+      style.fill,
+      style.outline,
+      tostring(style.dashed),
+      SkynetIADSMapView.drawnEngagementRange(item.object, item.isEwRadar),
+      SkynetIADSMapView.nameOf(iads, item.object),
+    }, "|")
+  elseif item.kind == "commandCenter" then
+    local style = SkynetIADSMapView.commandCenterStyle(item.object)
+    return table.concat({ style.fill, tostring(style.dashed), SkynetIADSMapView.nameOf(iads, item.object) }, "|")
+  elseif item.kind == "powerSource" then
+    return tostring(SkynetIADSMapView.isAlive(item.object)) .. "|" .. SkynetIADSMapView.nameOf(iads, item.object)
+  end
+  return item.kind -- a relation: its kind is in its key, its look depends only on where its ends are
+end
+
+function SkynetIADSMapView.drawItem(iads, item, marks)
+  if item.kind == "radar" then
+    SkynetIADSMapView.drawRadarElement(iads, marks, item.object, item.isEwRadar)
+  elseif item.kind == "commandCenter" then
+    SkynetIADSMapView.drawCommandCenter(iads, marks, item.object)
+  elseif item.kind == "powerSource" then
+    SkynetIADSMapView.drawPowerSource(iads, marks, item.object)
+  else
+    SkynetIADSMapView.drawRelation(iads, marks, item.relation)
+  end
+end
+
+--- How far this object may move before what is drawn for it is redrawn.
+function SkynetIADSMapView.moveThresholdOf(object)
+  local representation = object.getDCSRepresentation and object:getDCSRepresentation() or object
+  local asked, airborne = pcall(representation.inAir, representation)
+  if asked and airborne then
+    return SkynetIADSMapView.AirMoveThreshold
+  end
+  return SkynetIADSMapView.GroundMoveThreshold
+end
+
+--- Has any anchor of a drawn item moved past its threshold (or appeared, or gone) since it was drawn?
+function SkynetIADSMapView.hasMoved(iads, item, drawn)
+  for i, anchor in ipairs(item.anchors) do
+    local now, then_ = SkynetIADSMapView.positionOf(iads, anchor), drawn.positions[i]
+    if (now == nil) ~= (then_ == nil) then
+      return true
+    end
+    if now then
+      local dx, dz, threshold = now.x - then_.x, now.z - then_.z, SkynetIADSMapView.moveThresholdOf(anchor)
+      if dx * dx + dz * dz > threshold * threshold then
+        return true
+      end
+    end
+  end
+  return false
+end
+
+function SkynetIADSMapView.removeMarks(markIds)
+  for _, id in ipairs(markIds or {}) do
+    pcall(trigger.action.removeMark, id)
+  end
+end
+
+--- Redraw one item if its state changed or it moved; leave its marks alone otherwise.
+function SkynetIADSMapView.updateItem(iads, item)
+  local state = SkynetIADSMapView.itemState(iads, item)
+  local drawn = iads.mapViewItems[item.key]
+  if drawn and drawn.state == state and not SkynetIADSMapView.hasMoved(iads, item, drawn) then
+    return
+  end
+  if drawn then
+    SkynetIADSMapView.removeMarks(drawn.markIds)
+  end
+  local positions = {}
+  for i, anchor in ipairs(item.anchors) do
+    positions[i] = SkynetIADSMapView.positionOf(iads, anchor)
+  end
+  -- stored before drawing, so marks drawn by a draw that fails half way are still erased later
+  local redrawn = { state = state, positions = positions, markIds = {} }
+  iads.mapViewItems[item.key] = redrawn
+  SkynetIADSMapView.drawItem(iads, item, redrawn.markIds)
+end
+
+--- Bring the drawing of a network up to date: redraw the items that changed, erase the ones that are gone.
+function SkynetIADSMapView.update(iads)
+  iads.mapViewItems = iads.mapViewItems or {}
+  local present = {}
+  for _, item in ipairs(SkynetIADSMapView.itemsOf(iads)) do
+    present[item.key] = true
+    SkynetIADSMapView.guardedDraw(item.key, SkynetIADSMapView.updateItem, iads, item)
+  end
+  for key, drawn in pairs(iads.mapViewItems) do
+    if not present[key] then
+      SkynetIADSMapView.removeMarks(drawn.markIds)
+      iads.mapViewItems[key] = nil
+    end
+  end
+end
+
+function SkynetIADSMapView.erase(iads)
+  for _, drawn in pairs(iads.mapViewItems or {}) do
+    SkynetIADSMapView.removeMarks(drawn.markIds)
+  end
+  iads.mapViewItems = {}
+end
+
+--- How many marks are on the map for this network.
+function SkynetIADSMapView.markCount(iads)
+  local count = 0
+  for _, drawn in pairs(iads.mapViewItems or {}) do
+    count = count + #drawn.markIds
+  end
+  return count
 end
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------
 -- Refresh loop
 -------------------------------------------------------------------------------------------------------------------------------------------------------------
---- Metres a position is rounded to in a signature: a move smaller than this does not redraw.
----
---- An AWACS used as an EW radar never stops moving: at 100 m it redrew the whole network at every Skynet cycle (every 5 s, ~940 marks
---- for MAP). At 2 km it redraws about every 10 s, and its square lags at most 2 km behind it.
-SkynetIADSMapView.SignaturePositionStep = 2000
-
-function SkynetIADSMapView.positionSignature(iads, object)
-  local position = SkynetIADSMapView.positionOf(iads, object)
-  if not position then
-    return "-"
-  end
-  local step = SkynetIADSMapView.SignaturePositionStep
-  return math.floor(position.x / step) .. "," .. math.floor(position.z / step)
-end
-
---- Everything the drawing of one radar element depends on, as a string.
-function SkynetIADSMapView.radarElementSignature(iads, element)
-  -- covering parents only, so a parent losing its power or its life redraws the lines it no longer carries
-  local parents = {}
-  for _, parent in ipairs(SkynetIADSMapView.coveringParentsOf(element)) do
-    table.insert(parents, SkynetIADSMapView.nameOf(iads, parent))
-  end
-  table.sort(parents)
-  return table.concat({
-    SkynetIADSMapView.nameOf(iads, element),
-    tostring(element:isActive()),
-    tostring(element:isDefendingHARM()),
-    tostring(element:getAutonomousState()),
-    tostring(element:isDestroyed()),
-    tostring(element:getActAsEW()),
-    tostring(element:getIsAPointDefence()),
-    tostring(element:getIsPointDefending()),
-    SkynetIADSMapView.positionSignature(iads, element),
-    table.concat(parents, "+"),
-  }, "|")
-end
-
-function SkynetIADSMapView.commandCenterSignature(iads, commandCenter)
-  local parts = {
-    SkynetIADSMapView.nameOf(iads, commandCenter),
-    tostring(commandCenter:isDestroyed()),
-    tostring(commandCenter:hasWorkingPowerSource()),
-    SkynetIADSMapView.positionSignature(iads, commandCenter),
-  }
-  for _, powerSource in ipairs(commandCenter:getPowerSources() or {}) do
-    local asked, alive = pcall(powerSource.isExist, powerSource)
-    table.insert(parts, tostring(asked and alive) .. "@" .. SkynetIADSMapView.positionSignature(iads, powerSource))
-  end
-  return table.concat(parts, "|")
-end
-
---- Everything the drawing of a network depends on, as a string: two equal signatures draw the same picture.
----
---- Skynet calls several of the wrapped functions on a cycle even when nothing changes (a dark site is told to go dark again), so a
---- dirty mark only means "maybe": this is what decides whether a redraw is worth its hundreds of marks.
-function SkynetIADSMapView.signatureOf(iads)
-  local parts = {}
-  for _, list in ipairs({ iads:getEarlyWarningRadars() or {}, iads:getSAMSites() or {} }) do
-    for _, element in ipairs(list) do
-      table.insert(parts, SkynetIADSMapView.radarElementSignature(iads, element))
-    end
-  end
-  for _, cc in ipairs(iads:getCommandCenters() or {}) do
-    table.insert(parts, SkynetIADSMapView.commandCenterSignature(iads, cc))
-  end
-  return table.concat(parts, "\n")
-end
-
 --- Remember where every element of a network is, so one lost while the view is hidden is still drawn where it was.
 function SkynetIADSMapView.rememberPositions(iads)
   for _, list in ipairs({ iads:getEarlyWarningRadars() or {}, iads:getSAMSites() or {}, iads:getCommandCenters() or {} }) do
@@ -521,8 +585,8 @@ function SkynetIADSMapView.rememberPositions(iads)
   end
 end
 
---- Redraw every shown network marked dirty whose picture has changed; for a hidden one, only remember positions. Answers the time of
---- the next check, so it can be the timer's function.
+--- Update every shown network marked dirty; for a hidden one, only remember positions. Answers the time of the next check, so it can
+--- be the timer's function.
 function SkynetIADSMapView.tick()
   for iads in pairs(SkynetIADSMapView.knownIads) do
     if iads.mapViewDirty and not SkynetIADSMapView.shownIads[iads] then
@@ -533,14 +597,7 @@ function SkynetIADSMapView.tick()
   for iads in pairs(SkynetIADSMapView.shownIads) do
     if iads.mapViewDirty then
       iads.mapViewDirty = false
-      local ok, signature = pcall(SkynetIADSMapView.signatureOf, iads)
-      if not ok then
-        SkynetIADSMapView.warn(string.format("%s: state not readable, redrawing anyway: %s", tostring(iads.name), tostring(signature)))
-      end
-      if not ok or signature ~= iads.mapViewSignature then
-        iads.mapViewSignature = ok and signature or nil
-        SkynetIADSMapView.guardedDraw(iads.name, SkynetIADSMapView.redraw, iads)
-      end
+      SkynetIADSMapView.guardedDraw(iads.name, SkynetIADSMapView.update, iads)
     end
   end
   return timer.getTime() + SkynetIADSMapView.RefreshPeriod
@@ -569,12 +626,10 @@ end
 function SkynetIADS:setMapView(bEnabled)
   if bEnabled then
     SkynetIADSMapView.shownIads[self] = true
-    self.mapViewSignature = nil -- draw at the next refresh, whatever the state
     self:markMapViewDirty()
     SkynetIADSMapView.startTimer()
   else
     SkynetIADSMapView.shownIads[self] = nil
-    self.mapViewSignature = nil
     SkynetIADSMapView.erase(self)
   end
   return self
@@ -584,7 +639,7 @@ function SkynetIADS:getMapView()
   return SkynetIADSMapView.shownIads[self] == true
 end
 
---- Ask for a redraw at the next refresh. While the view is hidden, the refresh only remembers element positions.
+--- Ask for an update at the next refresh. While the view is hidden, the refresh only remembers element positions.
 function SkynetIADS:markMapViewDirty()
   self.mapViewDirty = true
   if not SkynetIADSMapView.knownIads[self] then
@@ -670,8 +725,7 @@ end
 
 SkynetIADSMapView.installWraps()
 
--- after a reload, shown networks are redrawn by the new code (their mark ids live on the IADS, so the old drawing goes)
+-- after a reload, shown networks are updated by the new code (their drawn items live on the IADS)
 for shown in pairs(SkynetIADSMapView.shownIads) do
-  shown.mapViewSignature = nil
   shown:markMapViewDirty()
 end
