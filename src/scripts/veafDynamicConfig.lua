@@ -8,6 +8,7 @@ local scriptsToLoad =
     { name = "veaf-config.lua" },
     { name = "mission-script.lua" },
     { name = "skynet-iads-vendored.lua" },
+    { name = "skynet-iads-mapview.lua" },
     { name = "mission-iads.lua" },
 }
 
