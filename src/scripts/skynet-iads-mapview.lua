@@ -44,8 +44,8 @@ SkynetIADSMapView.Sizes = {
   ew = 700, -- square half-side
   sam = 800, -- triangle circumradius
   pointDefence = 500, -- inverted triangle circumradius, so it stands apart from the site it protects
-  commandCenterHalfWidth = 1500,
-  commandCenterHalfHeight = 750,
+  commandCenterHalfWidth = 800,
+  commandCenterHalfHeight = 400,
   powerSource = 350, -- square half-side
 }
 SkynetIADSMapView.LineMargin = 200 -- metres between a line's end and the shape it points at, on top of the shape's size
@@ -61,6 +61,7 @@ SkynetIADSMapView.RelationStyles = {
 }
 
 SkynetIADSMapView.shownIads = SkynetIADSMapView.shownIads or {}
+SkynetIADSMapView.knownIads = SkynetIADSMapView.knownIads or {} -- every IADS that has marked itself dirty once, shown or not
 SkynetIADSMapView.lastMarkId = SkynetIADSMapView.lastMarkId or (SkynetIADSMapView.FirstMarkId - 1)
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -120,7 +121,10 @@ function SkynetIADSMapView.radarElementStyle(element, isEwRadar)
     style.shape = "triangle"
     style.size = SkynetIADSMapView.Sizes.sam
   end
-  if element:isDefendingHARM() then
+  -- destroyed first: a site killed with missiles in flight is never told to go dark, so Skynet still reports it live
+  if element:isDestroyed() then
+    style.fill = "grey"
+  elseif element:isDefendingHARM() then
     style.fill = "purple"
   elseif element:isActive() then
     style.fill = style.shape == "square" and "blue" or "red"
@@ -244,12 +248,31 @@ end
 -------------------------------------------------------------------------------------------------------------------------------------------------------------
 -- What a network holds
 -------------------------------------------------------------------------------------------------------------------------------------------------------------
+--- Does this parent radar really cover its child site? Skynet's parent list is geometry only: any radar element whose radar reaches
+--- the site, an SA-10 that does not act as EW included, and a dead parent stays in it. This is the per-parent half of Skynet's own
+--- SkynetIADSAbstractRadarElement:hasValidParentRadar().
+function SkynetIADSMapView.coversSite(parent)
+  return parent:getActAsEW() == true and parent:isDestroyed() == false and parent:hasWorkingPowerSource() == true and parent:hasActiveConnectionNode() == true
+end
+
+--- The parents of a site that really cover it.
+function SkynetIADSMapView.coveringParentsOf(site)
+  local covering = {}
+  for _, parent in ipairs(site:getParentRadars() or {}) do
+    local ok, covers = pcall(SkynetIADSMapView.coversSite, parent)
+    if ok and covers then
+      table.insert(covering, parent)
+    end
+  end
+  return covering
+end
+
 --- Every relation drawn as a line: { from = <element or DCS object>, to = <element or DCS object>, kind = <RelationStyles key> }.
 function SkynetIADSMapView.relationsOf(iads)
   local relations = {}
   local samSites = iads:getSAMSites() or {}
   for _, sam in ipairs(samSites) do
-    for _, parent in ipairs(sam:getParentRadars() or {}) do
+    for _, parent in ipairs(SkynetIADSMapView.coveringParentsOf(sam)) do
       table.insert(relations, { from = parent, to = sam, kind = "coverage" })
     end
   end
@@ -363,7 +386,7 @@ function SkynetIADSMapView.drawRelation(iads, relation)
 end
 
 function SkynetIADSMapView.drawEngagementRange(iads, samSite)
-  if samSite:isActive() then
+  if samSite:isActive() and not samSite:isDestroyed() then
     local range = SkynetIADSMapView.engagementRange(samSite)
     local position = SkynetIADSMapView.positionOf(iads, samSite)
     if range > 0 and position then
@@ -433,8 +456,9 @@ end
 
 --- Everything the drawing of one radar element depends on, as a string.
 function SkynetIADSMapView.radarElementSignature(iads, element)
+  -- covering parents only, so a parent losing its power or its life redraws the lines it no longer carries
   local parents = {}
-  for _, parent in ipairs(element:getParentRadars() or {}) do
+  for _, parent in ipairs(SkynetIADSMapView.coveringParentsOf(element)) do
     table.insert(parents, SkynetIADSMapView.nameOf(iads, parent))
   end
   table.sort(parents)
@@ -483,9 +507,29 @@ function SkynetIADSMapView.signatureOf(iads)
   return table.concat(parts, "\n")
 end
 
---- Redraw every shown network marked dirty whose picture has changed. Answers the time of the next check, so it can be the timer's
---- function.
+--- Remember where every element of a network is, so one lost while the view is hidden is still drawn where it was.
+function SkynetIADSMapView.rememberPositions(iads)
+  for _, list in ipairs({ iads:getEarlyWarningRadars() or {}, iads:getSAMSites() or {}, iads:getCommandCenters() or {} }) do
+    for _, element in ipairs(list) do
+      SkynetIADSMapView.positionOf(iads, element)
+    end
+  end
+  for _, cc in ipairs(iads:getCommandCenters() or {}) do
+    for _, powerSource in ipairs(cc:getPowerSources() or {}) do
+      SkynetIADSMapView.positionOf(iads, powerSource)
+    end
+  end
+end
+
+--- Redraw every shown network marked dirty whose picture has changed; for a hidden one, only remember positions. Answers the time of
+--- the next check, so it can be the timer's function.
 function SkynetIADSMapView.tick()
+  for iads in pairs(SkynetIADSMapView.knownIads) do
+    if iads.mapViewDirty and not SkynetIADSMapView.shownIads[iads] then
+      iads.mapViewDirty = false
+      SkynetIADSMapView.guardedDraw(iads.name, SkynetIADSMapView.rememberPositions, iads)
+    end
+  end
   for iads in pairs(SkynetIADSMapView.shownIads) do
     if iads.mapViewDirty then
       iads.mapViewDirty = false
@@ -540,9 +584,13 @@ function SkynetIADS:getMapView()
   return SkynetIADSMapView.shownIads[self] == true
 end
 
---- Ask for a redraw at the next refresh; costs nothing when the view is hidden.
+--- Ask for a redraw at the next refresh. While the view is hidden, the refresh only remembers element positions.
 function SkynetIADS:markMapViewDirty()
   self.mapViewDirty = true
+  if not SkynetIADSMapView.knownIads[self] then
+    SkynetIADSMapView.knownIads[self] = true
+    SkynetIADSMapView.startTimer()
+  end
 end
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------
