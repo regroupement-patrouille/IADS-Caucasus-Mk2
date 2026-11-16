@@ -23,6 +23,21 @@ Check your kneeboard for target coordinates and maps.
 
 The F10 menus "IADS Tbilissi" and "IADS Map" show or hide the Skynet status of each network and can deactivate it (every site then fights on its own); "IADS Tbilissi" can also blow up the command center.
 
+"Show/hide map view", in the same menus, draws the network on the F10 map and keeps the drawing current as sites go live or dark, lose their coverage or are destroyed. It is drawn for every coalition, blue included.
+
+| Shape | Element | Colour |
+|---|---|---|
+| square | EW radar, or a SAM site acting as EW | blue live, grey dark, purple silenced by a HARM |
+| triangle | SAM site (smaller: point defence) | fill red live, grey dark, purple silenced by a HARM; outline orange when autonomous (no radar covers it) |
+| rectangle | command center | green powered, orange unpowered, red destroyed |
+| small square | command center power source | green, red destroyed |
+| red circle | engagement range of a live SAM site | |
+| solid blue line | coverage: radar → SAM site it covers | |
+| dashed grey line | point defence → the site it protects (solid red while held live against a HARM) | |
+| dashed green line | command center → power source | |
+
+A destroyed element keeps its shape, with a dashed outline. Each shape carries its name.
+
 ## Building the mission
 
 Built with [VEAF Mission Creation Tools](https://github.com/VEAF/VEAF-Mission-Creation-Tools) v6 and [Skynet IADS](https://github.com/VEAF/Skynet-IADS) 3.6.0.
@@ -37,7 +52,7 @@ VEAF MCT v6 has no post-build hook, so `build.py` runs `.\veaf-tools.exe mission
 
 - `mission.yaml` — enabled modules (Skynet, QRA, map-marker toolbox), scripts, build steps.
 - `src/mission/` — the mission as saved by the DCS Mission Editor. After editing a built `.miz` in the editor, extract it back with `.\veaf-tools.exe mission extract <file>.miz .`. If that `.miz` came from `python build.py --hotload`, first run `python dcs-hotload/bin/hotload-setup.py boot-path --miz <file>.miz --clear`: otherwise the extract brings this machine's `BASE_HOTLOAD_PATH` into `src/mission/`, where it would be committed (`build.py` clears it in the `.miz` it writes, but a bare `.\veaf-tools.exe mission build` would keep it).
-- `src/scripts/` — `skynet-iads-vendored.lua` (Skynet IADS 3.6.0) and `mission-iads.lua` (builds the two red networks from names, logs a `MISSION IADS:` report to `dcs.log`, adds the F10 menus). The mission loads and starts Skynet itself: VEAF MCT's SKYNET module is off, so the Skynet it bundles is not in the `.miz`. Keep SKYNET and SKYNET_MONITOR off in `mission.yaml`, otherwise VMCT loads its own copy as well. To update Skynet, replace `skynet-iads-vendored.lua` with the new release's compiled script. VMCT loads every `.lua` in `src/scripts/`, so keep nothing else there.
+- `src/scripts/` — `skynet-iads-vendored.lua` (Skynet IADS 3.6.0), `skynet-iads-mapview.lua` (the F10 map view, `SkynetIADS:setMapView`; written to move into Skynet later, it wraps Skynet functions rather than editing them) and `mission-iads.lua` (builds the two red networks from names, logs a `MISSION IADS:` report to `dcs.log`, adds the F10 menus). The mission loads and starts Skynet itself: VEAF MCT's SKYNET module is off, so the Skynet it bundles is not in the `.miz`. Keep SKYNET and SKYNET_MONITOR off in `mission.yaml`, otherwise VMCT loads its own copy as well. To update Skynet, replace `skynet-iads-vendored.lua` with the new release's compiled script. VMCT loads every `.lua` in `src/scripts/`, so keep nothing else there.
 ### Red IADS naming
 
 The IADS is built from names, so red ground units must follow this scheme (network `TBS` = Tbilisi, `MAP` = the rest of the map):
