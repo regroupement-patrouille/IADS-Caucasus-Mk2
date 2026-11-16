@@ -51,7 +51,7 @@ SkynetIADSMapView.Sizes = {
 }
 SkynetIADSMapView.LineMargin = 200 -- metres between a line's end and the shape it points at, on top of the shape's size
 SkynetIADSMapView.LabelOffset = 300 -- metres between a shape and its label, south of it
-SkynetIADSMapView.LabelFontSize = 10
+SkynetIADSMapView.LabelFontSizes = { large = 13, small = 10 } -- large: SAM sites, EW radars, command centers; small: point defences, power sources
 SkynetIADSMapView.LineTypes = { solid = 1, dashed = 2 }
 -- how each kind of relation is drawn
 SkynetIADSMapView.RelationStyles = {
@@ -232,7 +232,7 @@ function SkynetIADSMapView.drawCircle(marks, centre, radius, colourName)
 end
 
 --- A label south of a shape of size `size` centred on `centre`.
-function SkynetIADSMapView.drawLabel(marks, centre, size, colourName, text)
+function SkynetIADSMapView.drawLabel(marks, centre, size, colourName, text, fontSize)
   local point = { x = centre.x - size - SkynetIADSMapView.LabelOffset, y = centre.y, z = centre.z }
   trigger.action.textToAll(
     -1,
@@ -240,7 +240,7 @@ function SkynetIADSMapView.drawLabel(marks, centre, size, colourName, text)
     point,
     SkynetIADSMapView.colour(colourName),
     SkynetIADSMapView.colour(colourName, 0),
-    SkynetIADSMapView.LabelFontSize,
+    fontSize or SkynetIADSMapView.LabelFontSizes.small,
     true,
     text
   )
@@ -362,7 +362,8 @@ function SkynetIADSMapView.drawRadarElement(iads, marks, element, isEwRadar)
       SkynetIADSMapView.drawCircle(marks, position, range, "red")
     end
     SkynetIADSMapView.drawShape(marks, position, style)
-    SkynetIADSMapView.drawLabel(marks, position, style.size, style.outline, SkynetIADSMapView.nameOf(iads, element))
+    local fontSize = style.shape == "invertedTriangle" and SkynetIADSMapView.LabelFontSizes.small or SkynetIADSMapView.LabelFontSizes.large
+    SkynetIADSMapView.drawLabel(marks, position, style.size, style.outline, SkynetIADSMapView.nameOf(iads, element), fontSize)
   end
 end
 
@@ -372,7 +373,7 @@ function SkynetIADSMapView.drawCommandCenter(iads, marks, commandCenter)
     local sizes = SkynetIADSMapView.Sizes
     local style = SkynetIADSMapView.commandCenterStyle(commandCenter)
     SkynetIADSMapView.drawRectangle(marks, position, sizes.commandCenterHalfWidth, sizes.commandCenterHalfHeight, style)
-    SkynetIADSMapView.drawLabel(marks, position, sizes.commandCenterHalfHeight, style.outline, SkynetIADSMapView.nameOf(iads, commandCenter))
+    SkynetIADSMapView.drawLabel(marks, position, sizes.commandCenterHalfHeight, style.outline, SkynetIADSMapView.nameOf(iads, commandCenter), SkynetIADSMapView.LabelFontSizes.large)
   end
 end
 
