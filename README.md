@@ -28,7 +28,7 @@ The F10 menus "IADS Tbilissi" and "IADS Map" show or hide the Skynet status of e
 | Shape | Element | Colour |
 |---|---|---|
 | square | EW radar, or a SAM site acting as EW | blue live, grey dark, purple silenced by a HARM |
-| triangle | SAM site (smaller: point defence) | fill red live, grey dark, purple silenced by a HARM; outline orange when autonomous (no radar covers it) |
+| triangle | SAM site (small, pointing down: point defence) | fill red live, grey dark, purple silenced by a HARM; outline orange when autonomous (no radar covers it) |
 | rectangle | command center | green powered, orange unpowered, red destroyed |
 | small square | command center power source | green, red destroyed |
 | red circle | engagement range of a live SAM site | |

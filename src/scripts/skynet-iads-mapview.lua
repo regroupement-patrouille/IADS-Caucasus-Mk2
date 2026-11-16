@@ -8,7 +8,7 @@
 --   EW radar (or a SAM site acting as EW)   square          blue live, grey dark, purple silenced by a HARM
 --   SAM site                                triangle        fill red live, grey dark, purple silenced by a HARM;
 --                                                           outline orange when autonomous, else as the fill
---   point defence                           small triangle  as a SAM site
+--   point defence                           small triangle, pointing down: as a SAM site
 --   command center                          rectangle       green powered, orange unpowered, red destroyed
 --   command center power source             small square    green alive, red destroyed
 --   destroyed element                       dashed outline, at its last known position
@@ -39,17 +39,17 @@ SkynetIADSMapView.Colours = {
   purple = { 0.65, 0.2, 0.85 },
   green = { 0, 0.75, 0 },
 }
--- metres; a first guess, to tune in game
+-- metres; halved after a first look in game, where the shapes swamped the sites
 SkynetIADSMapView.Sizes = {
-  ew = 1500, -- square half-side
-  sam = 1500, -- triangle circumradius
-  pointDefence = 800, -- triangle circumradius
-  commandCenterHalfWidth = 3000,
-  commandCenterHalfHeight = 1500,
-  powerSource = 600, -- square half-side
+  ew = 700, -- square half-side
+  sam = 800, -- triangle circumradius
+  pointDefence = 500, -- inverted triangle circumradius, so it stands apart from the site it protects
+  commandCenterHalfWidth = 1500,
+  commandCenterHalfHeight = 750,
+  powerSource = 350, -- square half-side
 }
-SkynetIADSMapView.LineMargin = 300 -- metres between a line's end and the shape it points at, on top of the shape's size
-SkynetIADSMapView.LabelOffset = 500 -- metres between a shape and its label, south of it
+SkynetIADSMapView.LineMargin = 200 -- metres between a line's end and the shape it points at, on top of the shape's size
+SkynetIADSMapView.LabelOffset = 300 -- metres between a shape and its label, south of it
 SkynetIADSMapView.LabelFontSize = 10
 SkynetIADSMapView.LineTypes = { solid = 1, dashed = 2 }
 -- how each kind of relation is drawn
@@ -113,9 +113,12 @@ function SkynetIADSMapView.radarElementStyle(element, isEwRadar)
   if isEwRadar or element:getActAsEW() then
     style.shape = "square"
     style.size = SkynetIADSMapView.Sizes.ew
+  elseif element:getIsAPointDefence() then
+    style.shape = "invertedTriangle"
+    style.size = SkynetIADSMapView.Sizes.pointDefence
   else
     style.shape = "triangle"
-    style.size = element:getIsAPointDefence() and SkynetIADSMapView.Sizes.pointDefence or SkynetIADSMapView.Sizes.sam
+    style.size = SkynetIADSMapView.Sizes.sam
   end
   if element:isDefendingHARM() then
     style.fill = "purple"
@@ -124,7 +127,7 @@ function SkynetIADSMapView.radarElementStyle(element, isEwRadar)
   else
     style.fill = "grey"
   end
-  if style.shape == "triangle" and element:getAutonomousState() then
+  if style.shape ~= "square" and element:getAutonomousState() then
     style.outline = "orange"
   else
     style.outline = style.fill
@@ -169,11 +172,11 @@ function SkynetIADSMapView.drawRectangle(iads, centre, halfWidth, halfHeight, st
   )
 end
 
---- Triangle on a circle of radius `radius` around `centre`, apex north.
-function SkynetIADSMapView.drawTriangle(iads, centre, radius, style)
+--- Triangle on a circle of radius `radius` around `centre`, apex north (south when `inverted`).
+function SkynetIADSMapView.drawTriangle(iads, centre, radius, style, inverted)
   local points = {}
   for i = 0, 2 do
-    local angle = i * 2 * math.pi / 3
+    local angle = i * 2 * math.pi / 3 + (inverted and math.pi or 0)
     points[i + 1] = { x = centre.x + radius * math.cos(angle), y = centre.y, z = centre.z + radius * math.sin(angle) }
   end
   trigger.action.markupToAll(
@@ -191,8 +194,8 @@ function SkynetIADSMapView.drawTriangle(iads, centre, radius, style)
 end
 
 function SkynetIADSMapView.drawShape(iads, centre, style)
-  if style.shape == "triangle" then
-    SkynetIADSMapView.drawTriangle(iads, centre, style.size, style)
+  if style.shape == "triangle" or style.shape == "invertedTriangle" then
+    SkynetIADSMapView.drawTriangle(iads, centre, style.size, style, style.shape == "invertedTriangle")
   else
     SkynetIADSMapView.drawRectangle(iads, centre, style.size, style.size, style)
   end
