@@ -10,7 +10,13 @@
 --                                                           outline orange when autonomous, else as the fill
 --   point defence                           small triangle  as a SAM site
 --   command center                          rectangle       green powered, orange unpowered, red destroyed
+--   command center power source             small square    green alive, red destroyed
 --   destroyed element                       dashed outline, at its last known position
+--   live SAM site                           red circle: the engagement range of its longest-reaching launcher
+--   coverage (parent radar -> SAM site)     solid blue line
+--   point defence -> protected site         dashed grey line; solid red while held live against a HARM
+--   command center -> power source          dashed green line
+-- Each shape carries its DCS name.
 --
 -- A redraw removes every mark drawn last time and draws anew (DCS marks cannot be edited). It runs on a short timer, only for
 -- networks that are shown and marked dirty.
@@ -40,8 +46,19 @@ SkynetIADSMapView.Sizes = {
   pointDefence = 800, -- triangle circumradius
   commandCenterHalfWidth = 3000,
   commandCenterHalfHeight = 1500,
+  powerSource = 600, -- square half-side
 }
+SkynetIADSMapView.LineMargin = 300 -- metres between a line's end and the shape it points at, on top of the shape's size
+SkynetIADSMapView.LabelOffset = 500 -- metres between a shape and its label, south of it
+SkynetIADSMapView.LabelFontSize = 10
 SkynetIADSMapView.LineTypes = { solid = 1, dashed = 2 }
+-- how each kind of relation is drawn
+SkynetIADSMapView.RelationStyles = {
+  coverage = { colour = "blue", dashed = false }, -- parent radar -> SAM site it covers
+  pointDefence = { colour = "grey", dashed = true }, -- point defence -> site it protects
+  pointDefending = { colour = "red", dashed = false }, -- the same, while held live against a HARM
+  power = { colour = "green", dashed = true }, -- command center -> its power source
+}
 
 SkynetIADSMapView.shownIads = SkynetIADSMapView.shownIads or {}
 SkynetIADSMapView.lastMarkId = SkynetIADSMapView.lastMarkId or (SkynetIADSMapView.FirstMarkId - 1)
@@ -181,13 +198,119 @@ function SkynetIADSMapView.drawShape(iads, centre, style)
   end
 end
 
+function SkynetIADSMapView.drawLine(iads, from, to, colourName, dashed)
+  trigger.action.lineToAll(
+    -1,
+    SkynetIADSMapView.newIadsMarkId(iads),
+    from,
+    to,
+    SkynetIADSMapView.colour(colourName),
+    dashed and SkynetIADSMapView.LineTypes.dashed or SkynetIADSMapView.LineTypes.solid,
+    true
+  )
+end
+
+function SkynetIADSMapView.drawCircle(iads, centre, radius, colourName)
+  trigger.action.circleToAll(
+    -1,
+    SkynetIADSMapView.newIadsMarkId(iads),
+    centre,
+    radius,
+    SkynetIADSMapView.colour(colourName),
+    SkynetIADSMapView.colour(colourName, 0),
+    SkynetIADSMapView.LineTypes.solid,
+    true
+  )
+end
+
+--- A label south of a shape of size `size` centred on `centre`.
+function SkynetIADSMapView.drawLabel(iads, centre, size, colourName, text)
+  local point = { x = centre.x - size - SkynetIADSMapView.LabelOffset, y = centre.y, z = centre.z }
+  trigger.action.textToAll(
+    -1,
+    SkynetIADSMapView.newIadsMarkId(iads),
+    point,
+    SkynetIADSMapView.colour(colourName),
+    SkynetIADSMapView.colour(colourName, 0),
+    SkynetIADSMapView.LabelFontSize,
+    true,
+    text
+  )
+end
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- What a network holds
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
+--- Every relation drawn as a line: { from = <element or DCS object>, to = <element or DCS object>, kind = <RelationStyles key> }.
+function SkynetIADSMapView.relationsOf(iads)
+  local relations = {}
+  local samSites = iads:getSAMSites() or {}
+  for _, sam in ipairs(samSites) do
+    for _, parent in ipairs(sam:getParentRadars() or {}) do
+      table.insert(relations, { from = parent, to = sam, kind = "coverage" })
+    end
+  end
+  for _, list in ipairs({ iads:getEarlyWarningRadars() or {}, samSites }) do
+    for _, protected in ipairs(list) do
+      for _, pd in ipairs(protected:getPointDefences() or {}) do
+        table.insert(relations, { from = pd, to = protected, kind = pd:getIsPointDefending() and "pointDefending" or "pointDefence" })
+      end
+    end
+  end
+  for _, cc in ipairs(iads:getCommandCenters() or {}) do
+    for _, powerSource in ipairs(cc:getPowerSources() or {}) do
+      table.insert(relations, { from = cc, to = powerSource, kind = "power" })
+    end
+  end
+  return relations
+end
+
+--- Range of the site's longest-reaching launcher, in metres; 0 when it has none.
+function SkynetIADSMapView.engagementRange(samSite)
+  local range = 0
+  for _, launcher in ipairs(samSite:getLaunchers() or {}) do
+    local ok, launcherRange = pcall(launcher.getRange, launcher)
+    if ok and launcherRange and launcherRange > range then
+      range = launcherRange
+    end
+  end
+  return range
+end
+
+--- How far a shape reaches from its centre, to keep lines and labels clear of it.
+function SkynetIADSMapView.footprintOf(object)
+  local sizes = SkynetIADSMapView.Sizes
+  if getmetatable(object) == SkynetIADSCommandCenter then
+    return sizes.commandCenterHalfWidth
+  elseif not object.getElementPosition then
+    return sizes.powerSource
+  elseif object:getIsAPointDefence() then
+    return sizes.pointDefence
+  end
+  return math.max(sizes.sam, sizes.ew)
+end
+
+--- Name of a Skynet element or DCS object; the last known one once it is gone.
+function SkynetIADSMapView.nameOf(iads, object)
+  iads.mapViewNames = iads.mapViewNames or {}
+  local getter = object.getDCSName or object.getName
+  local ok, name = pcall(getter, object)
+  if ok and name then
+    iads.mapViewNames[object] = name
+    return name
+  end
+  return iads.mapViewNames[object] or "?"
+end
+
 -------------------------------------------------------------------------------------------------------------------------------------------------------------
 -- Drawing a network
 -------------------------------------------------------------------------------------------------------------------------------------------------------------
 function SkynetIADSMapView.drawRadarElement(iads, element, isEwRadar)
   local position = SkynetIADSMapView.positionOf(iads, element)
   if position then
-    SkynetIADSMapView.drawShape(iads, position, SkynetIADSMapView.radarElementStyle(element, isEwRadar))
+    local style = SkynetIADSMapView.radarElementStyle(element, isEwRadar)
+    SkynetIADSMapView.drawShape(iads, position, style)
+    SkynetIADSMapView.drawLabel(iads, position, style.size, style.outline, SkynetIADSMapView.nameOf(iads, element))
   end
 end
 
@@ -195,7 +318,54 @@ function SkynetIADSMapView.drawCommandCenter(iads, commandCenter)
   local position = SkynetIADSMapView.positionOf(iads, commandCenter)
   if position then
     local sizes = SkynetIADSMapView.Sizes
-    SkynetIADSMapView.drawRectangle(iads, position, sizes.commandCenterHalfWidth, sizes.commandCenterHalfHeight, SkynetIADSMapView.commandCenterStyle(commandCenter))
+    local style = SkynetIADSMapView.commandCenterStyle(commandCenter)
+    SkynetIADSMapView.drawRectangle(iads, position, sizes.commandCenterHalfWidth, sizes.commandCenterHalfHeight, style)
+    SkynetIADSMapView.drawLabel(iads, position, sizes.commandCenterHalfHeight, style.outline, SkynetIADSMapView.nameOf(iads, commandCenter))
+  end
+end
+
+function SkynetIADSMapView.drawPowerSource(iads, powerSource)
+  local position = SkynetIADSMapView.positionOf(iads, powerSource)
+  if position then
+    local asked, alive = pcall(powerSource.isExist, powerSource)
+    local style = (asked and alive) and { fill = "green", outline = "green", dashed = false } or { fill = "red", outline = "red", dashed = true }
+    local size = SkynetIADSMapView.Sizes.powerSource
+    SkynetIADSMapView.drawRectangle(iads, position, size, size, style)
+    SkynetIADSMapView.drawLabel(iads, position, size, style.outline, SkynetIADSMapView.nameOf(iads, powerSource))
+  end
+end
+
+--- A relation's line, each end pulled back off the shape it touches; nothing when the two shapes overlap.
+function SkynetIADSMapView.drawRelation(iads, relation)
+  local from, to = SkynetIADSMapView.positionOf(iads, relation.from), SkynetIADSMapView.positionOf(iads, relation.to)
+  if not from or not to then
+    return
+  end
+  local dx, dz = to.x - from.x, to.z - from.z
+  local length = math.sqrt(dx * dx + dz * dz)
+  local fromGap = SkynetIADSMapView.footprintOf(relation.from) + SkynetIADSMapView.LineMargin
+  local toGap = SkynetIADSMapView.footprintOf(relation.to) + SkynetIADSMapView.LineMargin
+  if length <= fromGap + toGap then
+    return
+  end
+  local ux, uz = dx / length, dz / length
+  local style = SkynetIADSMapView.RelationStyles[relation.kind]
+  SkynetIADSMapView.drawLine(
+    iads,
+    { x = from.x + ux * fromGap, y = from.y, z = from.z + uz * fromGap },
+    { x = to.x - ux * toGap, y = to.y, z = to.z - uz * toGap },
+    style.colour,
+    style.dashed
+  )
+end
+
+function SkynetIADSMapView.drawEngagementRange(iads, samSite)
+  if samSite:isActive() then
+    local range = SkynetIADSMapView.engagementRange(samSite)
+    local position = SkynetIADSMapView.positionOf(iads, samSite)
+    if range > 0 and position then
+      SkynetIADSMapView.drawCircle(iads, position, range, "red")
+    end
   end
 end
 
@@ -214,23 +384,29 @@ function SkynetIADSMapView.erase(iads)
   iads.mapViewMarkIds = {}
 end
 
-function SkynetIADSMapView.elementName(element)
-  local ok, name = pcall(element.getDCSName, element)
-  return ok and name or "?"
-end
-
+--- Erase and draw the whole network: range circles underneath, then shapes and labels, then the relations.
 function SkynetIADSMapView.redraw(iads)
   SkynetIADSMapView.erase(iads)
   iads.mapViewDirty = false
-  for _, ew in ipairs(iads:getEarlyWarningRadars() or {}) do
-    SkynetIADSMapView.guardedDraw(SkynetIADSMapView.elementName(ew), SkynetIADSMapView.drawRadarElement, iads, ew, true)
-  end
+  local ews, sams, ccs = iads:getEarlyWarningRadars() or {}, iads:getSAMSites() or {}, iads:getCommandCenters() or {}
   -- point defences are SAM sites too
-  for _, sam in ipairs(iads:getSAMSites() or {}) do
-    SkynetIADSMapView.guardedDraw(SkynetIADSMapView.elementName(sam), SkynetIADSMapView.drawRadarElement, iads, sam, false)
+  for _, sam in ipairs(sams) do
+    SkynetIADSMapView.guardedDraw(SkynetIADSMapView.nameOf(iads, sam), SkynetIADSMapView.drawEngagementRange, iads, sam)
   end
-  for _, cc in ipairs(iads:getCommandCenters() or {}) do
-    SkynetIADSMapView.guardedDraw(SkynetIADSMapView.elementName(cc), SkynetIADSMapView.drawCommandCenter, iads, cc)
+  for _, ew in ipairs(ews) do
+    SkynetIADSMapView.guardedDraw(SkynetIADSMapView.nameOf(iads, ew), SkynetIADSMapView.drawRadarElement, iads, ew, true)
+  end
+  for _, sam in ipairs(sams) do
+    SkynetIADSMapView.guardedDraw(SkynetIADSMapView.nameOf(iads, sam), SkynetIADSMapView.drawRadarElement, iads, sam, false)
+  end
+  for _, cc in ipairs(ccs) do
+    SkynetIADSMapView.guardedDraw(SkynetIADSMapView.nameOf(iads, cc), SkynetIADSMapView.drawCommandCenter, iads, cc)
+    for _, powerSource in ipairs(cc:getPowerSources() or {}) do
+      SkynetIADSMapView.guardedDraw(SkynetIADSMapView.nameOf(iads, powerSource), SkynetIADSMapView.drawPowerSource, iads, powerSource)
+    end
+  end
+  for _, relation in ipairs(SkynetIADSMapView.relationsOf(iads)) do
+    SkynetIADSMapView.guardedDraw(relation.kind .. " relation", SkynetIADSMapView.drawRelation, iads, relation)
   end
 end
 
