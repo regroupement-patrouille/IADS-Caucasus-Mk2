@@ -11,7 +11,7 @@
 --   TBS: Tbilisi, with a command center (TBS-CC Tbilissi) powered by TBS-CC Tbilissi Power
 --   MAP: every other scenario, no command center
 --
--- Needs skynet-iads-vendored.lua loaded before this file. Uses nothing from veafSkynet.
+-- Needs skynet-iads-vendored.lua and skynet-iads-mapview.lua loaded before this file. Uses nothing from veafSkynet.
 -------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 MissionIads = {}
@@ -291,10 +291,15 @@ function MissionIads.toggleStatusDisplay(managedIads)
   MissionIads.setStatusDisplay(managedIads, not managedIads.skynetIads:getDebugSettings().IADSStatus)
 end
 
+function MissionIads.toggleMapView(managedIads)
+  managedIads.skynetIads:setMapView(not managedIads.skynetIads:getMapView())
+end
+
 function MissionIads.addMenus()
   for _, managedIads in ipairs(MissionIads.ManagedIads) do
     if managedIads.skynetIads then
       local menu = missionCommands.addSubMenu(managedIads.name)
+      missionCommands.addCommand("Show/hide map view", menu, MissionIads.toggleMapView, managedIads)
       missionCommands.addCommand("Display/hide Skynet status", menu, MissionIads.toggleStatusDisplay, managedIads)
       if managedIads.commandCenter then
         missionCommands.addCommand("Disable network (destroy CC)", menu, MissionIads.destroyCommandCenter, managedIads)
