@@ -112,6 +112,7 @@ modules:
 custom_scripts:
   scripts:
     - path: src/scripts/skynet-iads-vendored.lua   # Skynet IADS 3.6.0, loaded after veaf-scripts.lua
+    - path: src/scripts/skynet-iads-mapview.lua   # F10 map view of a Skynet IADS (SkynetIADS:setMapView)
     - path: src/scripts/mission-iads.lua      # builds the TBS and MAP networks, F10 "IADS ..." menus
 
 # ── Build pipeline ────────────────────────────────────────────────────────────
