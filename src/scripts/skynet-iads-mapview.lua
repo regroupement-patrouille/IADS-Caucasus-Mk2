@@ -19,7 +19,7 @@
 -- Each shape carries its DCS name.
 --
 -- A redraw removes every mark drawn last time and draws anew (DCS marks cannot be edited). It runs on a short timer, only for
--- networks that are shown and marked dirty.
+-- networks that are shown, marked dirty by a wrapped Skynet function, and whose state signature has actually changed.
 --
 -- Load order: after Skynet (skynet-iads-vendored.lua), before any script that builds an IADS. Uses nothing from VEAF.
 -------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -413,11 +413,87 @@ end
 -------------------------------------------------------------------------------------------------------------------------------------------------------------
 -- Refresh loop
 -------------------------------------------------------------------------------------------------------------------------------------------------------------
---- Redraw every shown network marked dirty. Answers the time of the next check, so it can be the timer's function.
+--- Metres a position is rounded to in a signature: a move smaller than this does not redraw.
+---
+--- An AWACS used as an EW radar never stops moving: at 100 m it redrew the whole network at every Skynet cycle (every 5 s, ~940 marks
+--- for MAP). At 2 km it redraws about every 10 s, and its square lags at most 2 km behind it.
+SkynetIADSMapView.SignaturePositionStep = 2000
+
+function SkynetIADSMapView.positionSignature(iads, object)
+  local position = SkynetIADSMapView.positionOf(iads, object)
+  if not position then
+    return "-"
+  end
+  local step = SkynetIADSMapView.SignaturePositionStep
+  return math.floor(position.x / step) .. "," .. math.floor(position.z / step)
+end
+
+--- Everything the drawing of one radar element depends on, as a string.
+function SkynetIADSMapView.radarElementSignature(iads, element)
+  local parents = {}
+  for _, parent in ipairs(element:getParentRadars() or {}) do
+    table.insert(parents, SkynetIADSMapView.nameOf(iads, parent))
+  end
+  table.sort(parents)
+  return table.concat({
+    SkynetIADSMapView.nameOf(iads, element),
+    tostring(element:isActive()),
+    tostring(element:isDefendingHARM()),
+    tostring(element:getAutonomousState()),
+    tostring(element:isDestroyed()),
+    tostring(element:getActAsEW()),
+    tostring(element:getIsAPointDefence()),
+    tostring(element:getIsPointDefending()),
+    SkynetIADSMapView.positionSignature(iads, element),
+    table.concat(parents, "+"),
+  }, "|")
+end
+
+function SkynetIADSMapView.commandCenterSignature(iads, commandCenter)
+  local parts = {
+    SkynetIADSMapView.nameOf(iads, commandCenter),
+    tostring(commandCenter:isDestroyed()),
+    tostring(commandCenter:hasWorkingPowerSource()),
+    SkynetIADSMapView.positionSignature(iads, commandCenter),
+  }
+  for _, powerSource in ipairs(commandCenter:getPowerSources() or {}) do
+    local asked, alive = pcall(powerSource.isExist, powerSource)
+    table.insert(parts, tostring(asked and alive) .. "@" .. SkynetIADSMapView.positionSignature(iads, powerSource))
+  end
+  return table.concat(parts, "|")
+end
+
+--- Everything the drawing of a network depends on, as a string: two equal signatures draw the same picture.
+---
+--- Skynet calls several of the wrapped functions on a cycle even when nothing changes (a dark site is told to go dark again), so a
+--- dirty mark only means "maybe": this is what decides whether a redraw is worth its hundreds of marks.
+function SkynetIADSMapView.signatureOf(iads)
+  local parts = {}
+  for _, list in ipairs({ iads:getEarlyWarningRadars() or {}, iads:getSAMSites() or {} }) do
+    for _, element in ipairs(list) do
+      table.insert(parts, SkynetIADSMapView.radarElementSignature(iads, element))
+    end
+  end
+  for _, cc in ipairs(iads:getCommandCenters() or {}) do
+    table.insert(parts, SkynetIADSMapView.commandCenterSignature(iads, cc))
+  end
+  return table.concat(parts, "\n")
+end
+
+--- Redraw every shown network marked dirty whose picture has changed. Answers the time of the next check, so it can be the timer's
+--- function.
 function SkynetIADSMapView.tick()
   for iads in pairs(SkynetIADSMapView.shownIads) do
     if iads.mapViewDirty then
-      SkynetIADSMapView.guardedDraw(iads.name, SkynetIADSMapView.redraw, iads)
+      iads.mapViewDirty = false
+      local ok, signature = pcall(SkynetIADSMapView.signatureOf, iads)
+      if not ok then
+        SkynetIADSMapView.warn(string.format("%s: state not readable, redrawing anyway: %s", tostring(iads.name), tostring(signature)))
+      end
+      if not ok or signature ~= iads.mapViewSignature then
+        iads.mapViewSignature = ok and signature or nil
+        SkynetIADSMapView.guardedDraw(iads.name, SkynetIADSMapView.redraw, iads)
+      end
     end
   end
   return timer.getTime() + SkynetIADSMapView.RefreshPeriod
@@ -446,10 +522,12 @@ end
 function SkynetIADS:setMapView(bEnabled)
   if bEnabled then
     SkynetIADSMapView.shownIads[self] = true
+    self.mapViewSignature = nil -- draw at the next refresh, whatever the state
     self:markMapViewDirty()
     SkynetIADSMapView.startTimer()
   else
     SkynetIADSMapView.shownIads[self] = nil
+    self.mapViewSignature = nil
     SkynetIADSMapView.erase(self)
   end
   return self
@@ -462,4 +540,87 @@ end
 --- Ask for a redraw at the next refresh; costs nothing when the view is hidden.
 function SkynetIADS:markMapViewDirty()
   self.mapViewDirty = true
+end
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- Change detection: Skynet functions that change what the view shows are wrapped so they mark their IADS dirty.
+--
+-- Once this lives in Skynet, each wrap becomes a call to markMapViewDirty() at the end of the function it wraps.
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
+--- Skynet's own functions, keyed "<class>.<method>". Kept across reloads, so a reload wraps the original and never a previous wrap.
+SkynetIADSMapView.originals = SkynetIADSMapView.originals or {}
+
+function SkynetIADSMapView.pack(...)
+  return { n = select("#", ...), ... }
+end
+
+function SkynetIADSMapView.iadsOfElement(element)
+  return element.iads
+end
+
+function SkynetIADSMapView.iadsItself(iads)
+  return iads
+end
+
+--- Every element receives every world event, shots included: only a death can change what the view shows.
+function SkynetIADSMapView.isDeathEvent(_, event)
+  return event ~= nil and event.id == world.event.S_EVENT_DEAD
+end
+
+--- Replace `<className>.<methodName>` by a function that runs Skynet's original, then marks the IADS dirty (when `filter`, if given,
+--- agrees). Answers all the original's results. Only a function defined on that class itself is wrapped, not an inherited one.
+function SkynetIADSMapView.wrap(className, methodName, iadsOf, filter)
+  local key = className .. "." .. methodName
+  local class = rawget(_G, className)
+  if SkynetIADSMapView.originals[key] == nil then
+    local original = class and rawget(class, methodName)
+    if type(original) ~= "function" then
+      SkynetIADSMapView.warn(string.format("cannot watch %s, it does not exist", key))
+      return
+    end
+    SkynetIADSMapView.originals[key] = original
+  end
+  class[methodName] = function(self, ...)
+    local results = SkynetIADSMapView.pack(SkynetIADSMapView.originals[key](self, ...))
+    if filter == nil or filter(self, ...) then
+      local iads = iadsOf(self)
+      if iads and iads.markMapViewDirty then
+        pcall(iads.markMapViewDirty, iads)
+      end
+    end
+    return unpack(results, 1, results.n)
+  end
+end
+
+function SkynetIADSMapView.installWraps()
+  local element, iads = SkynetIADSMapView.iadsOfElement, SkynetIADSMapView.iadsItself
+  -- state: live, dark, autonomous, silenced by a HARM, point defending
+  for _, method in ipairs({ "goLive", "goDark", "setToCorrectAutonomousState", "goSilentToEvadeHARM", "finishHarmDefence", "setIsPointDefending", "addPointDefence" }) do
+    SkynetIADSMapView.wrap("SkynetIADSAbstractRadarElement", method, element)
+  end
+  -- an override: the wrap of the base function does not reach it
+  SkynetIADSMapView.wrap("SkynetIADSEWRadar", "setToCorrectAutonomousState", element)
+  -- losses: an element, a power source, a command center
+  SkynetIADSMapView.wrap("SkynetIADSAbstractElement", "onEvent", element, SkynetIADSMapView.isDeathEvent)
+  -- coverage (also how moving elements are noticed) and membership
+  for _, method in ipairs({
+    "buildRadarCoverage",
+    "buildRadarCoverageForSAMSite",
+    "buildRadarCoverageForEarlyWarningRadar",
+    "updateRadarAssociation",
+    "addSAMSite",
+    "addEarlyWarningRadar",
+    "addCommandCenter",
+    "deactivate",
+  }) do
+    SkynetIADSMapView.wrap("SkynetIADS", method, iads)
+  end
+end
+
+SkynetIADSMapView.installWraps()
+
+-- after a reload, shown networks are redrawn by the new code (their mark ids live on the IADS, so the old drawing goes)
+for shown in pairs(SkynetIADSMapView.shownIads) do
+  shown.mapViewSignature = nil
+  shown:markMapViewDirty()
 end
